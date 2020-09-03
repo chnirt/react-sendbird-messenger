@@ -1,8 +1,22 @@
 version: 2.1
 jobs:
   build:
+    # pre-built images: https://circleci.com/docs/2.0/circleci-images/
     docker:
-      - image: circleci/node:4.8.2 # the primary container, where your job's commands are run
+      - image: circleci/node:10-browsers
     steps:
-      - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - checkout
+      - run:
+          name: The First Step
+          command: |
+            echo 'Hello World!'
+            echo 'This is the delivery pipeline'
+      - run:
+          name: Code Has Arrived
+          command: |
+            ls -al
+            echo '^^^That should look familiar^^^'
+      - run:
+          name: Running in a Unique Container
+          command: |
+            node -v
