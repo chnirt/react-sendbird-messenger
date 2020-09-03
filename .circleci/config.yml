@@ -1,18 +1,18 @@
 orbs:
-  react: "thefrontside/react@dev:alpha"
+  node: circleci/node@4.0.0
 
 version: 2.1
 
+jobs:
+  install-yarn-example:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - node/install:
+          install-yarn: true
+
 workflows:
-  push:
+  node-tests:
     jobs:
-      - react/install
-      - react/eslint:
-          requires:
-            - react/install
-      - react/test:
-          requires:
-            - react/install
-      - react/coverage:
-          requires:
-            - react/install
+      - install-yarn-example
+      - node/test
