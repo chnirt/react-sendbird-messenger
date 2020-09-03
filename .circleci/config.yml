@@ -1,9 +1,12 @@
 version: 2.1
+orbs:
+  node: circleci/node@3.0.0
+  slack: circleci/slack@3.4.2
 jobs:
   prepare:
     # pre-built images: https://circleci.com/docs/2.0/circleci-images/
-    docker:
-      - image: circleci/node:10-browsers
+    # docker:
+    #   - image: circleci/node:10-browsers
     steps:
       - checkout
       # - run:
@@ -32,8 +35,8 @@ jobs:
           paths:
             - .
   test:
-    docker:
-      - image: circleci/node:10-browsers
+    # docker:
+    #   - image: circleci/node:10-browsers
     steps:
       - checkout
       - attach_workspace:
@@ -42,8 +45,8 @@ jobs:
           name: Test
           command: yarn test
   build:
-    docker:
-      - image: circleci/node:10-browsers
+    # docker:
+    #   - image: circleci/node:10-browsers
     steps:
       - checkout
       - attach_workspace:
@@ -53,11 +56,11 @@ jobs:
           command: yarn build
       - slack/notify:
           color: '#42e2f4'
-          mentions: 'all'
+          mentions: '@all'
           message: A custom message to notify the channel about the latest build
       - slack/status:
           fail_only: true
-          mentions: 'all'
+          mentions: '@all'
 # Orchestrate our job run sequence
 workflows:
   build_and_test:

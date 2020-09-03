@@ -78,3 +78,5 @@ React — Environment specific builds using .env with CRA and env-cmd: https://m
 CircleCI Sample config.yml Files: https://circleci.com/docs/2.0/sample-config/#section=configuration
 
 CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
+
+Circle Slack: https://circleci.com/blog/automating-the-deploy-of-an-adonis-api-to-heroku/
