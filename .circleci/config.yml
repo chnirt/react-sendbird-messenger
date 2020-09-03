@@ -1,6 +1,5 @@
 version: 2.1
 orbs:
-  # node: circleci/node@3.0.0
   slack: circleci/slack@3.4.2
 jobs:
   prepare:
@@ -55,12 +54,12 @@ jobs:
           name: Build
           command: yarn build
       - slack/notify:
-          color: '#42e2f4'
-          mentions: '@all'
+          color: '#762FDD'
+          mentions: ''
           message: A custom message to notify the channel about the latest build
       - slack/status:
           fail_only: true
-          mentions: '@all'
+          mentions: ''
 # Orchestrate our job run sequence
 workflows:
   build_and_test:
