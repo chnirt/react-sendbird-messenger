@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  prepare:
     # pre-built images: https://circleci.com/docs/2.0/circleci-images/
     docker:
       - image: circleci/node:10-browsers
@@ -44,26 +44,27 @@ jobs:
       - run:
           name: Test
           command: yarn test
-  deploy:
+  build:
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
-      - run: echo 'npm run deploy'
-
+      - run:
+          name: Build
+          command: yarn build
 # Orchestrate our job run sequence
 workflows:
   build_and_test:
     jobs:
-      - build
+      - prepare
       - test:
           requires:
-            - build
+            - prepare
       - hold:
           type: approval
           requires:
-            - build
+            - prepare
             - test
-      - deploy:
+      - build:
           requires:
             - hold
