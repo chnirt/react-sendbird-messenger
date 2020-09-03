@@ -72,3 +72,5 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 React Router v6 Preview: https://reacttraining.com/blog/react-router-v6-pre/
 
 React — Environment specific builds using .env with CRA and env-cmd: https://medium.com/@rishi.vedpathak/react-environment-specific-builds-using-env-with-cra-and-env-cmd-5960a1253fe6
+
+CircleCI Sample config.yml Files: https://circleci.com/docs/2.0/sample-config/#section=configuration
