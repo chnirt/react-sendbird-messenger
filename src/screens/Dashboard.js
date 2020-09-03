@@ -12,12 +12,11 @@ import {
 	Button,
 	Avatar,
 	Typography,
-	Badge,
 	Dropdown,
 	Menu,
 	Skeleton,
-	Divider,
 	Upload,
+	Divider,
 } from 'antd'
 import {
 	SettingOutlined,
@@ -35,7 +34,7 @@ import moment from 'moment'
 import { useAuth } from '../context/authContext'
 import { Loading } from '../components'
 
-const { Text } = Typography
+const { Title, Text } = Typography
 
 export function Dashboard() {
 	const { logout } = useAuth()
@@ -73,22 +72,12 @@ export function Dashboard() {
 		}
 	}, [])
 
-	// const scrollToBottom = () => {
-	// 	messagesEndRef.current &&
-	// 		messagesEndRef.current.scrollIntoView({
-	// 			behavior: 'smooth',
-	// 		})
-	// }
-
-	// useEffect(() => {
-	// 	if (messages) {
-	// 		scrollToBottom()
-	// 	}
-	// }, [messages])
 	useEffect(() => {
-		messagesEndRef.current &&
-			messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-	})
+		if (messages) {
+			messagesEndRef.current &&
+				messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+		}
+	}, [messages])
 
 	const props = {
 		onRemove: (file) => {
@@ -160,7 +149,9 @@ export function Dashboard() {
 						</Col>
 						<Col span={18}>
 							<Row>
-								<Text>{user.name}</Text>
+								<Title style={{ margin: 0 }} level={5}>
+									{user.name}
+								</Title>
 							</Row>
 							<Row>
 								<Text type='secondary' ellipsis={true}>
@@ -170,9 +161,8 @@ export function Dashboard() {
 						</Col>
 					</Row>
 				</Col>
-				<Col span={6}>
+				<Col style={{ display: 'flex', justifyContent: 'flex-end' }} span={6}>
 					{moment(user.createdAt).format('HH:mma')}
-					<Badge status={user.isOnline ? 'success' : 'error'} />
 				</Col>
 			</Row>
 		)
@@ -237,7 +227,14 @@ export function Dashboard() {
 	return (
 		<Fragment>
 			<Loading spinning={loadingLogOut}>
-				<Row style={{ height: '100vh', border: '1px solid #d9d9d9' }}>
+				<Row
+					style={{
+						height: '100vh',
+						borderTop: '1px solid #d9d9d9',
+						borderLeft: '1px solid #d9d9d9',
+						borderRight: '1px solid #d9d9d9',
+					}}
+				>
 					<Col
 						style={{ borderRight: '1px solid #d9d9d9' }}
 						xs={24}
@@ -302,7 +299,14 @@ export function Dashboard() {
 							</div>
 						</Row>
 
-						<Row style={{ height: 'calc(100vh - 120px)', overflowY: 'auto' }}>
+						<Row
+							style={{
+								height: 'calc(100vh - 120px)',
+								overflowY: 'auto',
+								borderBottom: '1px solid #d9d9d9',
+								paddingBottom: 12,
+							}}
+						>
 							<Skeleton loading={loadingListUsers} paragraph={{ rows: 25 }}>
 								{renderListUsers(users)}
 							</Skeleton>
@@ -319,30 +323,37 @@ export function Dashboard() {
 								borderBottom: '1px solid #d9d9d9',
 							}}
 						>
-							<Col>
+							<Col style={{ display: 'flex', alignItems: 'center' }}>
 								<Avatar
-									style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
+									style={{
+										color: '#f56a00',
+										backgroundColor: '#fde3cf',
+										marginRight: 12,
+									}}
 								>
-									U
+									chnirt
 								</Avatar>
+								<Title style={{ margin: 0 }} level={4}>
+									chnirt
+								</Title>
 							</Col>
 							<Col>
 								<Button
 									style={{ border: 0 }}
 									type='ghost'
-									icon={<PhoneOutlined />}
+									icon={<PhoneOutlined style={{ color: '#762FDD' }} />}
 									size='large'
 								/>
 								<Button
 									style={{ border: 0 }}
 									type='ghost'
-									icon={<VideoCameraOutlined />}
+									icon={<VideoCameraOutlined style={{ color: '#762FDD' }} />}
 									size='large'
 								/>
 								<Button
 									style={{ border: 0 }}
 									type='ghost'
-									icon={<InfoCircleOutlined />}
+									icon={<InfoCircleOutlined style={{ color: '#762FDD' }} />}
 									size='large'
 								/>
 							</Col>
@@ -362,13 +373,13 @@ export function Dashboard() {
 										height: 'calc(100vh - 120px)',
 										borderBottom: '1px solid #d9d9d9',
 										overflowY: 'auto',
+										paddingTop: 12,
 									}}
 								>
 									<Skeleton
 										loading={loadingListMessages}
 										paragraph={{ rows: 25 }}
 									>
-										<Divider />
 										{renderListMessages(messages)}
 										<div ref={messagesEndRef} />
 									</Skeleton>
@@ -379,6 +390,7 @@ export function Dashboard() {
 										display: 'flex',
 										justifyContent: 'space-between',
 										alignItems: 'center',
+										borderBottom: '1px solid #d9d9d9',
 									}}
 								>
 									<Col style={{ padding: 12, width: 'calc(100% - 120px)' }}>
@@ -422,6 +434,7 @@ export function Dashboard() {
 								style={{
 									height: 'calc(100vh - 60px)',
 									borderLeft: '1px solid #d9d9d9',
+									borderBottom: '1px solid #d9d9d9',
 								}}
 								xs={0}
 								sm={8}
@@ -429,7 +442,53 @@ export function Dashboard() {
 								lg={8}
 								xl={8}
 							>
-								3 col-order-responsive
+								<Row
+									style={{
+										height: 100,
+										padding: '0 12px',
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+									}}
+								>
+									<Avatar
+										style={{
+											color: '#f56a00',
+											backgroundColor: '#fde3cf',
+											marginRight: 12,
+										}}
+										size={64}
+									>
+										chnirt
+									</Avatar>
+								</Row>
+								<Row
+									style={{
+										height: 20,
+										padding: '0 12px',
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+									}}
+								>
+									<Title style={{ margin: 0 }} level={4}>
+										chnirt
+									</Title>
+								</Row>
+								<Divider />
+								<Row
+									style={{
+										height: 20,
+										padding: '0 12px',
+									}}
+								>
+									<Col>
+										<Title level={5}>Facebook Profile</Title>
+										<Button style={{ padding: 0 }} type='link'>
+											m.me/xxxxxxxx
+										</Button>
+									</Col>
+								</Row>
 							</Col>
 						</Row>
 					</Col>
