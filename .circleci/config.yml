@@ -51,6 +51,13 @@ jobs:
       - run:
           name: Build
           command: yarn build
+      - slack/notify:
+          color: '#42e2f4'
+          mentions: 'all'
+          message: A custom message to notify the channel about the latest build
+      - slack/status:
+          fail_only: true
+          mentions: 'all'
 # Orchestrate our job run sequence
 workflows:
   build_and_test:
