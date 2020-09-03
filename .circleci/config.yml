@@ -75,6 +75,10 @@ workflows:
       - test:
           requires:
             - prepare
+          filters:
+            branches:
+              only:
+                - dev
       - hold:
           type: approval
           requires:

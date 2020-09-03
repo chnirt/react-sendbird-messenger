@@ -34,6 +34,7 @@ import moment from 'moment'
 
 import { useAuth } from '../context/authContext'
 import { Loading } from '../components'
+import Title from 'antd/lib/skeleton/Title'
 
 const { Text } = Typography
 
@@ -325,6 +326,7 @@ export function Dashboard() {
 								>
 									U
 								</Avatar>
+								<Title>Hello</Title>
 							</Col>
 							<Col>
 								<Button
