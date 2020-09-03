@@ -1,9 +1,22 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from 'react'
+import { render } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { BrowserRouter as Router } from 'react-router-dom'
+
+import App from './App'
+import { AuthProvider } from './context/authContext'
 
 test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+	const history = createMemoryHistory()
+	history.push('/some/bad/route')
+	const { getByText } = render(
+		<AuthProvider>
+			<Router history={history}>
+				<App />
+			</Router>
+		</AuthProvider>
+	)
+	expect(getByText('SendBird Messenger')).toHaveTextContent(
+		'SendBird Messenger'
+	)
+})
