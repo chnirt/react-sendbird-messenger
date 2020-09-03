@@ -14,7 +14,7 @@ export function Login() {
 	const [loading, setLoading] = useState(false)
 
 	function onFinish(values) {
-		console.log('Success:', values)
+		// console.log('Success:', values)
 		const { emailOrYourPhoneNumber, password } = values
 
 		setLoading(true)
@@ -25,7 +25,7 @@ export function Login() {
 	}
 
 	const onFinishFailed = (errorInfo) => {
-		console.log('Failed:', errorInfo)
+		// console.log('Failed:', errorInfo)
 	}
 
 	return (
