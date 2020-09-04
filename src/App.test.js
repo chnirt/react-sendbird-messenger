@@ -4,17 +4,19 @@ import { createMemoryHistory } from 'history'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from './App'
-import { AuthProvider } from './context/authContext'
+import { FirebaseProvider, AuthProvider } from './context'
 
 test('renders learn react link', () => {
 	const history = createMemoryHistory()
 	history.push('/some/bad/route')
 	const { getByText } = render(
-		<AuthProvider>
-			<Router history={history}>
-				<App />
-			</Router>
-		</AuthProvider>
+		<FirebaseProvider>
+			<AuthProvider>
+				<Router history={history}>
+					<App />
+				</Router>
+			</AuthProvider>
+		</FirebaseProvider>
 	)
 	expect(getByText('SendBird Messenger')).toHaveTextContent(
 		'SendBird Messenger'

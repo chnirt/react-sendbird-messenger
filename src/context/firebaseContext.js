@@ -30,6 +30,10 @@ export function FirebaseProvider({ children }) {
 export const useFirebase = () => useContext(FirebaseContext)
 
 function FirebaseValue() {
+	if (process.env.REACT_APP_FIREBASE_CONFIG === undefined) {
+		throw new Error('Missing REACT_APP_FIREBASE_CONFIG')
+	}
+
 	const authRef = useRef(null)
 	const firestoreRef = useRef(null)
 

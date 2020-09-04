@@ -40,6 +40,7 @@ const { Title, Text } = Typography
 const { Option } = Mentions
 
 export function Dashboard() {
+	console.log(process.env)
 	const { logout } = useAuth()
 	const { logoutFB } = useFirebase()
 

@@ -7,9 +7,6 @@ import React, {
 import SendBird from 'sendbird'
 import { nanoid } from 'nanoid'
 
-const REACT_APP_SB_APP_ID = '7AE1264D-2D61-4D37-A25C-AEDF55FD631D'
-const UNIQUE_HANDLER_ID = nanoid()
-
 // ChannelHandler.onMessageReceived = function(channel, message) {};
 // ChannelHandler.onMessageUpdated = function(channel, message) {};
 // ChannelHandler.onMessageDeleted = function(channel, messageId) {};
@@ -52,6 +49,8 @@ export function SendBirdProvider({ children }) {
 export const useSendBird = () => useContext(SendBirdContext)
 
 function SendBirdValue() {
+	const UNIQUE_HANDLER_ID = nanoid()
+
 	const sbRef = useRef(null)
 	const channelHandler = useRef(null)
 	const userEventHandler = useRef(null)
@@ -60,7 +59,7 @@ function SendBirdValue() {
 
 	useLayoutEffect(() => {
 		sbRef.current = new SendBird({
-			appId: process.env.REACT_APP_SB_APP_ID || REACT_APP_SB_APP_ID,
+			appId: process.env.REACT_APP_SB_APP_ID,
 		})
 
 		if (userId) {
@@ -90,7 +89,7 @@ function SendBirdValue() {
 			sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
 			sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
 		}
-	}, [userId])
+	}, [userId, UNIQUE_HANDLER_ID])
 
 	function connect(USER_ID = null) {
 		sbRef.current.connect(USER_ID, (user, error) => {

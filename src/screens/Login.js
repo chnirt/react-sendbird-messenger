@@ -24,35 +24,33 @@ export function Login() {
 
 	const [loading, setLoading] = useState(false)
 
-	function onFinish(values) {
+	async function onFinish(values) {
 		// console.log('Success:', values)
 		const { emailOrYourPhoneNumber, password } = values
 
 		setLoading(true)
-		setTimeout(async () => {
-			try {
-				const { user } = await loginFB(emailOrYourPhoneNumber, password)
+		try {
+			const { user } = await loginFB(emailOrYourPhoneNumber, password)
 
-				// console.log(user)
+			// console.log(user)
 
-				user.getIdToken().then((idToken) => {
-					// console.log(idToken)
-					login(user.email, idToken)
-				})
-			} catch (error) {
-				// console.log(error.message)
-				notification['error']({
-					message: 'Login Error',
-					description: error.message,
-					onClick: () => {
-						console.log('Notification Clicked!')
-					},
-					placement: 'bottomRight',
-				})
-			}
+			user.getIdToken().then((idToken) => {
+				// console.log(idToken)
+				login(user.email, idToken)
+			})
+		} catch (error) {
+			// console.log(error.message)
+			notification['error']({
+				message: 'Login Error',
+				description: error.message,
+				onClick: () => {
+					console.log('Notification Clicked!')
+				},
+				placement: 'bottomRight',
+			})
+		}
 
-			setLoading(false)
-		}, 1000)
+		setLoading(false)
 	}
 
 	function onFinishFailed(errorInfo) {
