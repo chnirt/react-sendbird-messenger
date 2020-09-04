@@ -82,3 +82,5 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 Circle Slack: https://circleci.com/blog/automating-the-deploy-of-an-adonis-api-to-heroku/
 
 Deploy ReactJS App with S3 Static Hosting: https://medium.com/serverlessguru/deploy-reactjs-app-with-s3-static-hosting-f640cb49d7e6
+
+How to use emojis in React: https://medium.com/@seanmcp/%EF%B8%8F-how-to-use-emojis-in-react-d23bbf608bf7

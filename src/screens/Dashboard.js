@@ -17,6 +17,8 @@ import {
 	Skeleton,
 	Upload,
 	Divider,
+	Tooltip,
+	Mentions,
 } from 'antd'
 import {
 	SettingOutlined,
@@ -32,9 +34,10 @@ import {
 import moment from 'moment'
 
 import { useAuth } from '../context/authContext'
-import { Loading } from '../components'
+import { Loading, Emoji } from '../components'
 
 const { Title, Text } = Typography
+const { Option } = Mentions
 
 export function Dashboard() {
 	const { logout } = useAuth()
@@ -45,7 +48,7 @@ export function Dashboard() {
 	const [messages, setMessages] = useState([])
 	const [loadingListMessages, setLoadingListMessages] = useState(false)
 	const messagesEndRef = useRef(null)
-	const [fileList, setFileList] = useState([])
+	const [fileList] = useState([])
 
 	useLayoutEffect(() => {
 		fetchUsers()
@@ -213,14 +216,77 @@ export function Dashboard() {
 					width: 200,
 				}}
 			>
-				<Text
-					style={{
-						color: message.isAuthor ? '#fff' : '#000',
-					}}
+				<Tooltip
+					placement='topLeft'
+					title={renderTitle(message.id)}
+					color='#fff'
+					trigger='click'
 				>
-					{message.content}
-				</Text>
+					<Text
+						style={{
+							color: message.isAuthor ? '#fff' : '#000',
+						}}
+					>
+						{message.content}
+					</Text>
+				</Tooltip>
 			</div>
+		)
+	}
+
+	function handleEmoji(id, emoji) {
+		console.log(id, emoji)
+	}
+
+	const renderTitle = (id) => {
+		return (
+			<Fragment>
+				<Button
+					onClick={() => handleEmoji(id, 'love')}
+					type='text'
+					size='small'
+				>
+					<Emoji label='love' symbol='❤️' />
+				</Button>
+				<Button
+					onClick={() => handleEmoji(id, 'smile')}
+					type='text'
+					size='small'
+				>
+					<Emoji label='smile' symbol='😆' />
+				</Button>
+				<Button
+					onClick={() => handleEmoji(id, 'subscribe')}
+					type='text'
+					size='small'
+				>
+					<Emoji label='subscribe' symbol='😮' />
+				</Button>
+				<Button onClick={() => handleEmoji(id, 'cry')} type='text' size='small'>
+					<Emoji label='cry' symbol='😢' />
+				</Button>
+				<Button
+					onClick={() => handleEmoji(id, 'angry')}
+					type='text'
+					size='small'
+				>
+					<Emoji label='angry' symbol='😠' />
+				</Button>
+				<Button
+					onClick={() => handleEmoji(id, 'like')}
+					type='text'
+					size='small'
+				>
+					<Emoji label='like' symbol='👍' />
+				</Button>
+				<Button
+					onClick={() => handleEmoji(id, 'dislike')}
+					type='text'
+					size='small'
+				>
+					<Emoji label='dislike' symbol='👎' />
+				</Button>
+			</Fragment>
 		)
 	}
 
@@ -394,7 +460,16 @@ export function Dashboard() {
 									}}
 								>
 									<Col style={{ padding: 12, width: 'calc(100% - 120px)' }}>
-										<Input placeholder='Type a message...' />
+										{/* <Input placeholder='Type a message...'></Input> */}
+										<Mentions
+											// rows='3'
+											placeholder='Type a message...'
+											placement='top'
+										>
+											<Option value='afc163'>afc163</Option>
+											<Option value='zombieJ'>zombieJ</Option>
+											<Option value='yesmeck'>yesmeck</Option>
+										</Mentions>
 									</Col>
 									<Col
 										style={{
