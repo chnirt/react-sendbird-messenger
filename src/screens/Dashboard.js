@@ -33,7 +33,7 @@ import {
 } from '@ant-design/icons'
 import moment from 'moment'
 
-import { useAuth } from '../context/authContext'
+import { useAuth, useFirebase } from '../context'
 import { Loading, Emoji } from '../components'
 
 const { Title, Text } = Typography
@@ -41,6 +41,7 @@ const { Option } = Mentions
 
 export function Dashboard() {
 	const { logout } = useAuth()
+	const { logoutFB } = useFirebase()
 
 	const [loadingLogOut, setLoadingLogOut] = useState(false)
 	const [users, setUsers] = useState([])
@@ -105,7 +106,9 @@ export function Dashboard() {
 	function onLogout() {
 		setLoadingLogOut(true)
 		setTimeout(() => {
+			logoutFB()
 			logout()
+
 			setLoadingLogOut(false)
 		}, 1000)
 	}
