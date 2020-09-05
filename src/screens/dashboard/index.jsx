@@ -24,6 +24,7 @@ import {
 	LikeOutlined,
 } from '@ant-design/icons'
 import moment from 'moment'
+import { Picker } from 'emoji-mart'
 
 import {
 	Loading,
@@ -259,13 +260,13 @@ export default function Dashboard() {
 						justifyContent: isAuthor ? 'flex-end' : 'flex-start',
 					}}
 				>
-					<RenderMessageBubble message={message} />
+					{renderMessageBubble(message)}
 				</Row>
 			</Row>
 		)
 	}
 
-	const RenderMessageBubble = ({ message }) => {
+	const renderMessageBubble = (message) => {
 		return (
 			<Tooltip
 				placement='topLeft'
@@ -275,13 +276,15 @@ export default function Dashboard() {
 				color='#fff'
 				trigger='click'
 			>
-				<MessageBubble
-					w={300}
-					// h={200}
-					backgroundColor={message.isAuthor ? PRIMARY_COLOR : '#d9d9d9'}
-					color={message.isAuthor ? '#fff' : '#000'}
-					content={message.content}
-				/>
+				<div>
+					<MessageBubble
+						w={300}
+						// h={200}
+						backgroundColor={message.isAuthor ? PRIMARY_COLOR : '#d9d9d9'}
+						color={message.isAuthor ? '#fff' : '#000'}
+						content={message.content}
+					/>
+				</div>
 			</Tooltip>
 		)
 	}
@@ -485,12 +488,32 @@ export default function Dashboard() {
 											/>
 										</Upload>
 
-										<Button
-											style={{ border: 0 }}
-											type='ghost'
-											icon={<SmileOutlined />}
-											size='large'
-										/>
+										<Tooltip
+											id='emoji-mart'
+											placement='topRight'
+											title={
+												<Picker
+													title='Pick your emoji…'
+													emoji='point_up'
+													size={20}
+													emojiSize={20}
+													color={PRIMARY_COLOR}
+													showPreview={false}
+													showSkinTones={false}
+												/>
+											}
+											color='transparent'
+											overlayStyle={{ boxShadow: '0 0 black', color: 'blue' }}
+											style={{ color: 'blue' }}
+											trigger='click'
+										>
+											<Button
+												style={{ border: 0 }}
+												type='ghost'
+												icon={<SmileOutlined />}
+												size='large'
+											/>
+										</Tooltip>
 										<Button
 											style={{ border: 0 }}
 											type='ghost'

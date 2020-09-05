@@ -136,11 +136,16 @@ export default function Login() {
 									</div>
 								</Form.Item>
 
-								<Form.Item name='remember' valuePropName='checked' noStyle>
-									<div style={{ display: 'flex', justifyContent: 'center' }}>
+								<div style={{ display: 'flex', justifyContent: 'center' }}>
+									<Form.Item
+										style={{ display: 'flex', justifyContent: 'center' }}
+										name='remember'
+										valuePropName='checked'
+										noStyle
+									>
 										<Checkbox>Keep me signed in</Checkbox>
-									</div>
-								</Form.Item>
+									</Form.Item>
+								</div>
 							</Form>
 						</Row>
 

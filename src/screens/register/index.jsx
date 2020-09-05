@@ -1,52 +1,60 @@
 import React, { Fragment, useState } from 'react'
-import { Row, Col, Typography, Form, Input, Button, notification } from 'antd'
+import {
+	Row,
+	Col,
+	Typography,
+	Form,
+	Input,
+	Button,
+	// notification
+} from 'antd'
 import { useNavigate } from 'react-router-dom'
 
 import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
 import { Loading } from '../../components'
 import { PRIMARY_COLOR } from '../../constants'
-import { useFirebase } from '../../context'
+// import { useFirebase } from '../../context'
 
 const { Title, Text } = Typography
 
 export default function Register() {
 	const navigate = useNavigate()
-	const { registerFB } = useFirebase()
+	// const { registerFB } = useFirebase()
 
 	const [loading, setLoading] = useState(false)
 
 	async function onFinish(values) {
-		const { fullName, emailOrYourPhoneNumber, password } = values
+		// const { fullName, emailOrYourPhoneNumber, password } = values
 
 		setLoading(true)
-		try {
-			const currentUser = await registerFB(
-				fullName,
-				emailOrYourPhoneNumber,
-				password
-			)
-			// console.log(currentUser)
+		// try {
+		// 	const currentUser = await registerFB(
+		// 		fullName,
+		// 		emailOrYourPhoneNumber,
+		// 		password
+		// 	)
+		// 	// console.log(currentUser)
 
-			if (currentUser) {
-				notification['success']({
-					message: 'Register',
-					description: 'Register successfully!',
-					onClick: () => {
-						console.log('Notification Clicked!')
-					},
-					placement: 'bottomRight',
-				})
-			}
-		} catch (error) {
-			notification['error']({
-				message: 'Login Error',
-				description: error.message,
-				onClick: () => {
-					console.log('Notification Clicked!')
-				},
-				placement: 'bottomRight',
-			})
-		}
+		// 	if (currentUser) {
+		// 		notification['success']({
+		// 			message: 'Register',
+		// 			description: 'Register successfully!',
+		// 			onClick: () => {
+		// 				console.log('Notification Clicked!')
+		// 			},
+		// 			placement: 'bottomRight',
+		// 		})
+		// 	}
+		// } catch (error) {
+		// 	notification['error']({
+		// 		message: 'Login Error',
+		// 		description: error.message,
+		// 		onClick: () => {
+		// 			console.log('Notification Clicked!')
+		// 		},
+		// 		placement: 'bottomRight',
+		// 	})
+		// }
 
 		setLoading(false)
 	}
@@ -97,11 +105,11 @@ export default function Register() {
 								style={{ padding: '0 5vw' }}
 								name='normal_login'
 								className='login-form'
-								initialValues={{
-									fullName: 'Trịnh Chin Chin',
-									emailOrYourPhoneNumber: 'trinhchinchin@gmail.com',
-									password: '123456',
-								}}
+								// initialValues={{
+								// 	fullName: 'Trịnh Chin Chin',
+								// 	emailOrYourPhoneNumber: 'trinhchinchin@gmail.com',
+								// 	password: '123456',
+								// }}
 								onFinish={onFinish}
 								onFinishFailed={onFinishFailed}
 							>

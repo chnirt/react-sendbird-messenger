@@ -9,6 +9,7 @@
 		"@testing-library/user-event": "^7.1.2",
 		"antd": "^4.6.2",
 		"craco-less": "^1.17.0",
+		"emoji-mart": "^3.0.0",
 		"env-cmd": "^10.1.0",
 		"firebase": "^7.19.1",
 		"history": "^5.0.0",

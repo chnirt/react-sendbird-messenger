@@ -6,6 +6,7 @@ import { useRoutes } from 'react-router-dom'
 import { PublicRoute, PrivateRoute } from './helpers'
 import { Layout } from './layout'
 import { Loadable } from './helpers'
+import 'emoji-mart/css/emoji-mart.css'
 
 function App() {
 	// We removed the <BrowserRouter> element from App because the
