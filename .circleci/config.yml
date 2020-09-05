@@ -61,12 +61,12 @@ jobs:
           name: Build
           command: yarn build
       - slack/notify:
-          color: '#762FDD'
-          mentions: ''
+          color: "#762FDD"
+          mentions: ""
           message: Build successfully 👻
       - slack/status:
           fail_only: true
-          mentions: ''
+          mentions: ""
 # Orchestrate our job run sequence
 workflows:
   build_and_test:
@@ -76,7 +76,7 @@ workflows:
           requires:
             - prepare
       - hold:
-          # type: approval
+          type: approval
           requires:
             - prepare
             - test
