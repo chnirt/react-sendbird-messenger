@@ -1,14 +1,22 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import {
+	cleanup,
+	render,
+	wait,
+	screen,
+	waitForElement,
+} from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from './App'
 import { FirebaseProvider, AuthProvider } from './context'
 
-test('renders learn react link', () => {
+afterEach(cleanup)
+
+test('renders learn react link', async () => {
 	const history = createMemoryHistory()
-	history.push('/some/bad/route')
+
 	const { getByText } = render(
 		<FirebaseProvider>
 			<AuthProvider>
@@ -18,7 +26,10 @@ test('renders learn react link', () => {
 			</AuthProvider>
 		</FirebaseProvider>
 	)
-	expect(getByText('SendBird Messenger')).toHaveTextContent(
-		'SendBird Messenger'
+
+	const lazyElement = await waitForElement(() =>
+		getByText(/SendBird Messenger/i)
 	)
+
+	expect(lazyElement).toBeInTheDocument()
 })

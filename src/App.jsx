@@ -4,9 +4,8 @@ import './App.less'
 import { useRoutes } from 'react-router-dom'
 
 import { PublicRoute, PrivateRoute } from './helpers'
-import { Login, Register, Dashboard, NotFound } from './screens'
-
 import { Layout } from './layout'
+import { Loadable } from './helpers'
 
 function App() {
 	// We removed the <BrowserRouter> element from App because the
@@ -21,7 +20,7 @@ function App() {
 			path: '/',
 			element: (
 				<PublicRoute>
-					<Login />
+					<Loadable route='login' />
 				</PublicRoute>
 			),
 		},
@@ -29,7 +28,7 @@ function App() {
 			path: '/register',
 			element: (
 				<PublicRoute>
-					<Register />
+					<Loadable route='register' />
 				</PublicRoute>
 			),
 		},
@@ -38,14 +37,14 @@ function App() {
 			element: (
 				<PrivateRoute>
 					<Layout>
-						<Dashboard />
+						<Loadable route='dashboard' />
 					</Layout>
 				</PrivateRoute>
 			),
 		},
 		{
 			path: '*',
-			element: <NotFound />,
+			element: <Loadable route='notfound' />,
 		},
 	])
 

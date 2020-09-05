@@ -7,6 +7,8 @@ import React, {
 import SendBird from 'sendbird'
 import { nanoid } from 'nanoid'
 
+import { SB_APP_ID } from '../constants'
+
 // ChannelHandler.onMessageReceived = function(channel, message) {};
 // ChannelHandler.onMessageUpdated = function(channel, message) {};
 // ChannelHandler.onMessageDeleted = function(channel, messageId) {};
@@ -49,24 +51,28 @@ export function SendBirdProvider({ children }) {
 export const useSendBird = () => useContext(SendBirdContext)
 
 function SendBirdValue() {
+	if (localStorage.getItem('email') === undefined) {
+		throw new Error("Missing localStorage.getItem('email')")
+	}
+
 	const UNIQUE_HANDLER_ID = nanoid()
 
 	const sbRef = useRef(null)
 	const channelHandler = useRef(null)
 	const userEventHandler = useRef(null)
 	const connectionHandler = useRef(null)
-	const userId = localStorage.getItem('userId')
+	const userId = localStorage.getItem('email')
 
 	useLayoutEffect(() => {
 		sbRef.current = new SendBird({
-			appId: process.env.REACT_APP_SB_APP_ID,
+			appId: SB_APP_ID,
 		})
 
 		if (userId) {
 			sbRef.current.connect(userId, function (user, error) {
 				if (error) console.log(error)
 
-				// console.log("connect", user);
+				console.log('connect', user)
 			})
 		}
 

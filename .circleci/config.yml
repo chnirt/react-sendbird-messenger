@@ -43,13 +43,13 @@ jobs:
       - run:
           name: Test
           command: yarn test
-      - slack/notify:
-          color: '#762FDD'
-          mentions: ''
-          message: Test successfully 👻, Merge code please!!!
-      - slack/status:
-          fail_only: true
-          mentions: ''
+      # - slack/notify:
+      #     color: '#762FDD'
+      #     mentions: ''
+      #     message: Test successfully 👻, Merge code please!!!
+      # - slack/status:
+      #     fail_only: true
+      #     mentions: ''
   build:
     docker:
       - image: circleci/node:10-browsers
@@ -76,7 +76,7 @@ workflows:
           requires:
             - prepare
       - hold:
-          type: approval
+          # type: approval
           requires:
             - prepare
             - test

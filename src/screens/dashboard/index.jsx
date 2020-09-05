@@ -1,14 +1,7 @@
-import React, {
-	useLayoutEffect,
-	useState,
-	Fragment,
-	useRef,
-	useEffect,
-} from 'react'
+import React, { useLayoutEffect, useState, Fragment } from 'react'
 import {
 	Row,
 	Col,
-	Input,
 	Button,
 	Avatar,
 	Typography,
@@ -29,28 +22,55 @@ import {
 	PictureOutlined,
 	SmileOutlined,
 	LikeOutlined,
-	SearchOutlined,
 } from '@ant-design/icons'
 import moment from 'moment'
 
-import { useAuth, useFirebase } from '../context'
-import { Loading, Emoji } from '../components'
+import { useAuth, useFirebase } from '../../context'
+import { Loading, Emoji, MyAutoComplete, Emoticons } from '../../components'
 
 const { Title, Text } = Typography
 const { Option } = Mentions
 
-export function Dashboard() {
-	console.log(process.env)
+export default function Dashboard() {
+	// console.log(process.env)
 	const { logout } = useAuth()
-	const { logoutFB } = useFirebase()
+	const { logoutFB, authRef, getUsers } = useFirebase()
 
 	const [loadingLogOut, setLoadingLogOut] = useState(false)
 	const [users, setUsers] = useState([])
 	const [loadingListUsers, setLoadingListUsers] = useState(false)
 	const [messages, setMessages] = useState([])
 	const [loadingListMessages, setLoadingListMessages] = useState(false)
-	const messagesEndRef = useRef(null)
 	const [fileList] = useState([])
+
+	/**
+	 * MyAutoComplete - State
+	 */
+	const [options, setOptions] = useState([])
+
+	/**
+	 * Firebase - Effect
+	 */
+	useLayoutEffect(() => {
+		authRef.current.onAuthStateChanged(async (user) => {
+			if (user !== null) {
+				// User is signed in.
+				user.providerData.forEach((profile) => {
+					// console.log('Sign-in provider: ' + profile.providerId)
+					// console.log('  Provider-specific UID: ' + profile.uid)
+					// console.log('  Name: ' + profile.displayName)
+					// console.log('  Email: ' + profile.email)
+					// console.log('  Photo URL: ' + profile.photoURL)
+				})
+				// const snapshot = await getUsers({ email: value })
+				// console.log(snapshot.docs)
+				// setOptions(snapshot.docs.map((doc) => ({ ...doc, value: doc.id })))
+			} else {
+				// No user is signed in.
+				logout()
+			}
+		})
+	}, [authRef, logout])
 
 	useLayoutEffect(() => {
 		fetchUsers()
@@ -77,12 +97,29 @@ export function Dashboard() {
 		}
 	}, [])
 
-	useEffect(() => {
-		if (messages) {
-			messagesEndRef.current &&
-				messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+	/**
+	 * NOTE: MyAutoComplete - Function
+	 */
+
+	const onSearch = async (searchText) => {
+		if (!!searchText) {
+			const snapshot = await getUsers({ email: searchText })
+			if (snapshot.empty) {
+				console.log('No matching documents.')
+				return
+			}
+
+			snapshot.forEach((doc) => {
+				console.log(doc.id, '=>', doc.data())
+			})
+			setOptions(snapshot.docs.map((doc) => ({ ...doc, value: doc.id })))
+		} else {
+			setOptions([])
 		}
-	}, [messages])
+	}
+	const onSelect = (data) => {
+		console.log('onSelect', data)
+	}
 
 	const props = {
 		onRemove: (file) => {
@@ -222,7 +259,11 @@ export function Dashboard() {
 			>
 				<Tooltip
 					placement='topLeft'
-					title={renderTitle(message.id)}
+					title={
+						<Emoticons
+							handleEmoji={(value) => handleEmoji(message.id, value)}
+						/>
+					}
 					color='#fff'
 					trigger='click'
 				>
@@ -239,59 +280,7 @@ export function Dashboard() {
 	}
 
 	function handleEmoji(id, emoji) {
-		console.log(id, emoji)
-	}
-
-	const renderTitle = (id) => {
-		return (
-			<Fragment>
-				<Button
-					onClick={() => handleEmoji(id, 'love')}
-					type='text'
-					size='small'
-				>
-					<Emoji label='love' symbol='❤️' />
-				</Button>
-				<Button
-					onClick={() => handleEmoji(id, 'smile')}
-					type='text'
-					size='small'
-				>
-					<Emoji label='smile' symbol='😆' />
-				</Button>
-				<Button
-					onClick={() => handleEmoji(id, 'subscribe')}
-					type='text'
-					size='small'
-				>
-					<Emoji label='subscribe' symbol='😮' />
-				</Button>
-				<Button onClick={() => handleEmoji(id, 'cry')} type='text' size='small'>
-					<Emoji label='cry' symbol='😢' />
-				</Button>
-				<Button
-					onClick={() => handleEmoji(id, 'angry')}
-					type='text'
-					size='small'
-				>
-					<Emoji label='angry' symbol='😠' />
-				</Button>
-				<Button
-					onClick={() => handleEmoji(id, 'like')}
-					type='text'
-					size='small'
-				>
-					<Emoji label='like' symbol='👍' />
-				</Button>
-				<Button
-					onClick={() => handleEmoji(id, 'dislike')}
-					type='text'
-					size='small'
-				>
-					<Emoji label='dislike' symbol='👎' />
-				</Button>
-			</Fragment>
-		)
+		console.log('handleEmoji --> id:', id, ', emoji:', emoji)
 	}
 
 	return (
@@ -354,19 +343,12 @@ export function Dashboard() {
 								padding: 12,
 							}}
 						>
-							<div style={{ width: '100%' }}>
-								<Input
-									placeholder='Search for people'
-									prefix={
-										<SearchOutlined
-											style={{
-												fontSize: 16,
-												color: '#d9d9d9',
-											}}
-										/>
-									}
-								/>
-							</div>
+							<MyAutoComplete
+								style={{ width: '100%' }}
+								options={options}
+								onSelect={onSelect}
+								onSearch={onSearch}
+							/>
 						</Row>
 
 						<Row
@@ -451,7 +433,6 @@ export function Dashboard() {
 										paragraph={{ rows: 25 }}
 									>
 										{renderListMessages(messages)}
-										<div ref={messagesEndRef} />
 									</Skeleton>
 								</Row>
 								<Row

@@ -11,13 +11,13 @@ import {
 } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { ReactComponent as Logo } from '../assets/ic-main-sendbird-logo-white.svg'
-import { Loading } from '../components'
-import { useAuth, useFirebase } from '../context'
+import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
+import { Loading } from '../../components'
+import { useAuth, useFirebase } from '../../context'
 
 const { Title, Text } = Typography
 
-export function Login() {
+export default function Login() {
 	const { login } = useAuth()
 	const { loginFB } = useFirebase()
 	const navigate = useNavigate()

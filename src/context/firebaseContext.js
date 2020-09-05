@@ -4,17 +4,32 @@ import React, {
 	useLayoutEffect,
 	useRef,
 } from 'react'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+// import 'firebase/database' // If using Firebase database
+// import 'firebase/storage' // If using Firebase storage
+
+import {
+	FB_API_KEY,
+	FB_AUTH_DOMAIN,
+	FB_DB_URL,
+	FB_PROJECT_ID,
+	FB_STORAGE_BUCKET,
+	FB_MESSAGING_SENDER_ID,
+	FB_APP_IP,
+	FB_MEASUREMENT_ID,
+} from '../constants'
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyCFfq-lMjI9ekYrcNpW6LH9r9P5k62GHls',
-	authDomain: 'sendbird-981b4.firebaseapp.com',
-	databaseURL: 'https://sendbird-981b4.firebaseio.com',
-	projectId: 'sendbird-981b4',
-	storageBucket: 'sendbird-981b4.appspot.com',
-	messagingSenderId: '135218547215',
-	appId: '1:135218547215:web:f90088d7472486a77bf17a',
-	measurementId: 'G-MFSVF1CFGK',
+	apiKey: FB_API_KEY,
+	authDomain: FB_AUTH_DOMAIN,
+	databaseURL: FB_DB_URL,
+	projectId: FB_PROJECT_ID,
+	storageBucket: FB_STORAGE_BUCKET,
+	messagingSenderId: FB_MESSAGING_SENDER_ID,
+	appId: FB_APP_IP,
+	measurementId: FB_MEASUREMENT_ID,
 }
 
 const FirebaseContext = createContext()
@@ -30,35 +45,19 @@ export function FirebaseProvider({ children }) {
 export const useFirebase = () => useContext(FirebaseContext)
 
 function FirebaseValue() {
-	if (process.env.REACT_APP_FIREBASE_CONFIG === undefined) {
-		throw new Error('Missing REACT_APP_FIREBASE_CONFIG')
-	}
+	// if (process.env.REACT_APP_FIREBASE_CONFIG === undefined) {
+	// 	throw new Error('Missing REACT_APP_FIREBASE_CONFIG')
+	// }
 
 	const authRef = useRef(null)
-	const firestoreRef = useRef(null)
+	const dbRef = useRef(null)
 
 	useLayoutEffect(() => {
 		if (firebase.apps.length === 0) {
 			firebase.initializeApp(firebaseConfig)
+			authRef.current = firebase.auth()
+			dbRef.current = firebase.firestore()
 		}
-		authRef.current = firebase.auth()
-		firestoreRef.current = firebase.firestore()
-
-		firebase.auth().onAuthStateChanged(function (user) {
-			if (user !== null) {
-				// User is signed in.
-				user.providerData.forEach(function (profile) {
-					console.log('Sign-in provider: ' + profile.providerId)
-					console.log('  Provider-specific UID: ' + profile.uid)
-					console.log('  Name: ' + profile.displayName)
-					console.log('  Email: ' + profile.email)
-					console.log('  Photo URL: ' + profile.photoURL)
-				})
-			} else {
-				// No user is signed in.
-				console.log('no')
-			}
-		})
 	}, [])
 
 	async function registerFB(displayName, email, password) {
@@ -66,9 +65,30 @@ function FirebaseValue() {
 			email,
 			password
 		)
-		authRef.current.updateProfile({
-			displayName,
-		})
+		// console.log(result)
+
+		if (result) {
+			authRef.current.currentUser.updateProfile({
+				displayName,
+			})
+
+			const { user } = result
+			const { uid, photoURL, providerId } = user
+
+			// console.log('Sign-in provider: ' + profile.providerId)
+			// console.log('  Provider-specific UID: ' + profile.uid)
+			// console.log('  Name: ' + profile.displayName)
+			// console.log('  Email: ' + profile.email)
+			// console.log('  Photo URL: ' + profile.photoURL)
+			addUser({
+				uid,
+				email,
+				displayName,
+				photoURL,
+				providerId,
+			})
+		}
+
 		return !!result
 	}
 
@@ -187,6 +207,53 @@ function FirebaseValue() {
 			})
 	}
 
+	/**
+	 *
+	 * DB
+	 */
+
+	async function addUser(user) {
+		console.log('addUser')
+
+		if (!authRef.current.currentUser) {
+			return console.log('Not authorized')
+		}
+
+		const { email, ...rest } = user
+
+		const result = await dbRef.current
+			.collection('users')
+			.doc(email)
+			.set({
+				...rest,
+				createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+				updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+			})
+
+		return result
+	}
+
+	async function getUsers({ email = '' }) {
+		if (authRef.current) {
+			const usersRef = dbRef.current.collection('users')
+
+			const snapshot = await usersRef
+				.orderBy(firebase.firestore.FieldPath.documentId())
+				.startAt(email)
+				.endAt(email + '~')
+				.get()
+
+			// snapshot.forEach(function (doc) {
+			// 	console.log(doc.id, ' => ', doc.data())
+			// })
+
+			return snapshot
+		}
+
+		console.log('Not authorized')
+		return false
+	}
+
 	return {
 		authRef,
 		registerFB,
@@ -200,5 +267,8 @@ function FirebaseValue() {
 		sendPasswordResetEmailFB,
 		deleteFB,
 		reauthenticateWithCredentialFB,
+
+		addUser,
+		getUsers,
 	}
 }

@@ -2,13 +2,13 @@ import React, { Fragment, useState } from 'react'
 import { Row, Col, Typography, Form, Input, Button, notification } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { ReactComponent as Logo } from '../assets/ic-main-sendbird-logo-white.svg'
-import { Loading } from '../components'
-import { useFirebase } from '../context'
+import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
+import { Loading } from '../../components'
+import { useFirebase } from '../../context'
 
 const { Title, Text } = Typography
 
-export function Register() {
+export default function Register() {
 	const navigate = useNavigate()
 	const { registerFB } = useFirebase()
 
@@ -25,7 +25,17 @@ export function Register() {
 				password
 			)
 			// console.log(currentUser)
-			currentUser && navigateLogin()
+
+			if (currentUser) {
+				notification['success']({
+					message: 'Register',
+					description: 'Register successfully!',
+					onClick: () => {
+						console.log('Notification Clicked!')
+					},
+					placement: 'bottomRight',
+				})
+			}
 		} catch (error) {
 			notification['error']({
 				message: 'Login Error',

@@ -88,3 +88,14 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 - Manage Users in Firebase: https://firebase.google.com/docs/auth/web/manage-users
 
 - How to Build a Role-based API with Firebase Authentication :https://www.toptal.com/firebase/role-based-firebase-authentication
+
+- Node.js Everywhere with Environment Variables!: https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
+
+- Basic Security Rules: https://firebase.google.com/docs/rules/basics
+
+- Firebase Timestamp: https://firebase.google.com/docs/reference/android/com/google/firebase/Timestamp
+
+- Autocomplete Input Styling:
+  https://github.com/ant-design/ant-design/issues/4736
+
+- Filter by search keyword in cloud firestore query: https://medium.com/feedflood/filter-by-search-keyword-in-cloud-firestore-query-638377bf0123
