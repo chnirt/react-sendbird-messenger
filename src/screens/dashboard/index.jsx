@@ -25,8 +25,14 @@ import {
 } from '@ant-design/icons'
 import moment from 'moment'
 
+import {
+	Loading,
+	MyAutoComplete,
+	Emoticons,
+	MessageBubble,
+} from '../../components'
+import { PRIMARY_COLOR } from '../../constants'
 import { useAuth, useFirebase } from '../../context'
-import { Loading, Emoji, MyAutoComplete, Emoticons } from '../../components'
 
 const { Title, Text } = Typography
 const { Option } = Mentions
@@ -101,7 +107,7 @@ export default function Dashboard() {
 	 * NOTE: MyAutoComplete - Function
 	 */
 
-	const onSearch = async (searchText) => {
+	const onSearchMyAutoComplete = async (searchText) => {
 		if (!!searchText) {
 			const snapshot = await getUsers({ email: searchText })
 			if (snapshot.empty) {
@@ -117,8 +123,20 @@ export default function Dashboard() {
 			setOptions([])
 		}
 	}
-	const onSelect = (data) => {
+	const onSelectMyAutoComplete = (data) => {
 		console.log('onSelect', data)
+	}
+
+	/**
+	 * NOTE: Mentions = Function
+	 */
+
+	function onChangeMentions(value) {
+		console.log('Change:', value)
+	}
+
+	function onSelectMentions(option) {
+		console.log('select', option)
 	}
 
 	const props = {
@@ -249,33 +267,22 @@ export default function Dashboard() {
 
 	const RenderMessageBubble = ({ message }) => {
 		return (
-			<div
-				style={{
-					backgroundColor: message.isAuthor ? '#762FDD' : '#d9d9d9',
-					borderRadius: 18,
-					padding: '6px 12px 6px',
-					width: 200,
-				}}
+			<Tooltip
+				placement='topLeft'
+				title={
+					<Emoticons handleEmoji={(value) => handleEmoji(message.id, value)} />
+				}
+				color='#fff'
+				trigger='click'
 			>
-				<Tooltip
-					placement='topLeft'
-					title={
-						<Emoticons
-							handleEmoji={(value) => handleEmoji(message.id, value)}
-						/>
-					}
-					color='#fff'
-					trigger='click'
-				>
-					<Text
-						style={{
-							color: message.isAuthor ? '#fff' : '#000',
-						}}
-					>
-						{message.content}
-					</Text>
-				</Tooltip>
-			</div>
+				<MessageBubble
+					w={300}
+					// h={200}
+					backgroundColor={message.isAuthor ? PRIMARY_COLOR : '#d9d9d9'}
+					color={message.isAuthor ? '#fff' : '#000'}
+					content={message.content}
+				/>
+			</Tooltip>
 		)
 	}
 
@@ -321,7 +328,7 @@ export default function Dashboard() {
 									<Button
 										style={{ border: 0 }}
 										type='ghost'
-										icon={<SettingOutlined style={{ color: '#762FDD' }} />}
+										icon={<SettingOutlined style={{ color: PRIMARY_COLOR }} />}
 										size='large'
 									/>
 								</Dropdown>
@@ -331,7 +338,7 @@ export default function Dashboard() {
 								<Button
 									style={{ border: 0 }}
 									type='ghost'
-									icon={<FormOutlined style={{ color: '#762FDD' }} />}
+									icon={<FormOutlined style={{ color: PRIMARY_COLOR }} />}
 									size='large'
 								/>
 							</Col>
@@ -346,8 +353,8 @@ export default function Dashboard() {
 							<MyAutoComplete
 								style={{ width: '100%' }}
 								options={options}
-								onSelect={onSelect}
-								onSearch={onSearch}
+								onSelect={onSelectMyAutoComplete}
+								onSearch={onSearchMyAutoComplete}
 							/>
 						</Row>
 
@@ -393,19 +400,21 @@ export default function Dashboard() {
 								<Button
 									style={{ border: 0 }}
 									type='ghost'
-									icon={<PhoneOutlined style={{ color: '#762FDD' }} />}
+									icon={<PhoneOutlined style={{ color: PRIMARY_COLOR }} />}
 									size='large'
 								/>
 								<Button
 									style={{ border: 0 }}
 									type='ghost'
-									icon={<VideoCameraOutlined style={{ color: '#762FDD' }} />}
+									icon={
+										<VideoCameraOutlined style={{ color: PRIMARY_COLOR }} />
+									}
 									size='large'
 								/>
 								<Button
 									style={{ border: 0 }}
 									type='ghost'
-									icon={<InfoCircleOutlined style={{ color: '#762FDD' }} />}
+									icon={<InfoCircleOutlined style={{ color: PRIMARY_COLOR }} />}
 									size='large'
 								/>
 							</Col>
@@ -445,11 +454,12 @@ export default function Dashboard() {
 									}}
 								>
 									<Col style={{ padding: 12, width: 'calc(100% - 120px)' }}>
-										{/* <Input placeholder='Type a message...'></Input> */}
 										<Mentions
 											// rows='3'
 											placeholder='Type a message...'
 											placement='top'
+											onChange={onChangeMentions}
+											onSelect={onSelectMentions}
 										>
 											<Option value='afc163'>afc163</Option>
 											<Option value='zombieJ'>zombieJ</Option>
@@ -484,7 +494,7 @@ export default function Dashboard() {
 										<Button
 											style={{ border: 0 }}
 											type='ghost'
-											icon={<LikeOutlined style={{ color: '#762FDD' }} />}
+											icon={<LikeOutlined style={{ color: PRIMARY_COLOR }} />}
 											size='large'
 										/>
 									</Col>
@@ -531,7 +541,7 @@ export default function Dashboard() {
 										alignItems: 'center',
 									}}
 								>
-									<Title style={{ margin: 0 }} level={4}>
+									<Title style={{ margin: 0 }} level={3}>
 										chnirt
 									</Title>
 								</Row>

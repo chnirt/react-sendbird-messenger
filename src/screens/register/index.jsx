@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
 import { Loading } from '../../components'
+import { PRIMARY_COLOR } from '../../constants'
 import { useFirebase } from '../../context'
 
 const { Title, Text } = Typography
@@ -84,7 +85,7 @@ export default function Register() {
 									height: '10vh',
 								}}
 							>
-								<Logo fill='#762FDD' />
+								<Logo fill={PRIMARY_COLOR} />
 							</Row>
 							<Row style={{ justifyContent: 'center' }}>
 								<Title level={2}>SendBird Messenger</Title>
