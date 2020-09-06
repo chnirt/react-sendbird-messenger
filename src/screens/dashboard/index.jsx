@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, Fragment } from 'react'
+import React, { useLayoutEffect, useState, Fragment, useRef } from 'react'
 import {
     Row,
     Col,
@@ -56,6 +56,12 @@ export default function Dashboard() {
      * MyAutoComplete - State
      */
     const [options, setOptions] = useState([])
+
+    /**
+     * Mentions - State
+     */
+    const [value, setValue] = useState([])
+    const mentionsRef = useRef(null)
 
     /**
      * Firebase - Effect
@@ -136,10 +142,18 @@ export default function Dashboard() {
 
     function onChangeMentions(value) {
         console.log('Change:', value)
+        setValue(value)
     }
 
     function onSelectMentions(option) {
-        console.log('select', option)
+        console.log('Select', option)
+    }
+
+    function onPressEnterMentions(option) {
+        console.log('PressEnter', option)
+        setTimeout(() => {
+            setValue('')
+        }, 1)
     }
 
     const props = {
@@ -302,6 +316,25 @@ export default function Dashboard() {
     function handleOpenNewTab(link) {
         window.open(link, '_blank')
     }
+
+    function handleEmojiMart(emoji) {
+        console.log(emoji.native)
+        setValue((prevState) => prevState + emoji.native)
+    }
+
+    // function handleKeyDown(event) {
+    //     console.log(event)
+    //     if (event.keyCode === 13) {
+    //         setTimeout(() => {
+    //             handleSendMessage()
+    //         }, 1)
+    //     }
+    // }
+
+    // function handleSendMessage() {
+    //     console.log(value)
+    //     setValue('')
+    // }
 
     return (
         <Fragment>
@@ -508,11 +541,15 @@ export default function Dashboard() {
                                             width: 'calc(100% - 120px)',
                                         }}
                                     >
+                                        {/* <div onKeyDown={handleKeyDown}> */}
                                         <Mentions
+                                            ref={mentionsRef}
                                             placeholder="Type a message..."
                                             placement="top"
+                                            value={value}
                                             onChange={onChangeMentions}
                                             onSelect={onSelectMentions}
+                                            onPressEnter={onPressEnterMentions}
                                         >
                                             <Option value="afc163">
                                                 afc163
@@ -524,6 +561,7 @@ export default function Dashboard() {
                                                 yesmeck
                                             </Option>
                                         </Mentions>
+                                        {/* </div> */}
                                     </Col>
                                     <Col
                                         style={{
@@ -549,6 +587,11 @@ export default function Dashboard() {
                                             placement="topRight"
                                             title={
                                                 <Picker
+                                                    style={{
+                                                        position: 'absolute',
+                                                        bottom: 0,
+                                                        right: 0,
+                                                    }}
                                                     title="Pick your emoji…"
                                                     emoji="point_up"
                                                     size={20}
@@ -556,6 +599,8 @@ export default function Dashboard() {
                                                     color={PRIMARY_COLOR}
                                                     showPreview={false}
                                                     showSkinTones={false}
+                                                    set="apple"
+                                                    onSelect={handleEmojiMart}
                                                 />
                                             }
                                             color="transparent"

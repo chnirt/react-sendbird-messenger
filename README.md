@@ -89,6 +89,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 -   [x] Start https with ssl
 -   [x] Pre-commit with husky
 -   [x] CircleCI, GithubCI
+-   [x] Analyze source
+-   [ ] I18n
+-   [ ] Dark mode
 
 ### Learn more
 
