@@ -1,55 +1,69 @@
 {
-	"name": "messsager",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"@craco/craco": "^5.6.4",
-		"@testing-library/jest-dom": "^4.2.4",
-		"@testing-library/react": "^9.3.2",
-		"@testing-library/user-event": "^7.1.2",
-		"antd": "^4.6.2",
-		"craco-less": "^1.17.0",
-		"emoji-mart": "^3.0.0",
-		"env-cmd": "^10.1.0",
-		"firebase": "^7.19.1",
-		"history": "^5.0.0",
-		"moment": "^2.27.0",
-		"nanoid": "^3.1.12",
-		"react": "^16.13.1",
-		"react-dom": "^16.13.1",
-		"react-router-dom": "6.0.0-beta.0",
-		"react-scripts": "3.4.3",
-		"react-topbar-progress-indicator": "^4.1.0",
-		"sendbird": "^3.0.132"
-	},
-	"scripts": {
-		"start": "craco start",
-		"start:stag": "env-cmd -f .env.staging craco start",
-		"start:prod": "env-cmd -f .env.production craco start",
-		"build": "craco build",
-		"build:stag": "env-cmd -f .env.staging craco build",
-		"build:prod": "env-cmd -f .env.production craco build",
-		"test": "craco test",
-		"eject": "react-scripts eject"
-	},
-	"eslintConfig": {
-		"extends": "react-app"
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
-	"devDependencies": {
-		"husky": "^4.2.5",
-		"lint-staged": "^10.3.0",
-		"prettier": "^2.1.1"
-	}
+  "name": "messsager",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^5.6.4",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "antd": "^4.6.2",
+    "craco-less": "^1.17.0",
+    "emoji-mart": "^3.0.0",
+    "env-cmd": "^10.1.0",
+    "firebase": "^7.19.1",
+    "history": "^5.0.0",
+    "moment": "^2.27.0",
+    "nanoid": "^3.1.12",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "6.0.0-beta.0",
+    "react-scripts": "3.4.3",
+    "react-styleguidist": "^11.0.10",
+    "react-topbar-progress-indicator": "^4.1.0",
+    "sendbird": "^3.0.132"
+  },
+  "scripts": {
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build",
+    "start": "craco start",
+    "start:stag": "env-cmd -f .env.staging craco start",
+    "start:prod": "env-cmd -f .env.production craco start",
+    "build": "craco build",
+    "build:stag": "env-cmd -f .env.staging craco build",
+    "build:prod": "env-cmd -f .env.production craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@storybook/addon-actions": "^6.0.21",
+    "@storybook/addon-essentials": "^6.0.21",
+    "@storybook/addon-links": "^6.0.21",
+    "@storybook/node-logger": "^6.0.21",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^6.0.21",
+    "babel-loader": "^8.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.3.0",
+    "prettier": "^2.1.1",
+    "react-is": "^16.13.1"
+  }
 }

@@ -110,4 +110,7 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 
 - TopBarProgress: https://codesandbox.io/s/rw156kk8km?file=/src/index.js:127-159
 
-- Using Pre-Commit and Pre-Push Git Hooks in a React Project : https://levelup.gitconnected.com/using-pre-commit-and-pre-push-git-hooks-in-a-react-project-6c83431ef2bd
+- Setting Up Your Editor : https://create-react-app.dev/docs/setting-up-your-editor/
+
+- Developing Components in Isolation:
+  https://create-react-app.dev/docs/developing-components-in-isolation
