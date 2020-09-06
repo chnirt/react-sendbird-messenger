@@ -117,3 +117,7 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 
 - Code Quality with Prettier, ESLint and Husky:
   https://rafaelsm.me/code-quality-prettier-eslint-husky
+
+- Starting with preconfigured workflow templates: https://docs.github.com/en/actions/getting-started-with-github-actions/starting-with-preconfigured-workflow-templates
+
+- Setting up a CI/CD workflow on GitHub Actions for a React App (with GitHub Pages and Codecov) : https://dev.to/dyarleniber/setting-up-a-ci-cd-workflow-on-github-actions-for-a-react-app-with-github-pages-and-codecov-4hnp

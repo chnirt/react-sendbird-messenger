@@ -64,8 +64,17 @@ function App() {
       <Suspense
         fallback={
           <div>
-            {/* <TopBarProgress /> */}
-            hello
+            <TopBarProgress
+              config={{
+                barColors: {
+                  0: PRIMARY_COLOR,
+                  0.5: PRIMARY_COLOR,
+                  "1.0": PRIMARY_COLOR,
+                },
+                shadowBlur: 5,
+              }}
+            />
+            {/* hello */}
           </div>
         }
       >

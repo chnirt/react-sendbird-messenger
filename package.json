@@ -25,8 +25,8 @@
 		"source-map-explorer": "^2.5.0"
 	},
 	"scripts": {
-		"generate:ssl": "mkcert -install",
-		"start:ssl": "HTTPS=true SSL_CRT_FILE=./.cert/cert.pem SSL_KEY_FILE=./.cert/key.pem react-scripts start",
+		"generate:ssl": "mkcert -key-file key.pem -cert-file cert.pem",
+		"start:ssl": "HTTPS=true SSL_CRT_FILE=cert.pem SSL_KEY_FILE=key.pem yarn start",
 		"analyze": "source-map-explorer 'build/static/js/*.js'",
 		"styleguide": "styleguidist server",
 		"styleguide:build": "styleguidist build",
