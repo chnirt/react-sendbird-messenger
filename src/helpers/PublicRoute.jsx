@@ -10,7 +10,7 @@ export function PublicRoute({ children }) {
 	return isAuth ? (
 		<Navigate
 			to={{
-				pathname: '/dashboard',
+				pathname: 'dashboard',
 				state: { from: location },
 			}}
 		/>

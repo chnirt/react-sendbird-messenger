@@ -1,14 +1,9 @@
-import React, { lazy, Suspense } from 'react'
-import { Loading } from '../components'
+import React, { lazy } from 'react'
 
 export const Loadable = ({ route = '', ...rest }) => {
 	const MyComponent = lazy(() => {
 		return import(`../screens/${route}`)
 	})
 
-	return (
-		<Suspense fallback={<Loading />}>
-			<MyComponent {...rest} />
-		</Suspense>
-	)
+	return <MyComponent {...rest} />
 }

@@ -244,14 +244,21 @@ export default function Dashboard() {
 					padding: '0 12px',
 					display: 'flex',
 					width: '100%',
-					marginBottom: 15,
+					// margin: '15px 0',
 				}}
 				key={message.id}
 			>
 				<Row
-					style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+					style={{
+						width: '100%',
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
 				>
-					{moment(message.createdAt).format('HH:mm, DD MMM, YYYY')}
+					<Divider plain>
+						{moment(message.createdAt).format('HH:mm, DD MMM, YYYY')}
+					</Divider>
 				</Row>
 				<Row
 					style={{

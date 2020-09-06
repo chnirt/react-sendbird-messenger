@@ -1,12 +1,22 @@
-import React from 'react'
-import './App.less'
-
+import React, { Suspense, Fragment } from 'react'
+import TopBarProgress from 'react-topbar-progress-indicator'
 import { useRoutes } from 'react-router-dom'
+import './App.less'
+import 'emoji-mart/css/emoji-mart.css'
 
 import { PublicRoute, PrivateRoute } from './helpers'
 import { Layout } from './layout'
 import { Loadable } from './helpers'
-import 'emoji-mart/css/emoji-mart.css'
+import { PRIMARY_COLOR } from './constants'
+
+TopBarProgress.config({
+	barColors: {
+		0: PRIMARY_COLOR,
+		0.5: PRIMARY_COLOR,
+		'1.0': PRIMARY_COLOR,
+	},
+	shadowBlur: 5,
+})
 
 function App() {
 	// We removed the <BrowserRouter> element from App because the
@@ -49,7 +59,11 @@ function App() {
 		},
 	])
 
-	return element
+	return (
+		<Fragment>
+			<Suspense fallback={<TopBarProgress />}>{element}</Suspense>
+		</Fragment>
+	)
 }
 
 export default App
