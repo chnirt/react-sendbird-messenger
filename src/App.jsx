@@ -1,6 +1,6 @@
 import React, { Suspense, Fragment } from 'react'
-import TopBarProgress from 'react-topbar-progress-indicator'
 import { useRoutes } from 'react-router-dom'
+import TopBarProgress from 'react-topbar-progress-indicator'
 import './App.less'
 import 'emoji-mart/css/emoji-mart.css'
 

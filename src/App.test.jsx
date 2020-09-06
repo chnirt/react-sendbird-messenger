@@ -8,9 +8,20 @@ import {
 } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { BrowserRouter as Router } from 'react-router-dom'
+import TopBarProgress from 'react-topbar-progress-indicator'
 
 import App from './App'
 import { FirebaseProvider, AuthProvider } from './context'
+import { PRIMARY_COLOR } from './constants'
+
+TopBarProgress.config({
+	barColors: {
+		0: PRIMARY_COLOR,
+		0.5: PRIMARY_COLOR,
+		'1.0': PRIMARY_COLOR,
+	},
+	shadowBlur: 5,
+})
 
 afterEach(cleanup)
 

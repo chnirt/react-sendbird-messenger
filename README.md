@@ -67,7 +67,15 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
+### CircleCI Build
+
 [![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger)
+
+### Tasks: 1 Sep, 2020 ~ Now
+
+- [x] this is a complete item
+- [ ] this is an incomplete item
+- [x] @mentions, #refs, [links](),
 
 ### Learn more
 
@@ -99,3 +107,7 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
   https://github.com/ant-design/ant-design/issues/4736
 
 - Filter by search keyword in cloud firestore query: https://medium.com/feedflood/filter-by-search-keyword-in-cloud-firestore-query-638377bf0123
+
+- TopBarProgress: https://codesandbox.io/s/rw156kk8km?file=/src/index.js:127-159
+
+- Using Pre-Commit and Pre-Push Git Hooks in a React Project : https://levelup.gitconnected.com/using-pre-commit-and-pre-push-git-hooks-in-a-react-project-6c83431ef2bd
