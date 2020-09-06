@@ -388,7 +388,7 @@ export default function Dashboard() {
             >
               <MySkeleton
                 loading={loadingListUsers}
-                rows={25}
+                rows={13}
                 size="default"
                 avatar
               >
@@ -439,7 +439,11 @@ export default function Dashboard() {
                 <Button
                   style={{ border: 0 }}
                   type="ghost"
-                  icon={<InfoCircleOutlined style={{ color: PRIMARY_COLOR }} />}
+                  icon={
+                    <InfoCircleOutlined
+                      style={{ color: showDetail && PRIMARY_COLOR }}
+                    />
+                  }
                   size="large"
                   onClick={handleShowDetail}
                 />
@@ -464,10 +468,10 @@ export default function Dashboard() {
                   }}
                 >
                   <MessageSkeleton
-                    // loading={loadingListMessages}
-                    loading={true}
-                    rows={25}
+                    loading={loadingListMessages}
+                    rows={13}
                     size="default"
+                    avatar
                   >
                     {renderListMessages(messages)}
                   </MessageSkeleton>
@@ -483,7 +487,6 @@ export default function Dashboard() {
                 >
                   <Col style={{ padding: 12, width: "calc(100% - 120px)" }}>
                     <Mentions
-                      // rows='3'
                       placeholder="Type a message..."
                       placement="top"
                       onChange={onChangeMentions}
@@ -528,7 +531,6 @@ export default function Dashboard() {
                         />
                       }
                       color="transparent"
-                      overlayStyle={{ boxShadow: "0 0 black", color: "blue" }}
                       style={{ color: "blue" }}
                       trigger="click"
                     >

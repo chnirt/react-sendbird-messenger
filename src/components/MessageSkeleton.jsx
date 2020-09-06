@@ -10,20 +10,39 @@ export function MessageSkeleton({
   avatarShape = "circle",
 }) {
   if (loading) {
-    const isAuthor = Boolean(Math.round(Math.random()));
-
-    return [...Array(rows).keys()].map(() => (
+    return [...Array(rows).keys()].map((i) => (
       <Fragment>
-        <Space style={{ padding: 12, height: 60 }}>
-          {!!avatar && (
-            <Skeleton.Avatar active={true} size={size} shape={avatarShape} />
-          )}
-          <Skeleton.Input
-            style={{ minWidth: 308, width: 355 }}
-            active={true}
-            size={size}
-          />
-        </Space>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: i % 2 === 0 && "flex-end",
+          }}
+        >
+          <Space
+            style={{
+              padding: 12,
+              height: 60,
+              flexDirection: i % 2 === 0 && "row-reverse",
+            }}
+          >
+            {!!avatar && (
+              <Skeleton.Avatar
+                style={{
+                  marginLeft: i % 2 === 0 && 8,
+                }}
+                active={true}
+                size={size}
+                shape={avatarShape}
+              />
+            )}
+            <Skeleton.Input
+              style={{ minWidth: 308, width: 355 }}
+              active={true}
+              size={size}
+            />
+          </Space>
+        </div>
         <Divider style={{ margin: 0 }} />
       </Fragment>
     ));
