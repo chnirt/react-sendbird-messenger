@@ -25,9 +25,7 @@ test("renders learn react link", async () => {
     },
     shadowBlur: 5,
   });
-
   const history = createMemoryHistory();
-
   const { getByText } = render(
     <FirebaseProvider>
       <AuthProvider>
@@ -37,10 +35,8 @@ test("renders learn react link", async () => {
       </AuthProvider>
     </FirebaseProvider>
   );
-
   const lazyElement = await waitForElement(() =>
     getByText(/SendBird Messenger/i)
   );
-
   expect(lazyElement).toBeInTheDocument();
 });

@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react";
 
 export const Layout = ({ children }) => {
-	return <Fragment>{children}</Fragment>
-}
+  return <Fragment>{children}</Fragment>;
+};

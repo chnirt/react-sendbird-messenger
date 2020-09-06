@@ -67,9 +67,12 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
-### CircleCI Build
+---
+
+### Life cycle processes.
 
 [![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger)
+![CI/CD](https://github.com/chnirt/react-sendbird-messenger/workflows/GithubCI/badge.svg)
 
 ### Tasks: 1 Sep, 2020 ~ Now
 
