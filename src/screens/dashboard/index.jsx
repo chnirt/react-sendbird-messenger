@@ -6,7 +6,6 @@ import {
     Avatar,
     Typography,
     Dropdown,
-    Menu,
     Upload,
     Divider,
     Tooltip,
@@ -35,6 +34,7 @@ import {
 } from '../../components'
 import { PRIMARY_COLOR, SECONDARY_COLOR, THIRD_COLOR } from '../../constants'
 import { useAuth, useFirebase } from '../../context'
+import { MyMenu } from './components'
 
 const { Title, Text } = Typography
 const { Option } = Mentions
@@ -44,7 +44,7 @@ export default function Dashboard() {
     const { logout } = useAuth()
     const { logoutFB, authRef, getUsers } = useFirebase()
 
-    const [loadingLogOut, setLoadingLogOut] = useState(false)
+    const [loadingLogout, setLoadingLogout] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
     const [users, setUsers] = useState([])
     const [loadingListUsers, setLoadingListUsers] = useState(false)
@@ -162,31 +162,15 @@ export default function Dashboard() {
         fileList,
     }
 
-    function onLogout() {
-        setLoadingLogOut(true)
+    function handleLogout() {
+        setLoadingLogout(true)
         setTimeout(() => {
             logoutFB()
             logout()
 
-            setLoadingLogOut(false)
+            setLoadingLogout(false)
         }, 1000)
     }
-
-    const menu = (
-        <Menu>
-            <Menu.Item>
-                <Button onClick={() => {}} type="text">
-                    Settings
-                </Button>
-            </Menu.Item>
-            <Menu.Divider />
-            <Menu.Item>
-                <Button onClick={onLogout} type="text">
-                    Log out
-                </Button>
-            </Menu.Item>
-        </Menu>
-    )
 
     const renderListUsers = (users) => {
         return users.map((user) => renderUser(user))
@@ -290,7 +274,7 @@ export default function Dashboard() {
                     />
                 }
                 color="#fff"
-                trigger="click"
+                // trigger="click"
             >
                 <div>
                     <MessageBubble
@@ -321,7 +305,7 @@ export default function Dashboard() {
 
     return (
         <Fragment>
-            <Loading spinning={loadingLogOut}>
+            <Loading spinning={loadingLogout}>
                 <Row
                     style={{
                         height: '100vh',
@@ -350,7 +334,9 @@ export default function Dashboard() {
                         >
                             <Col>
                                 <Dropdown
-                                    overlay={menu}
+                                    overlay={() =>
+                                        MyMenu({ logout: handleLogout })
+                                    }
                                     placement="bottomLeft"
                                     trigger={['click']}
                                 >

@@ -10,23 +10,20 @@ export function Emoticons({ handleEmoji = () => {} }) {
                 onClick={() => handleEmoji('love')}
                 type="text"
                 size="small"
-            >
-                <Emoji label="love" symbol="❤️" />
-            </Button>
+                icon={<Emoji label="love" symbol="❤️" />}
+            />
             <Button
                 onClick={() => handleEmoji('smile')}
                 type="text"
                 size="small"
-            >
-                <Emoji label="smile" symbol="😆" />
-            </Button>
+                icon={<Emoji label="smile" symbol="😆" />}
+            />
             <Button
                 onClick={() => handleEmoji('subscribe')}
                 type="text"
                 size="small"
-            >
-                <Emoji label="subscribe" symbol="😮" />
-            </Button>
+                icon={<Emoji label="subscribe" symbol="😮" />}
+            />
             <Button onClick={() => handleEmoji('cry')} type="text" size="small">
                 <Emoji label="cry" symbol="😢" />
             </Button>
@@ -34,23 +31,20 @@ export function Emoticons({ handleEmoji = () => {} }) {
                 onClick={() => handleEmoji('angry')}
                 type="text"
                 size="small"
-            >
-                <Emoji label="angry" symbol="😠" />
-            </Button>
+                icon={<Emoji label="angry" symbol="😠" />}
+            />
             <Button
                 onClick={() => handleEmoji('like')}
                 type="text"
                 size="small"
-            >
-                <Emoji label="like" symbol="👍" />
-            </Button>
+                icon={<Emoji label="like" symbol="👍" />}
+            />
             <Button
                 onClick={() => handleEmoji('dislike')}
                 type="text"
                 size="small"
-            >
-                <Emoji label="dislike" symbol="👎" />
-            </Button>
+                icon={<Emoji label="dislike" symbol="👎" />}
+            />
         </Fragment>
     )
 }
