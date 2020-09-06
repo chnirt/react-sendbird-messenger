@@ -76,53 +76,63 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Tasks: 1 Sep, 2020 ~ Now
 
-- [x] this is a complete item
-- [ ] this is an incomplete item
-- [x] @mentions, #refs, [links](),
+-   [x] Design login, register, dashboard
+-   [x] Router-router-dom v6
+-   [x] Custom components
+-   [x] useAuth
+-   [x] useFirebase
+-   [ ] useSendBird
+-   [x] Multiple Environment
+-   [x] Constants
+-   [x] Convert js --> jsx
+-   [x] Generate ssl
+-   [x] Start https with ssl
+-   [x] Pre-commit with husky
+-   [x] CircleCI, GithubCI
 
 ### Learn more
 
-- React Router v6 Preview: https://reacttraining.com/blog/react-router-v6-pre/
+-   React Router v6 Preview: https://reacttraining.com/blog/react-router-v6-pre/
 
-- React — Environment specific builds using .env with CRA and env-cmd: https://medium.com/@rishi.vedpathak/react-environment-specific-builds-using-env-with-cra-and-env-cmd-5960a1253fe6
+-   React — Environment specific builds using .env with CRA and env-cmd: https://medium.com/@rishi.vedpathak/react-environment-specific-builds-using-env-with-cra-and-env-cmd-5960a1253fe6
 
-- CircleCI Sample config.yml Files: https://circleci.com/docs/2.0/sample-config/#section=configuration
+-   CircleCI Sample config.yml Files: https://circleci.com/docs/2.0/sample-config/#section=configuration
 
 CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 
-- Circle Slack: https://circleci.com/blog/automating-the-deploy-of-an-adonis-api-to-heroku/
+-   Circle Slack: https://circleci.com/blog/automating-the-deploy-of-an-adonis-api-to-heroku/
 
-- Deploy ReactJS App with S3 Static Hosting: https://medium.com/serverlessguru/deploy-reactjs-app-with-s3-static-hosting-f640cb49d7e6
+-   Deploy ReactJS App with S3 Static Hosting: https://medium.com/serverlessguru/deploy-reactjs-app-with-s3-static-hosting-f640cb49d7e6
 
-- How to use emojis in React: https://medium.com/@seanmcp/%EF%B8%8F-how-to-use-emojis-in-react-d23bbf608bf7
+-   How to use emojis in React: https://medium.com/@seanmcp/%EF%B8%8F-how-to-use-emojis-in-react-d23bbf608bf7
 
-- Manage Users in Firebase: https://firebase.google.com/docs/auth/web/manage-users
+-   Manage Users in Firebase: https://firebase.google.com/docs/auth/web/manage-users
 
-- How to Build a Role-based API with Firebase Authentication :https://www.toptal.com/firebase/role-based-firebase-authentication
+-   How to Build a Role-based API with Firebase Authentication :https://www.toptal.com/firebase/role-based-firebase-authentication
 
-- Node.js Everywhere with Environment Variables!: https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
+-   Node.js Everywhere with Environment Variables!: https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
 
-- Basic Security Rules: https://firebase.google.com/docs/rules/basics
+-   Basic Security Rules: https://firebase.google.com/docs/rules/basics
 
-- Firebase Timestamp: https://firebase.google.com/docs/reference/android/com/google/firebase/Timestamp
+-   Firebase Timestamp: https://firebase.google.com/docs/reference/android/com/google/firebase/Timestamp
 
-- Autocomplete Input Styling:
-  https://github.com/ant-design/ant-design/issues/4736
+-   Autocomplete Input Styling:
+    https://github.com/ant-design/ant-design/issues/4736
 
-- Filter by search keyword in cloud firestore query: https://medium.com/feedflood/filter-by-search-keyword-in-cloud-firestore-query-638377bf0123
+-   Filter by search keyword in cloud firestore query: https://medium.com/feedflood/filter-by-search-keyword-in-cloud-firestore-query-638377bf0123
 
-- TopBarProgress: https://codesandbox.io/s/rw156kk8km?file=/src/index.js:127-159
+-   TopBarProgress: https://codesandbox.io/s/rw156kk8km?file=/src/index.js:127-159
 
-- Setting Up Your Editor : https://create-react-app.dev/docs/setting-up-your-editor/
+-   Setting Up Your Editor : https://create-react-app.dev/docs/setting-up-your-editor/
 
-- Developing Components in Isolation:
-  https://create-react-app.dev/docs/developing-components-in-isolation
+-   Developing Components in Isolation:
+    https://create-react-app.dev/docs/developing-components-in-isolation
 
-- Code Quality with Prettier, ESLint and Husky:
-  https://rafaelsm.me/code-quality-prettier-eslint-husky
+-   Code Quality with Prettier, ESLint and Husky:
+    https://rafaelsm.me/code-quality-prettier-eslint-husky
 
-- Starting with preconfigured workflow templates: https://docs.github.com/en/actions/getting-started-with-github-actions/starting-with-preconfigured-workflow-templates
+-   Starting with preconfigured workflow templates: https://docs.github.com/en/actions/getting-started-with-github-actions/starting-with-preconfigured-workflow-templates
 
-- Setting up a CI/CD workflow on GitHub Actions for a React App (with GitHub Pages and Codecov) : https://dev.to/dyarleniber/setting-up-a-ci-cd-workflow-on-github-actions-for-a-react-app-with-github-pages-and-codecov-4hnp
+-   Setting up a CI/CD workflow on GitHub Actions for a React App (with GitHub Pages and Codecov) : https://dev.to/dyarleniber/setting-up-a-ci-cd-workflow-on-github-actions-for-a-react-app-with-github-pages-and-codecov-4hnp
 
-- How to add canvas support to my tests in Jest? : https://stackoverflow.com/questions/33269093/how-to-add-canvas-support-to-my-tests-in-jest
+-   How to add canvas support to my tests in Jest? : https://stackoverflow.com/questions/33269093/how-to-add-canvas-support-to-my-tests-in-jest
