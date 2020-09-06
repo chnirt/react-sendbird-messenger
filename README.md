@@ -114,3 +114,6 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 
 - Developing Components in Isolation:
   https://create-react-app.dev/docs/developing-components-in-isolation
+
+- Code Quality with Prettier, ESLint and Husky:
+  https://rafaelsm.me/code-quality-prettier-eslint-husky
