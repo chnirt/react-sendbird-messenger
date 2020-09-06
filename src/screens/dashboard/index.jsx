@@ -7,7 +7,6 @@ import {
   Typography,
   Dropdown,
   Menu,
-  Skeleton,
   Upload,
   Divider,
   Tooltip,
@@ -31,8 +30,10 @@ import {
   MyAutoComplete,
   Emoticons,
   MessageBubble,
+  MySkeleton,
+  MessageSkeleton,
 } from "../../components";
-import { PRIMARY_COLOR } from "../../constants";
+import { PRIMARY_COLOR, SECONDARY_COLOR, THIRD_COLOR } from "../../constants";
 import { useAuth, useFirebase } from "../../context";
 
 const { Title, Text } = Typography;
@@ -44,6 +45,7 @@ export default function Dashboard() {
   const { logoutFB, authRef, getUsers } = useFirebase();
 
   const [loadingLogOut, setLoadingLogOut] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [users, setUsers] = useState([]);
   const [loadingListUsers, setLoadingListUsers] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -198,7 +200,7 @@ export default function Dashboard() {
           width: "100%",
           justifyContent: "space-between",
           alignItems: "center",
-          borderBottom: "1px solid #d9d9d9",
+          borderBottom: `1px solid ${THIRD_COLOR}`,
           padding: "0 12px",
         }}
         key={user.id}
@@ -287,7 +289,7 @@ export default function Dashboard() {
           <MessageBubble
             w={300}
             // h={200}
-            backgroundColor={message.isAuthor ? PRIMARY_COLOR : "#d9d9d9"}
+            backgroundColor={message.isAuthor ? PRIMARY_COLOR : THIRD_COLOR}
             color={message.isAuthor ? "#fff" : "#000"}
             content={message.content}
           />
@@ -300,19 +302,27 @@ export default function Dashboard() {
     console.log("handleEmoji --> id:", id, ", emoji:", emoji);
   }
 
+  function handleShowDetail() {
+    setShowDetail((prevState) => !prevState);
+  }
+
+  function handleOpenNewTab(link) {
+    window.open(link, "_blank");
+  }
+
   return (
     <Fragment>
       <Loading spinning={loadingLogOut}>
         <Row
           style={{
             height: "100vh",
-            borderTop: "1px solid #d9d9d9",
-            borderLeft: "1px solid #d9d9d9",
-            borderRight: "1px solid #d9d9d9",
+            borderTop: `1px solid ${THIRD_COLOR}`,
+            borderLeft: `1px solid ${THIRD_COLOR}`,
+            borderRight: `1px solid ${THIRD_COLOR}`,
           }}
         >
           <Col
-            style={{ borderRight: "1px solid #d9d9d9" }}
+            style={{ borderRight: `1px solid ${THIRD_COLOR}` }}
             xs={24}
             sm={6}
             md={6}
@@ -325,7 +335,7 @@ export default function Dashboard() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                borderBottom: "1px solid #d9d9d9",
+                borderBottom: `1px solid ${THIRD_COLOR}`,
                 padding: "0 12px",
               }}
             >
@@ -356,7 +366,7 @@ export default function Dashboard() {
             <Row
               style={{
                 height: 60,
-                borderBottom: "1px solid #d9d9d9",
+                borderBottom: `1px solid ${THIRD_COLOR}`,
                 padding: 12,
               }}
             >
@@ -372,13 +382,18 @@ export default function Dashboard() {
               style={{
                 height: "calc(100vh - 120px)",
                 overflowY: "auto",
-                borderBottom: "1px solid #d9d9d9",
+                borderBottom: `1px solid ${THIRD_COLOR}`,
                 paddingBottom: 12,
               }}
             >
-              <Skeleton loading={loadingListUsers} paragraph={{ rows: 25 }}>
+              <MySkeleton
+                loading={loadingListUsers}
+                rows={25}
+                size="default"
+                avatar
+              >
                 {renderListUsers(users)}
-              </Skeleton>
+              </MySkeleton>
             </Row>
           </Col>
           <Col xs={0} sm={18} md={18} lg={18} xl={18}>
@@ -389,14 +404,14 @@ export default function Dashboard() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "0 12px",
-                borderBottom: "1px solid #d9d9d9",
+                borderBottom: `1px solid ${THIRD_COLOR}`,
               }}
             >
               <Col style={{ display: "flex", alignItems: "center" }}>
                 <Avatar
                   style={{
-                    color: "#f56a00",
-                    backgroundColor: "#fde3cf",
+                    color: PRIMARY_COLOR,
+                    backgroundColor: SECONDARY_COLOR,
                     marginRight: 12,
                   }}
                 >
@@ -426,6 +441,7 @@ export default function Dashboard() {
                   type="ghost"
                   icon={<InfoCircleOutlined style={{ color: PRIMARY_COLOR }} />}
                   size="large"
+                  onClick={handleShowDetail}
                 />
               </Col>
             </Row>
@@ -434,25 +450,27 @@ export default function Dashboard() {
               <Col
                 style={{ height: "calc(100vh - 60px)" }}
                 xs={0}
-                sm={16}
-                md={16}
-                lg={16}
-                xl={16}
+                sm={showDetail ? 16 : 24}
+                md={showDetail ? 16 : 24}
+                lg={showDetail ? 16 : 24}
+                xl={showDetail ? 16 : 24}
               >
                 <Row
                   style={{
                     height: "calc(100vh - 120px)",
-                    borderBottom: "1px solid #d9d9d9",
+                    borderBottom: `1px solid ${THIRD_COLOR}`,
                     overflowY: "auto",
-                    paddingTop: 12,
+                    paddingBottom: 12,
                   }}
                 >
-                  <Skeleton
-                    loading={loadingListMessages}
-                    paragraph={{ rows: 25 }}
+                  <MessageSkeleton
+                    // loading={loadingListMessages}
+                    loading={true}
+                    rows={25}
+                    size="default"
                   >
                     {renderListMessages(messages)}
-                  </Skeleton>
+                  </MessageSkeleton>
                 </Row>
                 <Row
                   style={{
@@ -460,7 +478,7 @@ export default function Dashboard() {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    borderBottom: "1px solid #d9d9d9",
+                    borderBottom: `1px solid ${THIRD_COLOR}`,
                   }}
                 >
                   <Col style={{ padding: 12, width: "calc(100% - 120px)" }}>
@@ -530,66 +548,72 @@ export default function Dashboard() {
                   </Col>
                 </Row>
               </Col>
-              <Col
-                style={{
-                  height: "calc(100vh - 60px)",
-                  borderLeft: "1px solid #d9d9d9",
-                  borderBottom: "1px solid #d9d9d9",
-                }}
-                xs={0}
-                sm={8}
-                md={8}
-                lg={8}
-                xl={8}
-              >
-                <Row
+              {showDetail && (
+                <Col
                   style={{
-                    height: 100,
-                    padding: "0 12px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    height: "calc(100vh - 60px)",
+                    borderLeft: `1px solid ${THIRD_COLOR}`,
+                    borderBottom: `1px solid ${THIRD_COLOR}`,
                   }}
+                  xs={0}
+                  sm={8}
+                  md={8}
+                  lg={8}
+                  xl={8}
                 >
-                  <Avatar
+                  <Row
                     style={{
-                      color: "#f56a00",
-                      backgroundColor: "#fde3cf",
-                      marginRight: 12,
+                      height: 100,
+                      padding: "0 12px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
-                    size={64}
                   >
-                    chnirt
-                  </Avatar>
-                </Row>
-                <Row
-                  style={{
-                    height: 20,
-                    padding: "0 12px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Title style={{ margin: 0 }} level={3}>
-                    chnirt
-                  </Title>
-                </Row>
-                <Divider />
-                <Row
-                  style={{
-                    height: 20,
-                    padding: "0 12px",
-                  }}
-                >
-                  <Col>
-                    <Title level={5}>Facebook Profile</Title>
-                    <Button style={{ padding: 0 }} type="link">
-                      m.me/xxxxxxxx
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
+                    <Avatar
+                      style={{
+                        color: PRIMARY_COLOR,
+                        backgroundColor: SECONDARY_COLOR,
+                        marginRight: 12,
+                      }}
+                      size={64}
+                    >
+                      chnirt
+                    </Avatar>
+                  </Row>
+                  <Row
+                    style={{
+                      height: 20,
+                      padding: "0 12px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Title style={{ margin: 0 }} level={3}>
+                      chnirt
+                    </Title>
+                  </Row>
+                  <Divider />
+                  <Row
+                    style={{
+                      height: 20,
+                      padding: "0 12px",
+                    }}
+                  >
+                    <Col>
+                      <Title level={5}>SendBird Profile</Title>
+                      <Button
+                        onClick={() => handleOpenNewTab("https://fb.com")}
+                        style={{ padding: 0 }}
+                        type="link"
+                      >
+                        m.me/xxxxxxxx
+                      </Button>
+                    </Col>
+                  </Row>
+                </Col>
+              )}
             </Row>
           </Col>
         </Row>

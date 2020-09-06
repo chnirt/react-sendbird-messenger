@@ -124,3 +124,5 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 - Starting with preconfigured workflow templates: https://docs.github.com/en/actions/getting-started-with-github-actions/starting-with-preconfigured-workflow-templates
 
 - Setting up a CI/CD workflow on GitHub Actions for a React App (with GitHub Pages and Codecov) : https://dev.to/dyarleniber/setting-up-a-ci-cd-workflow-on-github-actions-for-a-react-app-with-github-pages-and-codecov-4hnp
+
+- How to add canvas support to my tests in Jest? : https://stackoverflow.com/questions/33269093/how-to-add-canvas-support-to-my-tests-in-jest

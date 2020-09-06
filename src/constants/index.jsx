@@ -11,4 +11,6 @@ export const FB_APP_IP = process.env.REACT_APP_FB_APP_IP;
 export const FB_MEASUREMENT_ID = process.env.REACT_APP_FB_MEASUREMENT_ID;
 
 export const PRIMARY_COLOR = "#762FDD";
+export const SECONDARY_COLOR = "#efdbff";
+export const THIRD_COLOR = "#d9d9d9";
 export const BASENAME = "chnirt";
