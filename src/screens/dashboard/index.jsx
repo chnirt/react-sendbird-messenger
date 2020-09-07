@@ -341,7 +341,7 @@ export default function Dashboard() {
             <Loading spinning={loadingLogout}>
                 <Row
                     style={{
-                        height: '100vh',
+                        // height: 'calc(100vh - 2px)',
                         borderTop: `1px solid ${THIRD_COLOR}`,
                         borderLeft: `1px solid ${THIRD_COLOR}`,
                         borderRight: `1px solid ${THIRD_COLOR}`,
@@ -416,7 +416,7 @@ export default function Dashboard() {
 
                         <Row
                             style={{
-                                height: 'calc(100vh - 120px)',
+                                height: 'calc(100vh - 122px)',
                                 overflowY: 'auto',
                                 borderBottom: `1px solid ${THIRD_COLOR}`,
                                 paddingBottom: 12,
@@ -502,7 +502,6 @@ export default function Dashboard() {
 
                         <Row>
                             <Col
-                                style={{ height: 'calc(100vh - 60px)' }}
                                 xs={0}
                                 sm={showDetail ? 16 : 24}
                                 md={showDetail ? 16 : 24}
@@ -511,7 +510,7 @@ export default function Dashboard() {
                             >
                                 <Row
                                     style={{
-                                        height: 'calc(100vh - 120px)',
+                                        height: 'calc(100vh - 122px)',
                                         borderBottom: `1px solid ${THIRD_COLOR}`,
                                         overflowY: 'auto',
                                         paddingBottom: 12,

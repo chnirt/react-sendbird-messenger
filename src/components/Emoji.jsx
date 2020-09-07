@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Emoji({ label = '', symbol = '🤬' }) {
+export function Emoji({ label = 'Angry', symbol = '🤬' }) {
     return (
         <span
             className="emoji"
