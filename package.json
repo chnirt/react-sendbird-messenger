@@ -43,7 +43,7 @@
         "prettier": "prettier \"src/**/*.{js,jsx,css}\"",
         "format": "yarn prettier --write --ignore-unknown",
         "lint": "eslint src",
-        "lint:fix": "yarn lint --fix"
+        "lint:fix": "yarn lint --fix --ignore-pattern ./src/stories"
     },
     "eslintConfig": {
         "extends": "react-app"
