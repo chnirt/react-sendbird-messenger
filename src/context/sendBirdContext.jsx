@@ -3,11 +3,13 @@ import React, {
     createContext,
     useRef,
     useLayoutEffect,
+    useState,
 } from 'react'
 import SendBird from 'sendbird'
 import { nanoid } from 'nanoid'
 
-import { SB_APP_ID } from '../constants'
+const REACT_APP_SB_APP_ID = '7AE1264D-2D61-4D37-A25C-AEDF55FD631D'
+const UNIQUE_HANDLER_ID = nanoid()
 
 // ChannelHandler.onMessageReceived = function(channel, message) {};
 // ChannelHandler.onMessageUpdated = function(channel, message) {};
@@ -51,29 +53,20 @@ export function SendBirdProvider({ children }) {
 export const useSendBird = () => useContext(SendBirdContext)
 
 function SendBirdValue() {
-    if (localStorage.getItem('email') === undefined) {
-        throw new Error("Missing localStorage.getItem('email')")
-    }
-
-    const UNIQUE_HANDLER_ID = nanoid()
-
     const sbRef = useRef(null)
     const channelHandler = useRef(null)
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
-    const userId = localStorage.getItem('email')
+    const userId = localStorage.getItem('userId')
+    const [currentUser, setCurrentUser] = useState(null)
 
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
-            appId: SB_APP_ID,
+            appId: process.env.REACT_APP_SB_APP_ID || REACT_APP_SB_APP_ID,
         })
 
         if (userId) {
-            sbRef.current.connect(userId, function (user, error) {
-                if (error) console.log(error)
-
-                console.log('connect', user)
-            })
+            connect(userId)
         }
 
         channelHandler.current = new sbRef.current.ChannelHandler()
@@ -98,13 +91,14 @@ function SendBirdValue() {
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
         }
-    }, [userId, UNIQUE_HANDLER_ID])
+    }, [userId])
 
     function connect(USER_ID = null) {
         sbRef.current.connect(USER_ID, (user, error) => {
             if (error) return console.log(error)
 
-            console.log('connect', user)
+            // console.log('connect', user)
+            setCurrentUser(user)
         })
     }
 
@@ -127,9 +121,10 @@ function SendBirdValue() {
 
     function onDeliveryReceiptUpdated() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onDeliveryReceiptUpdated = (channel) => {
-                console.log('asd', channel)
-                resolve({ channel })
+            channelHandler.current.onDeliveryReceiptUpdated = (
+                groupChannel
+            ) => {
+                resolve({ groupChannel })
             }
         })
     }
@@ -305,7 +300,8 @@ function SendBirdValue() {
                 error
             ) {
                 if (error) {
-                    reject(error)
+                    // reject(error)
+                    return
                 }
 
                 resolve(groupChannel)
@@ -403,11 +399,15 @@ function SendBirdValue() {
     }
 
     function markAsDelivered(CHANNEL_URL = null) {
-        console.log('delivered', CHANNEL_URL)
         sbRef.current.markAsDelivered(CHANNEL_URL)
+        sbRef.current.GroupChannel.getChannel(CHANNEL_URL, (channel, err) => {
+            channel.markAsDelivered()
+        })
     }
 
     return {
+        currentUser,
+
         connect,
         disconnect,
         onTypingStatusUpdated,

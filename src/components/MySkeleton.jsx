@@ -10,8 +10,8 @@ export function MySkeleton({
     avatarShape = 'circle',
 }) {
     if (loading) {
-        return [...Array(rows).keys()].map(() => (
-            <Fragment>
+        return [...Array(rows).keys()].map((i) => (
+            <Fragment key={i}>
                 <Space style={{ padding: 12, height: 60 }}>
                     {!!avatar && (
                         <Skeleton.Avatar

@@ -74,7 +74,6 @@ function App() {
                                 shadowBlur: 5,
                             }}
                         />
-                        {/* hello */}
                     </div>
                 }
             >

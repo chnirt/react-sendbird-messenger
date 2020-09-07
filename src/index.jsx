@@ -6,15 +6,17 @@ import * as serviceWorker from './serviceWorker'
 
 import { BrowserRouter as Router } from 'react-router-dom'
 
-import { AuthProvider, FirebaseProvider } from './context'
+import { FirebaseProvider, AuthProvider, SendBirdProvider } from './context'
 
 ReactDOM.render(
     <React.StrictMode>
         <FirebaseProvider>
             <AuthProvider>
-                <Router>
-                    <App />
-                </Router>
+                <SendBirdProvider>
+                    <Router>
+                        <App />
+                    </Router>
+                </SendBirdProvider>
             </AuthProvider>
         </FirebaseProvider>
     </React.StrictMode>,

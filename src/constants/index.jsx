@@ -13,4 +13,5 @@ export const FB_MEASUREMENT_ID = process.env.REACT_APP_FB_MEASUREMENT_ID
 export const PRIMARY_COLOR = '#762FDD'
 export const SECONDARY_COLOR = '#efdbff'
 export const THIRD_COLOR = '#d9d9d9'
+export const FOURTH_COLOR = '#f0f0f0'
 export const BASENAME = 'chnirt'

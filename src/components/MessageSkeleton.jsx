@@ -11,7 +11,7 @@ export function MessageSkeleton({
 }) {
     if (loading) {
         return [...Array(rows).keys()].map((i) => (
-            <Fragment>
+            <Fragment key={i}>
                 <div
                     style={{
                         width: '100%',

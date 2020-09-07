@@ -108,8 +108,9 @@ export default function Login() {
                                 name="normal_login"
                                 className="login-form"
                                 initialValues={{
-                                    emailOrYourPhoneNumber:
-                                        'trinhchinchin@gmail.com',
+                                    // emailOrYourPhoneNumber:
+                                    //     'trinhchinchin@gmail.com',
+                                    emailOrYourPhoneNumber: 'chnirt@gmail.com',
                                     password: '123456',
                                     remember: true,
                                 }}

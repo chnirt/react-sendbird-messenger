@@ -25,6 +25,7 @@ function AuthValue() {
 
     const login = async (email, token) => {
         localStorage.setItem('email', email)
+        localStorage.setItem('userId', email)
         localStorage.setItem('access-token', token)
         setIsAuth(true)
         setToken(token)
@@ -33,6 +34,7 @@ function AuthValue() {
 
     const logout = () => {
         localStorage.removeItem('email')
+        localStorage.removeItem('userId')
         localStorage.removeItem('access-token')
         setIsAuth(false)
     }

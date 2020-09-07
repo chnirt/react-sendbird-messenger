@@ -10,6 +10,7 @@ import {
     Divider,
     Tooltip,
     Mentions,
+    Badge,
 } from 'antd'
 import {
     SettingOutlined,
@@ -32,8 +33,13 @@ import {
     MySkeleton,
     MessageSkeleton,
 } from '../../components'
-import { PRIMARY_COLOR, SECONDARY_COLOR, THIRD_COLOR } from '../../constants'
-import { useAuth, useFirebase } from '../../context'
+import {
+    PRIMARY_COLOR,
+    SECONDARY_COLOR,
+    THIRD_COLOR,
+    FOURTH_COLOR,
+} from '../../constants'
+import { useAuth, useFirebase, useSendBird } from '../../context'
 import { MyMenu } from './components'
 
 const { Title, Text } = Typography
@@ -43,13 +49,26 @@ export default function Dashboard() {
     // console.log(process.env)
     const { logout } = useAuth()
     const { logoutFB, authRef, getUsers } = useFirebase()
+    const {
+        currentUser,
+        disconnect,
+        channelListQuery,
+        getChannel,
+    } = useSendBird()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
-    const [users, setUsers] = useState([])
-    const [loadingListUsers, setLoadingListUsers] = useState(false)
+
+    const [channels, setChannels] = useState([])
+    const [loadingChannels, setLoadingChannels] = useState(false)
+
+    const [channel, setChannel] = useState({})
+
     const [messages, setMessages] = useState([])
     const [loadingListMessages, setLoadingListMessages] = useState(false)
+
+    const [channelUrl, setChannelUrl] = useState(null)
+
     const [fileList] = useState([])
 
     /**
@@ -87,30 +106,51 @@ export default function Dashboard() {
         })
     }, [authRef, logout])
 
+    /**
+     * Sendbird - fetchChannels - Effect
+     */
     useLayoutEffect(() => {
-        fetchUsers()
-        fetchMessages()
+        // fetchMessages()
 
-        async function fetchUsers() {
-            setLoadingListUsers(true)
-            const response = await fetch(
-                'https://5f0ea5f8faef3500160b8663.mockapi.io/users'
-            )
-            const data = await response.json()
-            setUsers(data)
-            setLoadingListUsers(false)
+        // async function fetchMessages() {
+        //     setLoadingListMessages(true)
+        //     const response = await fetch(
+        //         'https://5f0ea5f8faef3500160b8663.mockapi.io/messages'
+        //     )
+        //     const data = await response.json()
+        //     setMessages(data)
+        //     setLoadingListMessages(false)
+        // }
+        if (currentUser) {
+            fetchChannels()
         }
 
-        async function fetchMessages() {
-            setLoadingListMessages(true)
-            const response = await fetch(
-                'https://5f0ea5f8faef3500160b8663.mockapi.io/messages'
-            )
-            const data = await response.json()
-            setMessages(data)
-            setLoadingListMessages(false)
+        async function fetchChannels() {
+            setLoadingChannels(true)
+            const channelList = await channelListQuery()
+            // console.log(channelList)
+            setChannels(channelList)
+            setLoadingChannels(false)
         }
-    }, [])
+    }, [channelListQuery, currentUser])
+
+    /**
+     * Sendbird - fetchChannel - Effect
+     */
+    useLayoutEffect(() => {
+        if (channelUrl) {
+            fetchChannel(channelUrl)
+
+            async function fetchChannel(url) {
+                const channel = await getChannel(url)
+                console.log(channel)
+                setChannel(channel)
+            }
+            // if (channel.channelType === 'group') {
+            //     channel.markAsRead()
+            // }
+        }
+    }, [channelUrl, getChannel])
 
     /**
      * NOTE: MyAutoComplete - Function
@@ -179,6 +219,7 @@ export default function Dashboard() {
     function handleLogout() {
         setLoadingLogout(true)
         setTimeout(() => {
+            disconnect()
             logoutFB()
             logout()
 
@@ -186,11 +227,14 @@ export default function Dashboard() {
         }, 1000)
     }
 
-    const renderListUsers = (users) => {
-        return users.map((user) => renderUser(user))
+    const renderChannelList = (channels) => {
+        return channels.map((channel) => renderChannel(channel))
     }
 
-    const renderUser = (user) => {
+    const renderChannel = (channel) => {
+        // console.log(channel)
+        const isUnread = channel.unreadMessageCount > 0
+
         return (
             <Row
                 style={{
@@ -200,25 +244,37 @@ export default function Dashboard() {
                     alignItems: 'center',
                     borderBottom: `1px solid ${THIRD_COLOR}`,
                     padding: '0 12px',
+                    backgroundColor: isUnread && FOURTH_COLOR,
+                    cursor: 'pointer',
                 }}
-                key={user.id}
+                key={channel.url}
+                onClick={() => {
+                    setChannelUrl(channel.url)
+                }}
             >
                 <Col span={18}>
                     <Row>
                         <Col span={4}>
-                            <Avatar src={user.avatar} size="large">
-                                {user.name}
+                            <Avatar src={channel.coverUrl} size="large">
+                                {channel.name}
                             </Avatar>
                         </Col>
                         <Col span={18}>
                             <Row>
-                                <Title style={{ margin: 0 }} level={5}>
-                                    {user.name}
+                                <Title
+                                    style={{ margin: 0, padding: '0 10px' }}
+                                    level={5}
+                                >
+                                    {channel.name}
                                 </Title>
                             </Row>
                             <Row>
-                                <Text type="secondary" ellipsis={true}>
-                                    {user.lastMessage}
+                                <Text
+                                    style={{ padding: '0 10px' }}
+                                    type="secondary"
+                                    ellipsis={true}
+                                >
+                                    {channel.lastMessage?.message}
                                 </Text>
                             </Row>
                         </Col>
@@ -228,7 +284,26 @@ export default function Dashboard() {
                     style={{ display: 'flex', justifyContent: 'flex-end' }}
                     span={6}
                 >
-                    {moment(user.createdAt).format('HH:mma')}
+                    <Col
+                        style={{ display: 'flex', justifyContent: 'flex-end' }}
+                        xs={18}
+                        sm={20}
+                        md={20}
+                        lg={20}
+                        xl={20}
+                    >
+                        {moment(channel.createdAt).format('HH:mm a')}
+                    </Col>
+                    <Col
+                        style={{ display: 'flex', justifyContent: 'flex-end' }}
+                        xs={6}
+                        sm={4}
+                        md={4}
+                        lg={4}
+                        xl={4}
+                    >
+                        {isUnread && <Badge color={PRIMARY_COLOR} />}
+                    </Col>
                 </Col>
             </Row>
         )
@@ -247,7 +322,6 @@ export default function Dashboard() {
                     padding: '0 12px',
                     display: 'flex',
                     width: '100%',
-                    // margin: '15px 0',
                 }}
                 key={message.id}
             >
@@ -341,7 +415,6 @@ export default function Dashboard() {
             <Loading spinning={loadingLogout}>
                 <Row
                     style={{
-                        // height: 'calc(100vh - 2px)',
                         borderTop: `1px solid ${THIRD_COLOR}`,
                         borderLeft: `1px solid ${THIRD_COLOR}`,
                         borderRight: `1px solid ${THIRD_COLOR}`,
@@ -414,7 +487,7 @@ export default function Dashboard() {
                             />
                         </Row>
 
-                        <Row
+                        <div
                             style={{
                                 height: 'calc(100vh - 122px)',
                                 overflowY: 'auto',
@@ -423,14 +496,14 @@ export default function Dashboard() {
                             }}
                         >
                             <MySkeleton
-                                loading={loadingListUsers}
+                                loading={loadingChannels}
                                 rows={13}
                                 size="default"
                                 avatar
                             >
-                                {renderListUsers(users)}
+                                {renderChannelList(channels)}
                             </MySkeleton>
-                        </Row>
+                        </div>
                     </Col>
                     <Col xs={0} sm={18} md={18} lg={18} xl={18}>
                         <Row
