@@ -36,7 +36,7 @@ export default function Login() {
             // console.log(user)
 
             user.getIdToken().then((idToken) => {
-                console.log(idToken)
+                // console.log(idToken)
                 login(user.email, idToken)
             })
         } catch (error) {
