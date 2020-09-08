@@ -44,10 +44,16 @@ import {
 } from '../../constants'
 import { useAuth, useFirebase, useSendBird } from '../../context'
 import { MyMenu } from './components'
-import { firstCharacterOfEachString, capitalizeFirstLetter } from '../../utils'
+import {
+    firstCharacterOfEachString,
+    capitalizeFirstLetter,
+    formatTypingUsers,
+} from '../../utils'
 import { useRef } from 'react'
 
 const { Title, Text } = Typography
+
+const customHeight = 120
 
 export default function Dashboard() {
     const { logout } = useAuth()
@@ -58,6 +64,7 @@ export default function Dashboard() {
         getChannel,
         createPreviousMessageListQuery,
         sendUserMessage,
+        onTypingStatusUpdated,
     } = useSendBird()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
@@ -69,6 +76,7 @@ export default function Dashboard() {
     const [channel, setChannel] = useState({})
 
     const [message, setMessage] = useState('')
+    const [typingMembers, setTypingMembers] = useState('')
 
     const [messages, setMessages] = useState([])
     const [loadingListMessages, setLoadingListMessages] = useState(false)
@@ -169,6 +177,29 @@ export default function Dashboard() {
             // }
         }
     }, [getChannel, channelUrl, createPreviousMessageListQuery])
+
+    useLayoutEffect(() => {
+        // listenOnMessageReceived()
+        listenOnTypingStatusUpdated()
+        // listenOnDeliveryReceiptUpdated()
+        // listenOnReadReceiptUpdated()
+    })
+
+    async function listenOnTypingStatusUpdated() {
+        const { groupChannel } = await onTypingStatusUpdated()
+
+        // console.log(channel.url, groupChannel.url)
+        if (channel && channel.url === groupChannel.url) {
+            var members = groupChannel.getTypingMembers()
+
+            // console.log(members)
+
+            members = members.map((member) => member.userId)
+            const typingUsers = formatTypingUsers(members)
+
+            setTypingMembers(typingUsers)
+        }
+    }
 
     /**
      * NOTE: MyAutoComplete - Function
@@ -446,7 +477,7 @@ export default function Dashboard() {
                         {`Last active: ${
                             isOnline
                                 ? 'just now'
-                                : moment(member.lastSeenAt).format('HH:mm AA')
+                                : moment(member.lastSeenAt).format('HH:mm A')
                         }`}
                     </Text>
                 </div>
@@ -459,13 +490,15 @@ export default function Dashboard() {
             <Loading spinning={loadingLogout}>
                 <Row
                     style={{
-                        borderTop: `1px solid ${THIRD_COLOR}`,
+                        // borderTop: `1px solid ${THIRD_COLOR}`,
                         borderLeft: `1px solid ${THIRD_COLOR}`,
                         borderRight: `1px solid ${THIRD_COLOR}`,
                     }}
                 >
                     <Col
-                        style={{ borderRight: `1px solid ${THIRD_COLOR}` }}
+                        style={{
+                            borderRight: `1px solid ${THIRD_COLOR}`,
+                        }}
                         xs={24}
                         sm={6}
                         md={6}
@@ -533,7 +566,7 @@ export default function Dashboard() {
 
                         <div
                             style={{
-                                height: 'calc(100vh - 120px)',
+                                height: `calc(100vh - ${customHeight}px)`,
                                 overflowY: 'auto',
                                 borderBottom: `1px solid ${THIRD_COLOR}`,
                                 paddingBottom: 12,
@@ -628,14 +661,13 @@ export default function Dashboard() {
                             >
                                 <div
                                     style={{
-                                        height: 'calc(100vh - 120px)',
+                                        height: `calc(100vh - ${customHeight}px)`,
                                         borderBottom: `1px solid ${THIRD_COLOR}`,
                                         overflowY: 'auto',
-                                        paddingBottom: 12,
+                                        paddingBottom: 30,
                                     }}
                                     ref={scrollRef}
                                     onScroll={() => {
-                                        console.log(scrollRef.current)
                                         if (scrollRef.current.scrollTop === 0) {
                                             // console.log(
                                             //     scrollRef.current.scrollTop
@@ -654,6 +686,23 @@ export default function Dashboard() {
                                             {renderListMessages(messages)}
                                         </MemoizedScrollToBottom>
                                     </MessageSkeleton>
+                                    <div
+                                        style={{
+                                            position: 'absolute',
+                                            bottom: 66,
+                                            left: 12,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontSize: 12,
+                                            }}
+                                            type="secondary"
+                                            ellipsis={true}
+                                        >
+                                            {typingMembers}
+                                        </Text>
+                                    </div>
                                 </div>
                                 <Row
                                     style={{

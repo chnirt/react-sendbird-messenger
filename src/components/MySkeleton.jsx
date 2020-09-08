@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Space, Skeleton, Divider } from 'antd'
+import { Space, Skeleton } from 'antd'
 
 export function MySkeleton({
     loading = false,
@@ -26,7 +26,6 @@ export function MySkeleton({
                         size={size}
                     />
                 </Space>
-                <Divider style={{ margin: 0 }} />
             </Fragment>
         ))
     }
