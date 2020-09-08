@@ -3,7 +3,6 @@ import React, {
     createContext,
     useRef,
     useLayoutEffect,
-    useState,
 } from 'react'
 import SendBird from 'sendbird'
 import { nanoid } from 'nanoid'
@@ -58,7 +57,6 @@ function SendBirdValue() {
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
     const userId = localStorage.getItem('userId')
-    const [currentUser, setCurrentUser] = useState(null)
 
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
@@ -94,26 +92,29 @@ function SendBirdValue() {
     }, [userId])
 
     function connect(USER_ID = null) {
-        sbRef.current.connect(USER_ID, (user, error) => {
-            if (error) return console.log(error)
+        return new Promise((resolve, reject) => {
+            sbRef.current.connect(USER_ID, (user, error) => {
+                if (error) reject(error)
 
-            // console.log('connect', user)
-            setCurrentUser(user)
+                // console.log('connect', user)
+                resolve(user)
+            })
         })
     }
 
     function disconnect() {
-        sbRef.current.disconnect(function () {
-            console.log('disconnect')
-            // A current user is discconected from Sendbird server.
+        return new Promise((resolve, reject) => {
+            sbRef.current.disconnect(() => {
+                // console.log('disconnect')
+                // A current user is discconected from Sendbird server.
+                resolve(true)
+            })
         })
     }
 
     function onTypingStatusUpdated() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onTypingStatusUpdated = function (
-                groupChannel
-            ) {
+            channelHandler.current.onTypingStatusUpdated = (groupChannel) => {
                 resolve({ groupChannel })
             }
         })
@@ -131,9 +132,7 @@ function SendBirdValue() {
 
     function onReadReceiptUpdated() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onReadReceiptUpdated = function (
-                groupChannel
-            ) {
+            channelHandler.current.onReadReceiptUpdated = (groupChannel) => {
                 resolve({ groupChannel })
             }
         })
@@ -141,10 +140,7 @@ function SendBirdValue() {
 
     function onMessageReceived() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onMessageReceived = function (
-                channel,
-                message
-            ) {
+            channelHandler.current.onMessageReceived = (channel, message) => {
                 resolve({ channel, message })
             }
         })
@@ -152,10 +148,7 @@ function SendBirdValue() {
 
     function onMessageUpdated() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onMessageUpdated = function (
-                channel,
-                message
-            ) {
+            channelHandler.current.onMessageUpdated = (channel, message) => {
                 resolve({ channel, message })
             }
         })
@@ -163,10 +156,7 @@ function SendBirdValue() {
 
     function onMessageDeleted() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onMessageDeleted = function (
-                channel,
-                message
-            ) {
+            channelHandler.current.onMessageDeleted = (channel, message) => {
                 resolve({ channel, message })
             }
         })
@@ -174,7 +164,7 @@ function SendBirdValue() {
 
     function onFriendsDiscovered() {
         return new Promise((resolve, reject) => {
-            userEventHandler.current.onFriendsDiscovered = function (users) {
+            userEventHandler.current.onFriendsDiscovered = (users) => {
                 resolve({ users })
             }
         })
@@ -182,10 +172,10 @@ function SendBirdValue() {
 
     function onTotalUnreadMessageCountUpdated() {
         return new Promise((resolve, reject) => {
-            userEventHandler.current.onTotalUnreadMessageCountUpdated = function (
+            userEventHandler.current.onTotalUnreadMessageCountUpdated = (
                 totalCount,
                 countByCustomTypes
-            ) {
+            ) => {
                 resolve({ totalCount, countByCustomTypes })
             }
         })
@@ -193,7 +183,7 @@ function SendBirdValue() {
 
     function onReconnectStarted() {
         return new Promise((resolve, reject) => {
-            connectionHandler.current.onReconnectStarted = function () {
+            connectionHandler.current.onReconnectStarted = () => {
                 resolve()
             }
         })
@@ -201,7 +191,7 @@ function SendBirdValue() {
 
     function onReconnectSucceeded() {
         return new Promise((resolve, reject) => {
-            connectionHandler.current.onReconnectSucceeded = function () {
+            connectionHandler.current.onReconnectSucceeded = () => {
                 resolve()
             }
         })
@@ -209,20 +199,24 @@ function SendBirdValue() {
 
     function onReconnectFailed() {
         return new Promise((resolve, reject) => {
-            connectionHandler.current.onReconnectFailed = function () {
+            connectionHandler.current.onReconnectFailed = () => {
                 resolve()
             }
         })
     }
 
     function updateCurrentUserInfo(NICKNAME = null, PROFILE_URL = null) {
-        sbRef.current.updateCurrentUserInfo(NICKNAME, PROFILE_URL, function (
-            response,
-            error
-        ) {
-            if (error) return console.log(error)
+        return new Promise((resolve, reject) => {
+            sbRef.current.updateCurrentUserInfo(
+                NICKNAME,
+                PROFILE_URL,
+                (response, error) => {
+                    if (error) reject(error)
 
-            console.log('updateCurrentUserInfo', response)
+                    // console.log('updateCurrentUserInfo', response)
+                    resolve(response)
+                }
+            )
         })
     }
 
@@ -230,20 +224,70 @@ function SendBirdValue() {
         NICKNAME = null,
         PROFILE_FILE = null
     ) {
-        sbRef.current.updateCurrentUserInfoWithProfileImage(
-            NICKNAME,
-            PROFILE_FILE,
-            function (response, error) {
-                if (error) return console.log(error)
+        return new Promise((resolve, reject) => {
+            sbRef.current.updateCurrentUserInfoWithProfileImage(
+                NICKNAME,
+                PROFILE_FILE,
+                (response, error) => {
+                    if (error) reject(error)
 
-                console.log('updateCurrentUserInfoWithProfileImage', response)
-            }
-        )
+                    // console.log(
+                    //     'updateCurrentUserInfoWithProfileImage',
+                    //     response
+                    // )
+                    resolve(resolve)
+                }
+            )
+        })
+    }
+
+    function userListQuery() {
+        return new Promise((resolve, reject) => {
+            // Retrieving all users
+            var applicationUserListQueryByIds = sbRef.current.createApplicationUserListQuery()
+            applicationUserListQueryByIds.next((users, error) => {
+                if (error) {
+                    reject(error)
+                }
+
+                resolve(users)
+            })
+        })
+    }
+
+    function blockedUserListQuery() {
+        return new Promise((resolve, reject) => {
+            // Retrieving all users
+            var blockedUserListQuery = sbRef.current.createBlockedUserListQuery()
+            blockedUserListQuery.next((users, error) => {
+                if (error) {
+                    reject(error)
+                }
+
+                resolve(users)
+            })
+        })
+    }
+
+    function connectionStatus(userIds) {
+        return new Promise((resolve, reject) => {
+            var applicationUserListQuery = sbRef.current.createApplicationUserListQuery()
+            applicationUserListQuery.userIdsFilter = userIds
+            applicationUserListQuery.next((users, error) => {
+                if (error) {
+                    reject(error)
+                }
+
+                if (users[0].connectionStatus === sbRef.current.User.ONLINE) {
+                    // User.connectionStatus consists of NON_AVAILABLE, ONLINE, and OFFLINE.
+                }
+            })
+        })
     }
 
     function inviteWithUserIds(groupChannel = null, userIds = []) {
         return new Promise((resolve, reject) => {
-            groupChannel.inviteWithUserIds(userIds, function (response, error) {
+            groupChannel.inviteWithUserIds(userIds, (response, error) => {
                 if (error) {
                     reject(error)
                 }
@@ -266,7 +310,7 @@ function SendBirdValue() {
             NAME,
             COVER_IMAGE_OR_URL,
             DATA,
-            function (groupChannel, error) {
+            (groupChannel, error) => {
                 if (error) return console.log(error)
 
                 console.log('createChannelWithUserIds', groupChannel)
@@ -282,7 +326,7 @@ function SendBirdValue() {
             channelListQuery.limit = 15 // The value of pagination limit could be set up to 100.
 
             if (channelListQuery.hasNext) {
-                channelListQuery.next(async function (channelList, error) {
+                channelListQuery.next((channelList, error) => {
                     if (error) {
                         reject(error)
                     }
@@ -295,18 +339,17 @@ function SendBirdValue() {
 
     function getChannel(CHANNEL_URL = null) {
         return new Promise((resolve, reject) => {
-            sbRef.current.GroupChannel.getChannel(CHANNEL_URL, function (
-                groupChannel,
-                error
-            ) {
-                if (error) {
-                    // reject(error)
-                    return
-                }
+            sbRef.current.GroupChannel.getChannel(
+                CHANNEL_URL,
+                (groupChannel, error) => {
+                    if (error) {
+                        reject(error)
+                    }
 
-                resolve(groupChannel)
-                // TODO: Implement what is needed with the contents of the response in the groupChannel parameter.
-            })
+                    resolve(groupChannel)
+                    // TODO: Implement what is needed with the contents of the response in the groupChannel parameter.
+                }
+            )
         })
     }
 
@@ -328,7 +371,7 @@ function SendBirdValue() {
             // params.translationTargetLanguages = ["fe", "de"]; // French and German
             // params.pushNotificationDeliveryOption = "default"; // Either 'default' or 'suppress'
 
-            groupChannel.sendUserMessage(params, function (message, error) {
+            groupChannel.sendUserMessage(params, (message, error) => {
                 if (error) {
                     reject(error)
                 }
@@ -357,9 +400,19 @@ function SendBirdValue() {
             //   if (error) {
             //     reject(error);
             //   }
-
             //   resolve(messages);
             // });
+        })
+    }
+
+    function refresh(groupChannel = null) {
+        return new Promise((resolve, reject) => {
+            groupChannel.refresh(function (response, error) {
+                if (error) {
+                    reject(error)
+                }
+                resolve(response)
+            })
         })
     }
 
@@ -386,7 +439,7 @@ function SendBirdValue() {
                 SENDER_USER_IDS,
                 INCLUDE_META_ARRAY,
                 INCLUDE_REACTION,
-                function (messages, error) {
+                (messages, error) => {
                     if (error) {
                         reject(error)
                     }
@@ -406,8 +459,6 @@ function SendBirdValue() {
     }
 
     return {
-        currentUser,
-
         connect,
         disconnect,
         onTypingStatusUpdated,
@@ -423,12 +474,16 @@ function SendBirdValue() {
         onReconnectFailed,
         updateCurrentUserInfo,
         updateCurrentUserInfoWithProfileImage,
+        userListQuery,
+        blockedUserListQuery,
+        connectionStatus,
         inviteWithUserIds,
         createChannelWithUserIds,
         channelListQuery,
         getChannel,
         sendUserMessage,
         createPreviousMessageListQuery,
+        refresh,
         getPreviousMessagesByTimestamp,
         markAsDelivered,
     }

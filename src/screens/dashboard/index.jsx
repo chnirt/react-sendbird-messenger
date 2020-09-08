@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, Fragment, useRef } from 'react'
+import React, { useLayoutEffect, useState, Fragment } from 'react'
 import {
     Row,
     Col,
@@ -9,8 +9,8 @@ import {
     Upload,
     Divider,
     Tooltip,
-    Mentions,
     Badge,
+    Input,
 } from 'antd'
 import {
     SettingOutlined,
@@ -32,55 +32,59 @@ import {
     MessageBubble,
     MySkeleton,
     MessageSkeleton,
+    MemoizedScrollToBottom,
 } from '../../components'
 import {
     PRIMARY_COLOR,
     SECONDARY_COLOR,
     THIRD_COLOR,
     FOURTH_COLOR,
+    ONLINE,
+    OFFLINE,
 } from '../../constants'
 import { useAuth, useFirebase, useSendBird } from '../../context'
 import { MyMenu } from './components'
+import { firstCharacterOfEachString, capitalizeFirstLetter } from '../../utils'
+import { useRef } from 'react'
 
 const { Title, Text } = Typography
-const { Option } = Mentions
 
 export default function Dashboard() {
-    // console.log(process.env)
     const { logout } = useAuth()
     const { logoutFB, authRef, getUsers } = useFirebase()
     const {
-        currentUser,
         disconnect,
         channelListQuery,
         getChannel,
+        createPreviousMessageListQuery,
+        sendUserMessage,
     } = useSendBird()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
-    const [showDetail, setShowDetail] = useState(false)
+    const [showDetail, setShowDetail] = useState(true)
 
     const [channels, setChannels] = useState([])
     const [loadingChannels, setLoadingChannels] = useState(false)
 
     const [channel, setChannel] = useState({})
 
+    const [message, setMessage] = useState('')
+
     const [messages, setMessages] = useState([])
     const [loadingListMessages, setLoadingListMessages] = useState(false)
 
     const [channelUrl, setChannelUrl] = useState(null)
 
+    const [prevMessageListQuery, setPrevMessageListQuery] = useState(null)
+
     const [fileList] = useState([])
+
+    const scrollRef = useRef()
 
     /**
      * MyAutoComplete - State
      */
     const [options, setOptions] = useState([])
-
-    /**
-     * Mentions - State
-     */
-    const [value, setValue] = useState([])
-    const mentionsRef = useRef(null)
 
     /**
      * Firebase - Effect
@@ -101,61 +105,74 @@ export default function Dashboard() {
                 // setOptions(snapshot.docs.map((doc) => ({ ...doc, value: doc.id })))
             } else {
                 // No user is signed in.
+                disconnect()
                 logout()
             }
         })
-    }, [authRef, logout])
+    }, [authRef, logout, disconnect])
 
     /**
-     * Sendbird - fetchChannels - Effect
+     * SendBird - fetchChannels - Effect
      */
     useLayoutEffect(() => {
-        // fetchMessages()
-
-        // async function fetchMessages() {
-        //     setLoadingListMessages(true)
-        //     const response = await fetch(
-        //         'https://5f0ea5f8faef3500160b8663.mockapi.io/messages'
-        //     )
-        //     const data = await response.json()
-        //     setMessages(data)
-        //     setLoadingListMessages(false)
-        // }
-        if (currentUser) {
-            fetchChannels()
-        }
+        fetchChannels()
 
         async function fetchChannels() {
             setLoadingChannels(true)
-            const channelList = await channelListQuery()
-            // console.log(channelList)
-            setChannels(channelList)
+            const channels = await channelListQuery()
+            // console.log(channels)
+            // channels.map((channel) => {
+            //   // console.log(channel.url);
+            //   return markAsDelivered(channel.url);
+            // });
+            setChannels(channels)
             setLoadingChannels(false)
         }
-    }, [channelListQuery, currentUser])
+    }, [channelListQuery])
 
     /**
-     * Sendbird - fetchChannel - Effect
+     * SendBird - fetchChannel - Effect
      */
     useLayoutEffect(() => {
+        async function fetchChannel(url) {
+            const channel = await getChannel(url)
+            setChannel(channel)
+
+            /**
+             * SendBird - fetchMessages
+             */
+            fetchMessages()
+
+            async function fetchMessages() {
+                setLoadingListMessages(true)
+                const prevMessageListQuery = await createPreviousMessageListQuery(
+                    channel,
+                    10
+                )
+                setPrevMessageListQuery(prevMessageListQuery)
+                prevMessageListQuery.load(function (messages, error) {
+                    if (error) {
+                        return console.log(error)
+                    }
+
+                    setMessages(messages)
+                    setLoadingListMessages(false)
+                })
+            }
+        }
+
         if (channelUrl) {
             fetchChannel(channelUrl)
 
-            async function fetchChannel(url) {
-                const channel = await getChannel(url)
-                console.log(channel)
-                setChannel(channel)
-            }
             // if (channel.channelType === 'group') {
             //     channel.markAsRead()
             // }
         }
-    }, [channelUrl, getChannel])
+    }, [getChannel, channelUrl, createPreviousMessageListQuery])
 
     /**
      * NOTE: MyAutoComplete - Function
      */
-
     const onSearchMyAutoComplete = async (searchText) => {
         if (!!searchText) {
             const snapshot = await getUsers({ email: searchText })
@@ -172,28 +189,9 @@ export default function Dashboard() {
             setOptions([])
         }
     }
+
     const onSelectMyAutoComplete = (data) => {
         console.log('onSelect', data)
-    }
-
-    /**
-     * NOTE: Mentions = Function
-     */
-
-    function onChangeMentions(value) {
-        console.log('Change:', value)
-        setValue(value)
-    }
-
-    function onSelectMentions(option) {
-        console.log('Select', option)
-    }
-
-    function onPressEnterMentions(option) {
-        console.log('PressEnter', option)
-        setTimeout(() => {
-            setValue('')
-        }, 1)
     }
 
     const props = {
@@ -227,7 +225,7 @@ export default function Dashboard() {
         }, 1000)
     }
 
-    const renderChannelList = (channels) => {
+    const renderChannelList = (channels = []) => {
         return channels.map((channel) => renderChannel(channel))
     }
 
@@ -309,12 +307,13 @@ export default function Dashboard() {
         )
     }
 
-    const renderListMessages = (messages) => {
+    const renderListMessages = (messages = []) => {
         return messages.map((message) => renderMessage(message))
     }
 
     const renderMessage = (message) => {
-        const { isAuthor } = message
+        message.isAuthor =
+            message._sender.userId === localStorage.getItem('userId')
 
         return (
             <Row
@@ -323,7 +322,7 @@ export default function Dashboard() {
                     display: 'flex',
                     width: '100%',
                 }}
-                key={message.id}
+                key={message.messageId}
             >
                 <Row
                     style={{
@@ -333,17 +332,19 @@ export default function Dashboard() {
                         alignItems: 'center',
                     }}
                 >
-                    <Divider plain>
+                    <div style={{ margin: '16px 0' }}>
                         {moment(message.createdAt).format(
                             'HH:mm, DD MMM, YYYY'
                         )}
-                    </Divider>
+                    </div>
                 </Row>
                 <Row
                     style={{
                         width: '100%',
                         display: 'flex',
-                        justifyContent: isAuthor ? 'flex-end' : 'flex-start',
+                        justifyContent: message.isAuthor
+                            ? 'flex-end'
+                            : 'flex-start',
                     }}
                 >
                     {renderMessageBubble(message)}
@@ -362,17 +363,15 @@ export default function Dashboard() {
                     />
                 }
                 color="#fff"
-                // trigger="click"
             >
                 <div>
                     <MessageBubble
                         w={300}
-                        // h={200}
                         backgroundColor={
                             message.isAuthor ? PRIMARY_COLOR : THIRD_COLOR
                         }
                         color={message.isAuthor ? '#fff' : '#000'}
-                        content={message.content}
+                        content={message.message}
                     />
                 </div>
             </Tooltip>
@@ -387,28 +386,73 @@ export default function Dashboard() {
         setShowDetail((prevState) => !prevState)
     }
 
-    function handleOpenNewTab(link) {
-        window.open(link, '_blank')
-    }
-
     function handleEmojiMart(emoji) {
-        console.log(emoji.native)
-        setValue((prevState) => prevState + emoji.native)
+        setMessage((prevState) => prevState + emoji.native)
     }
 
-    // function handleKeyDown(event) {
-    //     console.log(event)
-    //     if (event.keyCode === 13) {
-    //         setTimeout(() => {
-    //             handleSendMessage()
-    //         }, 1)
-    //     }
-    // }
+    async function handleLoadMore() {
+        prevMessageListQuery.load(function (messages, error) {
+            if (error) {
+                return console.log(error)
+            }
 
-    // function handleSendMessage() {
-    //     console.log(value)
-    //     setValue('')
-    // }
+            setMessages((prevState) => [...messages, ...prevState])
+        })
+    }
+
+    const renderMembers = (members = []) => {
+        return members.map((member) => renderMember(member))
+    }
+
+    const renderMember = (member) => {
+        const isOnline = member.connectionStatus === 'online'
+        return (
+            <div style={{ display: 'flex', paddingBottom: 12 }}>
+                <Badge dot color={isOnline ? ONLINE : OFFLINE}>
+                    <Avatar
+                        src={member.plainProfileUrl}
+                        size="default"
+                        shape="square"
+                    >
+                        {capitalizeFirstLetter(
+                            firstCharacterOfEachString(member.userId)
+                        )}
+                    </Avatar>
+                </Badge>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <Title
+                        style={{
+                            margin: 0,
+                            padding: '0 10px',
+                            fontSize: 12,
+                        }}
+                        level={5}
+                    >
+                        {member.userId}
+                    </Title>
+                    <Text
+                        style={{
+                            padding: '0 10px',
+                            fontSize: 10,
+                        }}
+                        type="secondary"
+                        ellipsis={true}
+                    >
+                        {`Last seen: ${
+                            isOnline
+                                ? 'live now'
+                                : moment(member.lastSeenAt).format('HH:mm a')
+                        }`}
+                    </Text>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <Fragment>
@@ -489,7 +533,7 @@ export default function Dashboard() {
 
                         <div
                             style={{
-                                height: 'calc(100vh - 122px)',
+                                height: 'calc(100vh - 120px)',
                                 overflowY: 'auto',
                                 borderBottom: `1px solid ${THIRD_COLOR}`,
                                 paddingBottom: 12,
@@ -528,11 +572,12 @@ export default function Dashboard() {
                                         backgroundColor: SECONDARY_COLOR,
                                         marginRight: 12,
                                     }}
+                                    src={channel.coverUrl}
                                 >
-                                    chnirt
+                                    {channel.name}
                                 </Avatar>
                                 <Title style={{ margin: 0 }} level={4}>
-                                    chnirt
+                                    {channel.name}
                                 </Title>
                             </Col>
                             <Col>
@@ -581,12 +626,22 @@ export default function Dashboard() {
                                 lg={showDetail ? 16 : 24}
                                 xl={showDetail ? 16 : 24}
                             >
-                                <Row
+                                <div
                                     style={{
-                                        height: 'calc(100vh - 122px)',
+                                        height: 'calc(100vh - 120px)',
                                         borderBottom: `1px solid ${THIRD_COLOR}`,
                                         overflowY: 'auto',
                                         paddingBottom: 12,
+                                    }}
+                                    ref={scrollRef}
+                                    onScroll={() => {
+                                        console.log(scrollRef.current)
+                                        if (scrollRef.current.scrollTop === 0) {
+                                            // console.log(
+                                            //     scrollRef.current.scrollTop
+                                            // )
+                                            handleLoadMore()
+                                        }
                                     }}
                                 >
                                     <MessageSkeleton
@@ -595,9 +650,11 @@ export default function Dashboard() {
                                         size="default"
                                         avatar
                                     >
-                                        {renderListMessages(messages)}
+                                        <MemoizedScrollToBottom>
+                                            {renderListMessages(messages)}
+                                        </MemoizedScrollToBottom>
                                     </MessageSkeleton>
-                                </Row>
+                                </div>
                                 <Row
                                     style={{
                                         height: 60,
@@ -613,27 +670,30 @@ export default function Dashboard() {
                                             width: 'calc(100% - 120px)',
                                         }}
                                     >
-                                        {/* <div onKeyDown={handleKeyDown}> */}
-                                        <Mentions
-                                            ref={mentionsRef}
+                                        <Input
                                             placeholder="Type a message..."
-                                            placement="top"
-                                            value={value}
-                                            onChange={onChangeMentions}
-                                            onSelect={onSelectMentions}
-                                            onPressEnter={onPressEnterMentions}
-                                        >
-                                            <Option value="afc163">
-                                                afc163
-                                            </Option>
-                                            <Option value="zombieJ">
-                                                zombieJ
-                                            </Option>
-                                            <Option value="yesmeck">
-                                                yesmeck
-                                            </Option>
-                                        </Mentions>
-                                        {/* </div> */}
+                                            value={message}
+                                            onChange={(e) =>
+                                                setMessage(e.target.value)
+                                            }
+                                            onKeyDown={async (e) => {
+                                                if (e.keyCode === 13) {
+                                                    const newMessage = await sendUserMessage(
+                                                        channel,
+                                                        message
+                                                    )
+                                                    setMessages((prevState) => [
+                                                        ...prevState,
+                                                        newMessage,
+                                                    ])
+                                                    setMessage('')
+                                                }
+                                            }}
+                                            onFocus={() =>
+                                                channel.startTyping()
+                                            }
+                                            onBlur={() => channel.endTyping()}
+                                        />
                                     </Col>
                                     <Col
                                         style={{
@@ -730,8 +790,9 @@ export default function Dashboard() {
                                                 marginRight: 12,
                                             }}
                                             size={64}
+                                            src={channel.coverUrl}
                                         >
-                                            chnirt
+                                            {channel.name}
                                         </Avatar>
                                     </Row>
                                     <Row
@@ -744,7 +805,7 @@ export default function Dashboard() {
                                         }}
                                     >
                                         <Title style={{ margin: 0 }} level={3}>
-                                            chnirt
+                                            {channel.name}
                                         </Title>
                                     </Row>
                                     <Divider />
@@ -755,21 +816,15 @@ export default function Dashboard() {
                                         }}
                                     >
                                         <Col>
-                                            <Title level={5}>
-                                                SendBird Profile
-                                            </Title>
-                                            <Button
-                                                onClick={() =>
-                                                    handleOpenNewTab(
-                                                        'https://fb.com'
-                                                    )
-                                                }
-                                                style={{ padding: 0 }}
-                                                type="link"
-                                            >
-                                                m.me/xxxxxxxx
-                                            </Button>
+                                            <Title level={5}>Members</Title>
                                         </Col>
+                                    </Row>
+                                    <Row
+                                        style={{
+                                            padding: 12,
+                                        }}
+                                    >
+                                        {renderMembers(channel?.members)}
                                     </Row>
                                 </Col>
                             )}

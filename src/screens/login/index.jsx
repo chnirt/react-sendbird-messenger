@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
 import { Loading } from '../../components'
-import { useAuth, useFirebase } from '../../context'
+import { useAuth, useFirebase, useSendBird } from '../../context'
 import { PRIMARY_COLOR } from '../../constants'
 
 const { Title, Text } = Typography
@@ -22,6 +22,7 @@ export default function Login() {
     const { login } = useAuth()
     const { loginFB } = useFirebase()
     const navigate = useNavigate()
+    const { connect } = useSendBird()
 
     const [loading, setLoading] = useState(false)
 
@@ -38,6 +39,7 @@ export default function Login() {
             user.getIdToken().then((idToken) => {
                 // console.log(idToken)
                 login(user.email, idToken)
+                connect(user.email)
             })
         } catch (error) {
             // console.log(error.message)

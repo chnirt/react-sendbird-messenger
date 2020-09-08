@@ -139,3 +139,5 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 -   Setting up a CI/CD workflow on GitHub Actions for a React App (with GitHub Pages and Codecov) : https://dev.to/dyarleniber/setting-up-a-ci-cd-workflow-on-github-actions-for-a-react-app-with-github-pages-and-codecov-4hnp
 
 -   How to add canvas support to my tests in Jest? : https://stackoverflow.com/questions/33269093/how-to-add-canvas-support-to-my-tests-in-jest
+
+-   WhatsApp-Engineering Inside-2 : https://medium.com/codingurukul/whatsapp-engineering-inside-2-bdd1ec354748

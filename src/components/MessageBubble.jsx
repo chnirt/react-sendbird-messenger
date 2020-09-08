@@ -14,7 +14,7 @@ export function MessageBubble({
         <div
             style={{
                 backgroundColor,
-                borderRadius: 15,
+                borderRadius: 12,
                 padding: '6px 12px 6px',
                 width: w,
                 height: h,

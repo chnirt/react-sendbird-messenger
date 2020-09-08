@@ -14,4 +14,7 @@ export const PRIMARY_COLOR = '#762FDD'
 export const SECONDARY_COLOR = '#efdbff'
 export const THIRD_COLOR = '#d9d9d9'
 export const FOURTH_COLOR = '#f0f0f0'
+export const ONLINE = '#73d13d'
+export const OFFLINE = '#ff4d4f'
+
 export const BASENAME = 'chnirt'
