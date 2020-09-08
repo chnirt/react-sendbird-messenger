@@ -1,17 +1,11 @@
 import React from 'react'
-import {
-    cleanup,
-    render,
-    wait,
-    screen,
-    waitForElement,
-} from '@testing-library/react'
+import { cleanup, render, waitForElement } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { BrowserRouter as Router } from 'react-router-dom'
 import TopBarProgress from 'react-topbar-progress-indicator'
 
 import App from './App'
-import { FirebaseProvider, AuthProvider } from './context'
+import { FirebaseProvider, AuthProvider, SendBirdProvider } from './context'
 import { PRIMARY_COLOR } from './constants'
 
 afterEach(cleanup)
@@ -29,9 +23,11 @@ test('renders learn react link', async () => {
     const { getByText } = render(
         <FirebaseProvider>
             <AuthProvider>
-                <Router history={history}>
-                    <App />
-                </Router>
+                <SendBirdProvider>
+                    <Router history={history}>
+                        <App />
+                    </Router>
+                </SendBirdProvider>
             </AuthProvider>
         </FirebaseProvider>
     )

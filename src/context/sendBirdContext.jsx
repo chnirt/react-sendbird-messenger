@@ -5,10 +5,9 @@ import React, {
     useLayoutEffect,
 } from 'react'
 import SendBird from 'sendbird'
-import { nanoid } from 'nanoid'
+import { uuidv4 } from '../utils'
 
 const REACT_APP_SB_APP_ID = '7AE1264D-2D61-4D37-A25C-AEDF55FD631D'
-const UNIQUE_HANDLER_ID = nanoid()
 
 // ChannelHandler.onMessageReceived = function(channel, message) {};
 // ChannelHandler.onMessageUpdated = function(channel, message) {};
@@ -57,6 +56,7 @@ function SendBirdValue() {
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
     const userId = localStorage.getItem('userId')
+    const UNIQUE_HANDLER_ID = uuidv4()
 
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
@@ -89,7 +89,7 @@ function SendBirdValue() {
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
         }
-    }, [userId])
+    }, [UNIQUE_HANDLER_ID, userId])
 
     function connect(USER_ID = null) {
         return new Promise((resolve, reject) => {

@@ -3654,9 +3654,9 @@ acorn-globals@^4.1.0, acorn-globals@^4.3.0:
     acorn-walk "^6.0.1"
 
 acorn-jsx@^5.1.0, acorn-jsx@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.2.0.tgz#4c66069173d6fdd68ed85239fc256226182b2ebe"
-  integrity sha512-HiUX/+K2YpkpJ+SzBffkM/AQ2YE03S0U1kjTLVpoJdhZMOWy8qvXVN9JdLqv2QsaQ6MPYQIuNmwD8zOiYUofLQ==
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.1.tgz#fc8661e11b7ac1539c47dbfea2e72b3af34d267b"
+  integrity sha512-K0Ptm/47OKfQRpNQ2J/oIN/3QYiK6FwW+eJbILhsdxh2WTLdl+30o8aGdTbm5JbffpFFAg/g+zi1E+jvJha5ng==
 
 acorn-walk@^6.0.1:
   version "6.2.0"
@@ -5736,7 +5736,7 @@ copy-to-clipboard@^3.0.8, copy-to-clipboard@^3.2.0:
   dependencies:
     toggle-selection "^1.0.6"
 
-copy-webpack-plugin@^6.0.3:
+copy-webpack-plugin@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-6.1.0.tgz#5bde7f826d87e716d8d5e761ddd34bb675448458"
   integrity sha512-aWjIuLt1OVQxaDVffnt3bnGmLA8zGgAJaFwPA+a+QYVPh1vhIKjVfh3SbOFLV0kRPvGBITbw17n5CsmiBS4LQQ==
@@ -6641,9 +6641,9 @@ ejs@^3.1.2, ejs@^3.1.5:
     jake "^10.6.1"
 
 electron-to-chromium@^1.3.247, electron-to-chromium@^1.3.378, electron-to-chromium@^1.3.562:
-  version "1.3.562"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.562.tgz#79c20277ee1c8d0173a22af00e38433b752bc70f"
-  integrity sha512-WhRe6liQ2q/w1MZc8mD8INkenHivuHdrr4r5EQHNomy3NJux+incP6M6lDMd0paShP3MD0WGe5R1TWmEClf+Bg==
+  version "1.3.563"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.563.tgz#9da4e4f0d76c4b221784cc9ca81a8464e8180408"
+  integrity sha512-JkEjRFmuSegdTBCPG+RS1zw9csObHoN4el+X9EfEALO0UT7us8swxspJx7cRsrMkjd8bmmRTAd0xuUhvvb5DLg==
 
 element-resize-detector@^1.2.1:
   version "1.2.1"
@@ -13072,16 +13072,7 @@ rc-collapse@~2.0.0:
     react-is "^16.7.0"
     shallowequal "^1.1.0"
 
-rc-dialog@^8.3.2:
-  version "8.3.4"
-  resolved "https://registry.yarnpkg.com/rc-dialog/-/rc-dialog-8.3.4.tgz#6aea8e7f7019ac8bed9ae45216cb874905923bff"
-  integrity sha512-ddlME7M7/3XPNWnD6n0rIdhDOe07iUE+uPok3q/VeZpninjtTH+yN52+kvZ9Hrd3VaHKisSNdMq6r14U2NdCnQ==
-  dependencies:
-    "@babel/runtime" "^7.10.1"
-    rc-animate "3.x"
-    rc-util "^5.0.1"
-
-rc-dialog@~8.2.1:
+rc-dialog@~8.2.1, rc-dialog@~8.2.2:
   version "8.2.2"
   resolved "https://registry.yarnpkg.com/rc-dialog/-/rc-dialog-8.2.2.tgz#fe97479575ec30bb9f75241a9f29bf39d71636c6"
   integrity sha512-U4jR5bE7XpIbMC20JAIv91254b+vQ8LODd8Kxco0XvkL+eJ1aCYkOfRqevJ1ipOIzF3s6F08jSH8YvJqxvpAvA==
@@ -13118,14 +13109,14 @@ rc-field-form@~1.10.0:
     rc-util "^5.0.0"
 
 rc-image@~3.0.2:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/rc-image/-/rc-image-3.0.5.tgz#43eee9868382976c542a322b070e8dbb0a254f21"
-  integrity sha512-XQnw4Xv9qcfSQhJwqQEWoUTSvHGkmXzGQG/0yIADJ2EHk5A0ckCzA/ywHG31ILt1cwoDsIbaOUzAaZ9RhO/UXA==
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/rc-image/-/rc-image-3.0.6.tgz#b1ad31463d0cc21b8ee6a0bcdc391b35a384b9d5"
+  integrity sha512-Dn8mTSlcgKJko417OX8+6yyNIL9+DEa81aexBfT78qWlEpcxtR4GgdsU0+zJLNqa2rnGZyjaBLFtaPw9tUuxYA==
   dependencies:
     "@ant-design/icons" "^4.2.2"
     "@babel/runtime" "^7.11.2"
     classnames "^2.2.6"
-    rc-dialog "^8.3.2"
+    rc-dialog "~8.2.2"
     rc-util "^5.0.6"
 
 rc-input-number@~6.0.0:
@@ -13193,9 +13184,9 @@ rc-pagination@~3.0.3:
     classnames "^2.2.1"
 
 rc-picker@~2.0.6:
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/rc-picker/-/rc-picker-2.0.10.tgz#89b585cd94d5aa19ee7f3222b8d1e5a92405a1dd"
-  integrity sha512-Vvd4Akb0d2IriAjEG94yB1O7XIWgObQU5mbTdyNUX+U2CvHWVFayMvm+sKDmkbf831n+q3WgVfrgfGujcf72ZQ==
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/rc-picker/-/rc-picker-2.0.11.tgz#68524babfd3470f9cce2f2e9f35038ec99784dc0"
+  integrity sha512-pUEne2fikHvzqmOjWNLa1P/ss4/1J9lpHrtSU1IrueRiEbUPLIgXmnzoUeVt3syOZGBnWok6nNDu1FvIQfVMCw==
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
@@ -13714,9 +13705,9 @@ react-sizeme@^2.6.7:
     throttle-debounce "^2.1.0"
 
 react-styleguidist@^11.0.10:
-  version "11.0.10"
-  resolved "https://registry.yarnpkg.com/react-styleguidist/-/react-styleguidist-11.0.10.tgz#e58261beeccd17ef1383f6715d891214a8637696"
-  integrity sha512-5xQojrv3NEddIwerFhB19J74AAD/CFkYxxMYq2jO31+xWMYmPKgonJyYI5Rd/VbVF+El/3nbp+NzHrttxHqWZg==
+  version "11.0.11"
+  resolved "https://registry.yarnpkg.com/react-styleguidist/-/react-styleguidist-11.0.11.tgz#0c297a3ef3892c29a6b213ee3d2f37327a5c8056"
+  integrity sha512-2hk/UcjMqnmiU2iwYW1YAD6Gf72X24hy3NawqP8ZVIOaFGXpHh61CC11k5jB0gEna91zntuftmxFVndDvU9khg==
   dependencies:
     "@tippyjs/react" "4.1.0"
     "@vxna/mini-html-webpack-template" "^1.0.0"
@@ -13728,7 +13719,7 @@ react-styleguidist@^11.0.10:
     clipboard-copy "^3.1.0"
     clsx "^1.0.4"
     common-dir "^3.0.0"
-    copy-webpack-plugin "^6.0.3"
+    copy-webpack-plugin "^6.1.0"
     core-js "^3.6.4"
     doctrine "^3.0.0"
     es6-object-assign "~1.1.0"

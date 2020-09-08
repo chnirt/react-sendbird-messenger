@@ -443,10 +443,10 @@ export default function Dashboard() {
                         type="secondary"
                         ellipsis={true}
                     >
-                        {`Last seen: ${
+                        {`Last active: ${
                             isOnline
-                                ? 'live now'
-                                : moment(member.lastSeenAt).format('HH:mm a')
+                                ? 'just now'
+                                : moment(member.lastSeenAt).format('HH:mm AA')
                         }`}
                     </Text>
                 </div>
