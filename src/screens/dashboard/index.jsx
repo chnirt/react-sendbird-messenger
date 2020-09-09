@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, Fragment } from 'react'
+import React, { useLayoutEffect, useState, Fragment, useRef } from 'react'
 import {
     Row,
     Col,
@@ -21,6 +21,7 @@ import {
     PictureOutlined,
     SmileOutlined,
     LikeOutlined,
+    LoadingOutlined,
 } from '@ant-design/icons'
 import moment from 'moment'
 import { Picker } from 'emoji-mart'
@@ -34,6 +35,9 @@ import {
     MessageSkeleton,
     MemoizedScrollToBottom,
 } from '../../components'
+import { ReactComponent as Sent } from '../../assets/chat/check.svg'
+import { ReactComponent as Delivered } from '../../assets/chat/tick.svg'
+import { ReactComponent as Seen } from '../../assets/chat/color-tick.svg'
 import {
     PRIMARY_COLOR,
     SECONDARY_COLOR,
@@ -49,7 +53,6 @@ import {
     capitalizeFirstLetter,
     formatTypingUsers,
 } from '../../utils'
-import { useRef } from 'react'
 
 const { Title, Text } = Typography
 
@@ -57,14 +60,21 @@ const customHeight = 120
 
 export default function Dashboard() {
     const { logout } = useAuth()
-    const { logoutFB, authRef, getUsers } = useFirebase()
+    const { logoutFB, authRef } = useFirebase()
     const {
         disconnect,
+        userListQuery,
         channelListQuery,
         getChannel,
         createPreviousMessageListQuery,
         sendUserMessage,
         onTypingStatusUpdated,
+        onMessageReceived,
+        markAsDelivered,
+        onDeliveryReceiptUpdated,
+        onReadReceiptUpdated,
+
+        onChannelChanged,
     } = useSendBird()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
@@ -73,7 +83,7 @@ export default function Dashboard() {
     const [channels, setChannels] = useState([])
     const [loadingChannels, setLoadingChannels] = useState(false)
 
-    const [channel, setChannel] = useState({})
+    const [channel, setChannel] = useState(null)
 
     const [message, setMessage] = useState('')
     const [typingMembers, setTypingMembers] = useState('')
@@ -129,14 +139,10 @@ export default function Dashboard() {
             setLoadingChannels(true)
             const channels = await channelListQuery()
             // console.log(channels)
-            // channels.map((channel) => {
-            //   // console.log(channel.url);
-            //   return markAsDelivered(channel.url);
-            // });
             setChannels(channels)
             setLoadingChannels(false)
         }
-    }, [channelListQuery])
+    }, [channelListQuery, markAsDelivered])
 
     /**
      * SendBird - fetchChannel - Effect
@@ -163,6 +169,12 @@ export default function Dashboard() {
                         return console.log(error)
                     }
 
+                    // console.log(channel)
+
+                    if (channel.channelType === 'group') {
+                        channel.markAsRead()
+                    }
+
                     setMessages(messages)
                     setLoadingListMessages(false)
                 })
@@ -171,18 +183,15 @@ export default function Dashboard() {
 
         if (channelUrl) {
             fetchChannel(channelUrl)
-
-            // if (channel.channelType === 'group') {
-            //     channel.markAsRead()
-            // }
         }
-    }, [getChannel, channelUrl, createPreviousMessageListQuery])
+    }, [getChannel, channel, createPreviousMessageListQuery, channelUrl])
 
     useLayoutEffect(() => {
-        // listenOnMessageReceived()
+        listenOnMessageReceived()
         listenOnTypingStatusUpdated()
-        // listenOnDeliveryReceiptUpdated()
-        // listenOnReadReceiptUpdated()
+        listenOnDeliveryReceiptUpdated()
+        listenOnReadReceiptUpdated()
+        listenOnChannelChanged()
     })
 
     async function listenOnTypingStatusUpdated() {
@@ -201,21 +210,61 @@ export default function Dashboard() {
         }
     }
 
+    async function listenOnMessageReceived() {
+        const { message } = await onMessageReceived()
+        if (channel && channelUrl === message.channelUrl) {
+            setMessages((prevState) => [...prevState, message])
+            if (channel.channelType === 'group') {
+                channel.markAsRead()
+            }
+        }
+    }
+
+    async function listenOnDeliveryReceiptUpdated() {
+        const { groupChannel } = await onDeliveryReceiptUpdated()
+        console.log('delivered', groupChannel)
+    }
+
+    async function listenOnReadReceiptUpdated() {
+        const { groupChannel } = await onReadReceiptUpdated()
+
+        console.log('read', groupChannel)
+
+        if (channel.url === groupChannel.url) {
+            const cloneMessages = messages.map((message) => ({
+                ...message,
+                unreadCount: groupChannel.getReadReceipt(message),
+            }))
+            setMessages(cloneMessages)
+        }
+    }
+
+    async function listenOnChannelChanged() {
+        const { channel } = await onChannelChanged()
+        console.log(channel)
+        const cloneChannels = [...channels]
+        cloneChannels.map((element) => {
+            if (element.url === channel.url) {
+                return channel
+            }
+            return element
+        })
+        setChannels(cloneChannels)
+    }
+
     /**
      * NOTE: MyAutoComplete - Function
      */
     const onSearchMyAutoComplete = async (searchText) => {
         if (!!searchText) {
-            const snapshot = await getUsers({ email: searchText })
-            if (snapshot.empty) {
-                console.log('No matching documents.')
-                return
-            }
+            let users = await userListQuery()
+            console.log(users)
 
-            snapshot.forEach((doc) => {
-                console.log(doc.id, '=>', doc.data())
-            })
-            setOptions(snapshot.docs.map((doc) => ({ ...doc, value: doc.id })))
+            users = users
+                .filter((user) => user.userId.includes(searchText))
+                .map((user) => ({ ...user, value: user.userId }))
+            // console.log(users)
+            setOptions(users)
         } else {
             setOptions([])
         }
@@ -261,7 +310,6 @@ export default function Dashboard() {
     }
 
     const renderChannel = (channel) => {
-        // console.log(channel)
         const isUnread = channel.unreadMessageCount > 0
 
         return (
@@ -321,7 +369,9 @@ export default function Dashboard() {
                         lg={20}
                         xl={20}
                     >
-                        {moment(channel.createdAt).format('HH:mm a')}
+                        {moment(channel.lastMessage?.createdAt).format(
+                            'HH:mm a'
+                        )}
                     </Col>
                     <Col
                         style={{ display: 'flex', justifyContent: 'flex-end' }}
@@ -343,8 +393,22 @@ export default function Dashboard() {
     }
 
     const renderMessage = (message) => {
+        // console.log(channel.joinedMemberCount)
         message.isAuthor =
             message._sender.userId === localStorage.getItem('userId')
+        message.status = message.isAuthor && checkStatus()
+
+        function checkStatus() {
+            var unreadCount = channel.getReadReceipt(message)
+            // console.log(unreadCount)
+            if (unreadCount <= 0) {
+                // All members have read the message.
+                return 'seen'
+            } else {
+                // Some of members haven't read the message yet.
+                return 'delivered'
+            }
+        }
 
         return (
             <Row
@@ -385,9 +449,26 @@ export default function Dashboard() {
     }
 
     const renderMessageBubble = (message) => {
+        const renderLastMessageStatus = (status) => {
+            if (status === 'sending') {
+                return <LoadingOutlined />
+            }
+
+            if (status === 'sent') {
+                return <Sent style={{ height: 14, width: 14 }} />
+            }
+
+            if (status === 'delivered') {
+                return <Delivered style={{ height: 14, width: 14 }} />
+            }
+
+            if (status === 'seen') {
+                return <Seen style={{ height: 14, width: 14 }} />
+            }
+        }
         return (
             <Tooltip
-                placement="topLeft"
+                placement={message.isAuthor ? 'topLeft' : 'topRight'}
                 title={
                     <Emoticons
                         handleEmoji={(value) => handleEmoji(message.id, value)}
@@ -405,6 +486,17 @@ export default function Dashboard() {
                         content={message.message}
                     />
                 </div>
+                {message.status && (
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            marginTop: 6,
+                        }}
+                    >
+                        {renderLastMessageStatus(message.status)}
+                    </div>
+                )}
             </Tooltip>
         )
     }
@@ -422,13 +514,15 @@ export default function Dashboard() {
     }
 
     async function handleLoadMore() {
-        prevMessageListQuery.load(function (messages, error) {
-            if (error) {
-                return console.log(error)
-            }
+        if (prevMessageListQuery) {
+            prevMessageListQuery.load(function (messages, error) {
+                if (error) {
+                    return console.log(error)
+                }
 
-            setMessages((prevState) => [...messages, ...prevState])
-        })
+                // setMessages((prevState) => [...messages, ...prevState])
+            })
+        }
     }
 
     const renderMembers = (members = []) => {
@@ -483,6 +577,14 @@ export default function Dashboard() {
                 </div>
             </div>
         )
+    }
+
+    async function handleSendMessage(e) {
+        if (e.keyCode === 13) {
+            const newMessage = await sendUserMessage(channel, message)
+            setMessages((prevState) => [...prevState, newMessage])
+            setMessage('')
+        }
     }
 
     return (
@@ -605,12 +707,12 @@ export default function Dashboard() {
                                         backgroundColor: SECONDARY_COLOR,
                                         marginRight: 12,
                                     }}
-                                    src={channel.coverUrl}
+                                    src={channel?.coverUrl}
                                 >
-                                    {channel.name}
+                                    {channel?.name}
                                 </Avatar>
                                 <Title style={{ margin: 0 }} level={4}>
-                                    {channel.name}
+                                    {channel?.name}
                                 </Title>
                             </Col>
                             <Col>
@@ -725,23 +827,11 @@ export default function Dashboard() {
                                             onChange={(e) =>
                                                 setMessage(e.target.value)
                                             }
-                                            onKeyDown={async (e) => {
-                                                if (e.keyCode === 13) {
-                                                    const newMessage = await sendUserMessage(
-                                                        channel,
-                                                        message
-                                                    )
-                                                    setMessages((prevState) => [
-                                                        ...prevState,
-                                                        newMessage,
-                                                    ])
-                                                    setMessage('')
-                                                }
-                                            }}
+                                            onKeyDown={handleSendMessage}
                                             onFocus={() =>
-                                                channel.startTyping()
+                                                channel?.startTyping()
                                             }
-                                            onBlur={() => channel.endTyping()}
+                                            onBlur={() => channel?.endTyping()}
                                         />
                                     </Col>
                                     <Col
@@ -839,9 +929,9 @@ export default function Dashboard() {
                                                 marginRight: 12,
                                             }}
                                             size={64}
-                                            src={channel.coverUrl}
+                                            src={channel?.coverUrl}
                                         >
-                                            {channel.name}
+                                            {channel?.name}
                                         </Avatar>
                                     </Row>
                                     <Row
@@ -854,7 +944,7 @@ export default function Dashboard() {
                                         }}
                                     >
                                         <Title style={{ margin: 0 }} level={3}>
-                                            {channel.name}
+                                            {channel?.name}
                                         </Title>
                                     </Row>
                                     <Divider />
@@ -871,6 +961,8 @@ export default function Dashboard() {
                                     <Row
                                         style={{
                                             padding: 12,
+                                            display: 'flex',
+                                            flexDirection: 'column',
                                         }}
                                     >
                                         {renderMembers(channel?.members)}

@@ -10,35 +10,6 @@ import { uuidv4 } from '../utils'
 const UNIQUE_HANDLER_ID = uuidv4()
 const REACT_APP_SB_APP_ID = '7AE1264D-2D61-4D37-A25C-AEDF55FD631D'
 
-// ChannelHandler.onMessageReceived = function(channel, message) {};
-// ChannelHandler.onMessageUpdated = function(channel, message) {};
-// ChannelHandler.onMessageDeleted = function(channel, messageId) {};
-// ChannelHandler.onMentionReceived = function(channel, message) {};
-// ChannelHandler.onChannelChanged = function(channel) {};
-// ChannelHandler.onChannelDeleted = function(channelUrl, channelType) {};
-// ChannelHandler.onChannelFrozen = function(channel) {};
-// ChannelHandler.onChannelUnfrozen = function(channel) {};
-// ChannelHandler.onMetaDataCreated = function(channel, metaData) {};
-// ChannelHandler.onMetaDataUpdated = function(channel, metaData) {};
-// ChannelHandler.onMetaDataDeleted = function(channel, metaDataKeys) {};
-// ChannelHandler.onMetaCountersCreated = function(channel, metaCounter) {};
-// ChannelHandler.onMetaCountersUpdated = function(channel, metaCounter) {};
-// ChannelHandler.onMetaCountersDeleted = function(channel, metaCounterKeys) {};
-// ChannelHandler.onChannelHidden = function(groupChannel) {};
-// ChannelHandler.onUserReceivedInvitation = function(groupChannel, inviter, invitees) {};
-// ChannelHandler.onUserDeclinedInvitation = function(groupChannel, inviter, invitee) {};
-// ChannelHandler.onUserJoined = function(groupChannel, user) {};
-// ChannelHandler.onUserLeft = function(groupChannel, user) {};
-// ChannelHandler.onDeliveryReceiptUpdated = function(groupChannel) {};
-// ChannelHandler.onReadReceiptUpdated = function(groupChannel) {};
-// ChannelHandler.onTypingStatusUpdated = function(groupChannel) {};
-// ChannelHandler.onUserEntered = function(openChannel, user) {};
-// ChannelHandler.onUserExited = function(openChannel, user) {};
-// ChannelHandler.onUserMuted = function(channel, user) {};
-// ChannelHandler.onUserUnmuted = function(channel, user) {};
-// ChannelHandler.onUserBanned = function(channel, user) {};
-// ChannelHandler.onUserUnbanned = function(channel, user) {};
-
 const SendBirdContext = createContext()
 
 export function SendBirdProvider({ children }) {
@@ -112,10 +83,196 @@ function SendBirdValue() {
         })
     }
 
-    function onTypingStatusUpdated() {
+    function onMessageReceived() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onTypingStatusUpdated = (groupChannel) => {
+            channelHandler.current.onMessageReceived = (channel, message) => {
+                console.log('onMessageReceived')
+                resolve({ channel, message })
+            }
+        })
+    }
+
+    function onMessageUpdated() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMessageUpdated = (channel, message) => {
+                console.log('onMessageUpdated')
+                resolve({ channel, message })
+            }
+        })
+    }
+
+    function onMessageDeleted() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMessageDeleted = (channel, message) => {
+                console.log('onMessageDeleted')
+                resolve({ channel, message })
+            }
+        })
+    }
+
+    function onMentionReceived() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMentionReceived = (channel, message) => {
+                console.log('onMentionReceived')
+                resolve({ channel, message })
+            }
+        })
+    }
+
+    function onChannelChanged() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onChannelChanged = (channel) => {
+                console.log('onChannelChanged')
+                resolve({ channel })
+            }
+        })
+    }
+
+    function onChannelDeleted() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onChannelDeleted = (
+                channelUrl,
+                channelType
+            ) => {
+                console.log('onChannelDeleted')
+                resolve({ channelUrl, channelType })
+            }
+        })
+    }
+
+    function onChannelFrozen() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onChannelFrozen = (channel) => {
+                console.log('onChannelFrozen')
+                resolve({ channel })
+            }
+        })
+    }
+
+    function onChannelUnfrozen() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onChannelUnfrozen = (channel) => {
+                console.log('onChannelUnfrozen')
+                resolve({ channel })
+            }
+        })
+    }
+
+    function onMetaDataCreated() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMetaDataCreated = (channel, metaData) => {
+                console.log('onMetaDataCreated')
+                resolve({ channel, metaData })
+            }
+        })
+    }
+
+    function onMetaDataUpdated() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMetaDataUpdated = (channel, metaData) => {
+                console.log('onMetaDataUpdated')
+                resolve({ channel, metaData })
+            }
+        })
+    }
+
+    function onMetaDataDeleted() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMetaDataDeleted = (
+                channel,
+                metaDataKeys
+            ) => {
+                console.log('onMetaDataDeleted')
+                resolve({ channel, metaDataKeys })
+            }
+        })
+    }
+
+    function onMetaCountersCreated() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMetaCountersCreated = (
+                channel,
+                metaCounter
+            ) => {
+                console.log('onMetaCountersCreated')
+                resolve({ channel, metaCounter })
+            }
+        })
+    }
+
+    function onMetaCountersUpdated() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMetaCountersUpdated = (
+                channel,
+                metaCounter
+            ) => {
+                console.log('onMetaCountersUpdated')
+                resolve({ channel, metaCounter })
+            }
+        })
+    }
+
+    function onMetaCountersDeleted() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onMetaCountersDeleted = (
+                channel,
+                metaCounterKeys
+            ) => {
+                console.log('onMetaCountersDeleted')
+                resolve({ channel, metaCounterKeys })
+            }
+        })
+    }
+
+    function onChannelHidden() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onChannelHidden = (groupChannel) => {
+                console.log('onChannelHidden')
                 resolve({ groupChannel })
+            }
+        })
+    }
+
+    function onUserReceivedInvitation() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserReceivedInvitation = (
+                groupChannel,
+                inviter,
+                invitees
+            ) => {
+                console.log('onUserReceivedInvitation')
+                resolve({ groupChannel, inviter, invitees })
+            }
+        })
+    }
+
+    function onUserDeclinedInvitation() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserDeclinedInvitation = (
+                groupChannel,
+                inviter,
+                invitee
+            ) => {
+                console.log('onUserDeclinedInvitation')
+                resolve({ groupChannel, inviter, invitee })
+            }
+        })
+    }
+
+    function onUserJoined() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserJoined = (groupChannel, user) => {
+                console.log('onUserJoined')
+                resolve({ groupChannel, user })
+            }
+        })
+    }
+
+    function onUserLeft() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserLeft = (groupChannel, user) => {
+                console.log('onUserLeft')
+                resolve({ groupChannel, user })
             }
         })
     }
@@ -125,6 +282,7 @@ function SendBirdValue() {
             channelHandler.current.onDeliveryReceiptUpdated = (
                 groupChannel
             ) => {
+                console.log('onDeliveryReceiptUpdated')
                 resolve({ groupChannel })
             }
         })
@@ -133,34 +291,76 @@ function SendBirdValue() {
     function onReadReceiptUpdated() {
         return new Promise((resolve, reject) => {
             channelHandler.current.onReadReceiptUpdated = (groupChannel) => {
+                console.log('onReadReceiptUpdated')
                 resolve({ groupChannel })
             }
         })
     }
 
-    function onMessageReceived() {
+    function onTypingStatusUpdated() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onMessageReceived = (channel, message) => {
-                resolve({ channel, message })
+            channelHandler.current.onTypingStatusUpdated = (groupChannel) => {
+                console.log('onTypingStatusUpdated')
+                resolve({ groupChannel })
             }
         })
     }
 
-    function onMessageUpdated() {
+    function onUserEntered() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onMessageUpdated = (channel, message) => {
-                resolve({ channel, message })
+            channelHandler.current.onUserEntered = (openChannel, user) => {
+                console.log('onUserEntered')
+                resolve({ openChannel, user })
             }
         })
     }
 
-    function onMessageDeleted() {
+    function onUserExited() {
         return new Promise((resolve, reject) => {
-            channelHandler.current.onMessageDeleted = (channel, message) => {
-                resolve({ channel, message })
+            channelHandler.current.onUserExited = (openChannel, user) => {
+                console.log('onUserExited')
+                resolve({ openChannel, user })
             }
         })
     }
+
+    function onUserMuted() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserMuted = (channel, user) => {
+                console.log('onUserMuted')
+                resolve({ channel, user })
+            }
+        })
+    }
+
+    function onUserUnmuted() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserUnmuted = (channel, user) => {
+                console.log('onUserUnmuted')
+                resolve({ channel, user })
+            }
+        })
+    }
+
+    function onUserBanned() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserBanned = (channel, user) => {
+                console.log('onUserBanned')
+                resolve({ channel, user })
+            }
+        })
+    }
+
+    function onUserUnbanned() {
+        return new Promise((resolve, reject) => {
+            channelHandler.current.onUserUnbanned = (channel, user) => {
+                console.log('onUserUnbanned')
+                resolve({ channel, user })
+            }
+        })
+    }
+
+    //TODO:
 
     function onFriendsDiscovered() {
         return new Promise((resolve, reject) => {
@@ -387,6 +587,11 @@ function SendBirdValue() {
         REVERSE = false
     ) {
         return new Promise((resolve, reject) => {
+            if (!groupChannel) {
+                console.log('Channel not init!!!')
+                return
+            }
+
             var prevMessageListQuery = groupChannel.createPreviousMessageListQuery()
             prevMessageListQuery.limit = LIMIT
             prevMessageListQuery.reverse = REVERSE
@@ -453,25 +658,57 @@ function SendBirdValue() {
 
     function markAsDelivered(CHANNEL_URL = null) {
         sbRef.current.markAsDelivered(CHANNEL_URL)
-        sbRef.current.GroupChannel.getChannel(CHANNEL_URL, (channel, err) => {
-            channel.markAsDelivered()
-        })
+        // sbRef.current.GroupChannel.getChannel(CHANNEL_URL, (channel, err) => {
+        //     channel.markAsDelivered()
+        // })
     }
 
     return {
+        sbRef,
         connect,
         disconnect,
-        onTypingStatusUpdated,
-        onReadReceiptUpdated,
+
         onMessageReceived,
         onMessageUpdated,
         onMessageDeleted,
+
+        onMentionReceived,
+        onChannelChanged,
+        onChannelDeleted,
+        onChannelFrozen,
+        onChannelUnfrozen,
+
+        onMetaDataCreated,
+        onMetaDataUpdated,
+        onMetaDataDeleted,
+        onMetaCountersCreated,
+        onMetaCountersUpdated,
+        onMetaCountersDeleted,
+
+        onChannelHidden,
+        onUserReceivedInvitation,
+        onUserDeclinedInvitation,
+
+        onUserJoined,
+        onUserLeft,
         onDeliveryReceiptUpdated,
+        onReadReceiptUpdated,
+        onTypingStatusUpdated,
+
+        onUserEntered,
+        onUserExited,
+        onUserMuted,
+        onUserUnmuted,
+        onUserBanned,
+        onUserUnbanned,
+
         onFriendsDiscovered,
         onTotalUnreadMessageCountUpdated,
+
         onReconnectStarted,
         onReconnectSucceeded,
         onReconnectFailed,
+
         updateCurrentUserInfo,
         updateCurrentUserInfoWithProfileImage,
         userListQuery,
