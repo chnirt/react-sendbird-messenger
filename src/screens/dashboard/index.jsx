@@ -317,21 +317,21 @@ export default function Dashboard() {
         const isGroupChat = channel.joinedMemberCount <= 2
 
         const renderLastMessage = (lastMessage) => {
-            let text = lastMessage.message
-            const isFile = lastMessage.messageType === 'file'
+            let text = lastMessage?.message || ''
+            const isFile = lastMessage?.messageType === 'file'
             const isAuthor =
-                lastMessage._sender.userId === localStorage.getItem('userId')
+                lastMessage?._sender.userId === localStorage.getItem('userId')
 
             if (isFile) {
                 text = 'sent an attachment'
             }
 
             if (isAuthor) {
-                text = 'You: ' + lastMessage.message
+                text = 'You: ' + lastMessage?.message
             }
 
             if (!isAuthor && isGroupChat) {
-                text = `${lastMessage._sender.userId}: ${lastMessage.message}`
+                text = `${lastMessage?._sender.userId}: ${lastMessage?.message}`
             }
 
             return text
