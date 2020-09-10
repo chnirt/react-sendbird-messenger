@@ -82,6 +82,7 @@ export default function Dashboard() {
         onChannelChanged,
         onUserReceivedInvitation,
         onUserLeft,
+        joinChannel,
         leave,
         createChannelWithUserIds,
         // inviteWithUserIds,
@@ -161,6 +162,7 @@ export default function Dashboard() {
         async function fetchChannel(url) {
             const channel = await getChannel(url)
             setChannel(channel)
+            joinChannel(channel)
 
             /**
              * SendBird - fetchMessages
@@ -194,7 +196,13 @@ export default function Dashboard() {
         if (channelUrl) {
             fetchChannel(channelUrl)
         }
-    }, [getChannel, channel, createPreviousMessageListQuery, channelUrl])
+    }, [
+        getChannel,
+        channel,
+        joinChannel,
+        createPreviousMessageListQuery,
+        channelUrl,
+    ])
 
     useLayoutEffect(() => {
         listenOnMessageReceived()
@@ -368,11 +376,13 @@ export default function Dashboard() {
     }
 
     const renderChannel = (channel) => {
-        console.log(channel)
+        // console.log(channel)
+
         const isUnread = channel.unreadMessageCount > 0
         const isGroupChat = channel.joinedMemberCount <= 2
 
         const renderLastMessage = (lastMessage) => {
+            console.log(lastMessage?._sender)
             if (!lastMessage) {
                 return ''
             }
@@ -392,17 +402,13 @@ export default function Dashboard() {
             }
 
             if (!isAuthor && isGroupChat) {
-                text = `${lastMessage?._sender.userId}: ${lastMessage?.message}`
+                text = `${lastMessage?._sender.nickname}${
+                    isFile ? '' : ':'
+                } ${text}`
             }
 
             return text
         }
-
-        console.log(
-            channel.members.find(
-                (member) => member.userId !== localStorage.getItem('userId')
-            )
-        )
 
         return (
             <Row
@@ -694,7 +700,7 @@ export default function Dashboard() {
 
     async function handleSendMessage(e) {
         if (e.keyCode === 13) {
-            const newMessage = await sendUserMessage(channel, message)
+            const newMessage = await sendUserMessage(channel, typingText)
             setMessages((prevState) => [...prevState, newMessage])
             setTypingText('')
         }

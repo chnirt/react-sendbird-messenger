@@ -510,6 +510,20 @@ function SendBirdValue() {
         })
     }
 
+    function joinChannel(groupChannel = null) {
+        return new Promise((resolve, reject) => {
+            if (groupChannel.isPublic) {
+                groupChannel.join(function (response, error) {
+                    if (error) {
+                        reject(error)
+                    }
+
+                    resolve(response)
+                })
+            }
+        })
+    }
+
     function leave(groupChannel = null) {
         return new Promise((resolve, reject) => {
             groupChannel.leave(function (response, error) {
@@ -597,6 +611,7 @@ function SendBirdValue() {
         CUSTOM_TYPE = null,
         DATA = null
     ) {
+        console.log(groupChannel, TEXT_MESSAGE)
         return new Promise((resolve, reject) => {
             const params = new sbRef.current.UserMessageParams()
 
@@ -797,6 +812,7 @@ function SendBirdValue() {
         blockedUserListQuery,
         connectionStatus,
         inviteWithUserIds,
+        joinChannel,
         leave,
         deleteChannel,
 
