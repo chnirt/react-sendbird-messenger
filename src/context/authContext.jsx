@@ -23,9 +23,10 @@ function AuthValue() {
         localStorage.getItem('access-token') || null
     )
 
-    const login = async (email, token) => {
-        localStorage.setItem('email', email)
-        localStorage.setItem('userId', email)
+    const login = async (user, token) => {
+        localStorage.setItem('email', user?.email)
+        localStorage.setItem('userId', user?.email)
+        localStorage.setItem('displayName', user?.displayName)
         localStorage.setItem('access-token', token)
         setIsAuth(true)
         setToken(token)

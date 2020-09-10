@@ -38,8 +38,8 @@ export default function Login() {
 
             user.getIdToken().then((idToken) => {
                 // console.log(idToken)
-                login(user.email, idToken)
-                connect(user.email)
+                login(user, idToken)
+                connect(user.email, user.displayName)
             })
         } catch (error) {
             // console.log(error.message)

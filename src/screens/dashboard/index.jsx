@@ -11,9 +11,9 @@ import {
     Tooltip,
     Badge,
     Input,
-    Tag,
     message,
     Collapse,
+    Result,
 } from 'antd'
 import {
     SettingOutlined,
@@ -41,6 +41,7 @@ import {
 import { ReactComponent as Sent } from '../../assets/chat/check.svg'
 import { ReactComponent as Delivered } from '../../assets/chat/tick.svg'
 import { ReactComponent as Seen } from '../../assets/chat/color-tick.svg'
+import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
 import {
     PRIMARY_COLOR,
     SECONDARY_COLOR,
@@ -79,8 +80,11 @@ export default function Dashboard() {
         onDeliveryReceiptUpdated,
         onReadReceiptUpdated,
         onChannelChanged,
+        onUserReceivedInvitation,
         onUserLeft,
         leave,
+        createChannelWithUserIds,
+        // inviteWithUserIds,
     } = useSendBird()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
@@ -198,6 +202,7 @@ export default function Dashboard() {
         listenOnDeliveryReceiptUpdated()
         listenOnReadReceiptUpdated()
         listenOnChannelChanged()
+        listenOnUserReceivedInvitation()
         listenOnUserLeft()
     })
 
@@ -259,6 +264,16 @@ export default function Dashboard() {
         setChannels(cloneChannels)
     }
 
+    async function listenOnUserReceivedInvitation() {
+        const {
+            groupChannel,
+            inviter,
+            invitees,
+        } = await onUserReceivedInvitation()
+        console.log(groupChannel, inviter, invitees)
+        setChannels((prevState) => [...prevState, groupChannel])
+    }
+
     async function listenOnUserLeft() {
         const { groupChannel } = await onUserLeft()
         // console.log(groupChannel)
@@ -276,7 +291,6 @@ export default function Dashboard() {
                 prevState.filter((element) => element.url !== groupChannel.url)
             )
         } else {
-            console.log('zxc')
             cloneChannels.map((element) => {
                 if (element.url === groupChannel.url) {
                     return groupChannel
@@ -293,9 +307,12 @@ export default function Dashboard() {
     const onSearchMyAutoComplete = async (searchText) => {
         if (!!searchText) {
             let users = await userListQuery()
-            console.log(users)
+            // console.log(users)
 
             users = users
+                .filter(
+                    (user) => user.userId !== localStorage.getItem('userId')
+                )
                 .filter((user) => user.userId.includes(searchText))
                 .map((user) => ({ ...user, value: user.userId }))
             // console.log(users)
@@ -305,8 +322,14 @@ export default function Dashboard() {
         }
     }
 
-    const onSelectMyAutoComplete = (data) => {
-        console.log('onSelect', data)
+    const onSelectMyAutoComplete = async (data) => {
+        // console.log('onSelect', data)
+        const response = await createChannelWithUserIds(
+            [data],
+            true,
+            'personalChat'
+        )
+        console.log(response)
     }
 
     const props = {
@@ -345,12 +368,17 @@ export default function Dashboard() {
     }
 
     const renderChannel = (channel) => {
-        // console.log(channel)
+        console.log(channel)
         const isUnread = channel.unreadMessageCount > 0
         const isGroupChat = channel.joinedMemberCount <= 2
 
         const renderLastMessage = (lastMessage) => {
-            let text = lastMessage?.message || ''
+            if (!lastMessage) {
+                return ''
+            }
+
+            let text = lastMessage?.message
+
             const isFile = lastMessage?.messageType === 'file'
             const isAuthor =
                 lastMessage?._sender.userId === localStorage.getItem('userId')
@@ -369,6 +397,12 @@ export default function Dashboard() {
 
             return text
         }
+
+        console.log(
+            channel.members.find(
+                (member) => member.userId !== localStorage.getItem('userId')
+            )
+        )
 
         return (
             <Row
@@ -391,7 +425,12 @@ export default function Dashboard() {
                     <Row>
                         <Col span={4}>
                             <Avatar src={channel.coverUrl} size="large">
-                                {channel.name}
+                                {/* {channel.name} */}
+                                {channel.members.find(
+                                    (member) =>
+                                        member.userId !==
+                                        localStorage.getItem('userId')
+                                ).nickname || ''}
                             </Avatar>
                         </Col>
                         <Col span={18}>
@@ -401,7 +440,11 @@ export default function Dashboard() {
                                     strong={isUnread}
                                     // level={5}
                                 >
-                                    {channel.name}
+                                    {channel.members.find(
+                                        (member) =>
+                                            member.userId !==
+                                            localStorage.getItem('userId')
+                                    ).nickname || ''}
                                 </Text>
                             </Row>
                             <Row>
@@ -657,11 +700,20 @@ export default function Dashboard() {
         }
     }
 
-    function handleLeaveChannel() {
-        leave(channel)
+    async function handleLeaveChannel() {
+        await leave(channel)
+        handleRefresh()
     }
 
-    function handleRefresh() {}
+    function handleRefresh() {
+        setChannelUrl(null)
+        setChannel(null)
+    }
+
+    // async function handleInvite(userId) {
+    //     const response = await inviteWithUserIds(channel, [userId])
+    //     console.log(response)
+    // }
 
     return (
         <Fragment>
@@ -778,7 +830,17 @@ export default function Dashboard() {
                             lg={18}
                             xl={18}
                         >
-                            <Tag color={PRIMARY_COLOR}>Send Message</Tag>
+                            <Result
+                                icon={<Logo />}
+                                title="Your Messages"
+                                subTitle="Send private photos and messages to a friend or group.
+"
+                                extra={[
+                                    <Button type="primary" key="console">
+                                        Send Message
+                                    </Button>,
+                                ]}
+                            />
                         </Col>
                     ) : (
                         <Col xs={0} sm={18} md={18} lg={18} xl={18}>

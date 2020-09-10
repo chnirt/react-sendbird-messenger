@@ -3,6 +3,7 @@ import React, {
     createContext,
     useRef,
     useLayoutEffect,
+    useCallback,
 } from 'react'
 import SendBird from 'sendbird'
 import { uuidv4 } from '../utils'
@@ -28,6 +29,19 @@ function SendBirdValue() {
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
     const userId = localStorage.getItem('userId')
+    const nickName = localStorage.getItem('displayName')
+
+    const connectWrapper = useCallback((USER_ID = null, NICK_NAME = null) => {
+        return new Promise((resolve, reject) => {
+            sbRef.current.connect(USER_ID, async (user, error) => {
+                if (error) reject(error)
+
+                // console.log('connect', user)
+                await updateCurrentUserInfo(NICK_NAME)
+                resolve(user)
+            })
+        })
+    }, [])
 
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
@@ -35,7 +49,7 @@ function SendBirdValue() {
         })
 
         if (userId) {
-            connect(userId)
+            connectWrapper(userId, nickName)
         }
 
         channelHandler.current = new sbRef.current.ChannelHandler()
@@ -60,14 +74,15 @@ function SendBirdValue() {
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
         }
-    }, [userId])
+    }, [connectWrapper, nickName, userId])
 
-    function connect(USER_ID = null) {
+    function connect(USER_ID = null, NICK_NAME = null) {
         return new Promise((resolve, reject) => {
-            sbRef.current.connect(USER_ID, (user, error) => {
+            sbRef.current.connect(USER_ID, async (user, error) => {
                 if (error) reject(error)
 
                 // console.log('connect', user)
+                await updateCurrentUserInfo(NICK_NAME)
                 resolve(user)
             })
         })
@@ -360,8 +375,6 @@ function SendBirdValue() {
         })
     }
 
-    //TODO:
-
     function onFriendsDiscovered() {
         return new Promise((resolve, reject) => {
             userEventHandler.current.onFriendsDiscovered = (users) => {
@@ -509,8 +522,21 @@ function SendBirdValue() {
         })
     }
 
+    function deleteChannel(groupChannel = null) {
+        return new Promise((resolve, reject) => {
+            groupChannel.delete(function (response, error) {
+                if (error) {
+                    reject(error)
+                }
+
+                resolve(response)
+            })
+        })
+    }
+
     function createChannelWithUserIds(
-        userIds = [userId],
+        userIds = [],
+        distinct = false,
         NAME = null,
         COVER_IMAGE_OR_URL = null,
         DATA = null
@@ -518,7 +544,7 @@ function SendBirdValue() {
         // When 'distinct' is false
         sbRef.current.GroupChannel.createChannelWithUserIds(
             userIds.concat(userId),
-            false,
+            distinct,
             NAME,
             COVER_IMAGE_OR_URL,
             DATA,
@@ -717,9 +743,6 @@ function SendBirdValue() {
 
     function markAsDelivered(CHANNEL_URL = null) {
         sbRef.current.markAsDelivered(CHANNEL_URL)
-        // sbRef.current.GroupChannel.getChannel(CHANNEL_URL, (channel, err) => {
-        //     channel.markAsDelivered()
-        // })
     }
 
     return {
@@ -775,6 +798,7 @@ function SendBirdValue() {
         connectionStatus,
         inviteWithUserIds,
         leave,
+        deleteChannel,
 
         createChannelWithUserIds,
         channelListQuery,
