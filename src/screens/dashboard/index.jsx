@@ -13,6 +13,7 @@ import {
     Input,
     Tag,
     message,
+    Collapse,
 } from 'antd'
 import {
     SettingOutlined,
@@ -57,6 +58,7 @@ import {
 } from '../../utils'
 
 const { Title, Text } = Typography
+const { Panel } = Collapse
 
 const customHeight = 120
 
@@ -77,6 +79,8 @@ export default function Dashboard() {
         onDeliveryReceiptUpdated,
         onReadReceiptUpdated,
         onChannelChanged,
+        onUserLeft,
+        leave,
     } = useSendBird()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
@@ -194,6 +198,7 @@ export default function Dashboard() {
         listenOnDeliveryReceiptUpdated()
         listenOnReadReceiptUpdated()
         listenOnChannelChanged()
+        listenOnUserLeft()
     })
 
     async function listenOnTypingStatusUpdated() {
@@ -232,7 +237,7 @@ export default function Dashboard() {
 
         console.log('read', groupChannel)
 
-        if (channel.url === groupChannel.url) {
+        if (groupChannel.url === channel?.url) {
             const cloneMessages = messages.map((message) => ({
                 ...message,
                 unreadCount: groupChannel.getReadReceipt(message),
@@ -252,6 +257,34 @@ export default function Dashboard() {
             return element
         })
         setChannels(cloneChannels)
+    }
+
+    async function listenOnUserLeft() {
+        const { groupChannel } = await onUserLeft()
+        // console.log(groupChannel)
+
+        let cloneChannels = [...channels]
+
+        if (
+            !groupChannel.members.some(
+                (member) => member.userId === localStorage.getItem('userId')
+            )
+        ) {
+            cloneChannels.filter((element) => element.url !== groupChannel.url)
+            setChannel(null)
+            setChannels((prevState) =>
+                prevState.filter((element) => element.url !== groupChannel.url)
+            )
+        } else {
+            console.log('zxc')
+            cloneChannels.map((element) => {
+                if (element.url === groupChannel.url) {
+                    return groupChannel
+                }
+                return element
+            })
+            setChannels(cloneChannels)
+        }
     }
 
     /**
@@ -566,7 +599,7 @@ export default function Dashboard() {
         return members.map((member) => renderMember(member))
     }
 
-    const renderMember = (member) => {
+    const renderMember = (member, i) => {
         const isOnline = member.connectionStatus === 'online'
         return (
             <div style={{ display: 'flex', paddingBottom: 12 }}>
@@ -624,6 +657,12 @@ export default function Dashboard() {
         }
     }
 
+    function handleLeaveChannel() {
+        leave(channel)
+    }
+
+    function handleRefresh() {}
+
     return (
         <Fragment>
             <Loading spinning={loadingLogout}>
@@ -674,7 +713,11 @@ export default function Dashboard() {
                                     />
                                 </Dropdown>
                             </Col>
-                            <Col>SendBird Messenger</Col>
+                            <Col>
+                                <Button onClick={handleRefresh} type="text">
+                                    SendBird Messenger
+                                </Button>
+                            </Col>
                             <Col>
                                 <Button
                                     style={{ border: 0 }}
@@ -1016,24 +1059,32 @@ export default function Dashboard() {
                                             </Title>
                                         </Row>
                                         <Divider />
-                                        <Row
-                                            style={{
-                                                height: 20,
-                                                padding: '0 12px',
-                                            }}
+                                        <Collapse
+                                            defaultActiveKey={['0']}
+                                            //   onChange={callback}
+                                            //   expandIconPosition={expandIconPosition}
+                                            ghost
+                                            expandIconPosition="right"
                                         >
-                                            <Col>
-                                                <Title level={5}>Members</Title>
-                                            </Col>
-                                        </Row>
-                                        <Row
-                                            style={{
-                                                padding: 12,
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                            }}
-                                        >
-                                            {renderMembers(channel?.members)}
+                                            <Panel
+                                                header="Members"
+                                                key={0}
+                                                // showArrow={false}
+                                            >
+                                                {renderMembers(
+                                                    channel?.members
+                                                )}
+                                            </Panel>
+                                        </Collapse>
+                                        <Divider />
+                                        <Row>
+                                            <Button
+                                                onClick={handleLeaveChannel}
+                                                danger
+                                                type="link"
+                                            >
+                                                Leave Room
+                                            </Button>
                                         </Row>
                                     </Col>
                                 )}

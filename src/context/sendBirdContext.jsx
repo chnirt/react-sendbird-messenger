@@ -497,6 +497,18 @@ function SendBirdValue() {
         })
     }
 
+    function leave(groupChannel = null) {
+        return new Promise((resolve, reject) => {
+            groupChannel.leave(function (response, error) {
+                if (error) {
+                    reject(error)
+                }
+
+                resolve(response)
+            })
+        })
+    }
+
     function createChannelWithUserIds(
         userIds = [userId],
         NAME = null,
@@ -762,6 +774,8 @@ function SendBirdValue() {
         blockedUserListQuery,
         connectionStatus,
         inviteWithUserIds,
+        leave,
+
         createChannelWithUserIds,
         channelListQuery,
         getChannel,
