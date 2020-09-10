@@ -141,3 +141,5 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 -   How to add canvas support to my tests in Jest? : https://stackoverflow.com/questions/33269093/how-to-add-canvas-support-to-my-tests-in-jest
 
 -   WhatsApp-Engineering Inside-2 : https://medium.com/codingurukul/whatsapp-engineering-inside-2-bdd1ec354748
+
+-   How do you disable viewport zooming on Mobile Safari?:https://stackoverflow.com/questions/4389932/how-do-you-disable-viewport-zooming-on-mobile-safari

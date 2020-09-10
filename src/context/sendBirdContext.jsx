@@ -581,6 +581,53 @@ function SendBirdValue() {
         })
     }
 
+    function sendFileMessage(
+        groupChannel = null,
+        FILE = null,
+        FILE_NAME = null,
+        FILE_SIZE = null,
+        MIME_TYPE = null,
+        CUSTOM_TYPE = null,
+        DATA = null
+    ) {
+        return new Promise((resolve, reject) => {
+            const params = new sbRef.current.FileMessageParams()
+
+            params.file = FILE // Or .fileUrl = FILE_URL (You can also send a file message with a file URL.)
+            params.fileName = FILE_NAME
+            params.fileSize = FILE_SIZE
+            params.thumbnailSizes = [
+                { maxWidth: 100, maxHeight: 100 },
+                { maxWidth: 200, maxHeight: 200 },
+            ] // Add the maximum sizes of thumbnail images (allowed number of thumbnail images: 3).
+            params.mimeType = MIME_TYPE
+            // params.customType = CUSTOM_TYPE
+            // params.data = DATA
+            // params.mentionType = 'users' // Either 'users' or 'channel'
+            // params.mentionedUserIds = ['Jeff', 'Julia'] // Or mentionedUsers = Array<User>;
+            // params.metaArrayKeys = ['linkTo', 'itemType']
+            // params.translationTargetLanguages = ['fe', 'de'] // French and German
+            // params.pushNotificationDeliveryOption = 'default' // Either 'default' or 'suppress'
+
+            groupChannel.sendFileMessage(params, function (fileMessage, error) {
+                if (error) {
+                    reject(error)
+                }
+
+                // var thumbnailFirst = fileMessage.thumbnails[0]
+                // var thumbnailSecond = fileMessage.thumbnails[1]
+
+                // var maxHeightFirst = thumbnailFirst.maxHeight // 100
+                // var maxHeightSecond = thumbnailSecond.maxHeight // 200
+
+                // var urlFirst = thumbnailFirst.url // The URL of first thumbnail file.
+                // var urlSecond = thumbnailSecond.url // The URL of second thumbnail file
+
+                resolve(fileMessage)
+            })
+        })
+    }
+
     function createPreviousMessageListQuery(
         groupChannel = null,
         LIMIT = 10,
@@ -719,6 +766,7 @@ function SendBirdValue() {
         channelListQuery,
         getChannel,
         sendUserMessage,
+        sendFileMessage,
         createPreviousMessageListQuery,
         refresh,
         getPreviousMessagesByTimestamp,

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState, Fragment, useRef } from 'react'
+import React, { Fragment, useRef, useLayoutEffect, useState } from 'react'
 import {
     Row,
     Col,
@@ -11,6 +11,8 @@ import {
     Tooltip,
     Badge,
     Input,
+    Tag,
+    message,
 } from 'antd'
 import {
     SettingOutlined,
@@ -68,12 +70,12 @@ export default function Dashboard() {
         getChannel,
         createPreviousMessageListQuery,
         sendUserMessage,
+        sendFileMessage,
         onTypingStatusUpdated,
         onMessageReceived,
         markAsDelivered,
         onDeliveryReceiptUpdated,
         onReadReceiptUpdated,
-
         onChannelChanged,
     } = useSendBird()
 
@@ -85,7 +87,7 @@ export default function Dashboard() {
 
     const [channel, setChannel] = useState(null)
 
-    const [message, setMessage] = useState('')
+    const [typingText, setTypingText] = useState('')
     const [typingMembers, setTypingMembers] = useState('')
 
     const [messages, setMessages] = useState([])
@@ -95,9 +97,9 @@ export default function Dashboard() {
 
     const [prevMessageListQuery, setPrevMessageListQuery] = useState(null)
 
-    const [fileList] = useState([])
-
     const scrollRef = useRef()
+
+    const searchRef = useRef()
 
     /**
      * MyAutoComplete - State
@@ -241,7 +243,7 @@ export default function Dashboard() {
 
     async function listenOnChannelChanged() {
         const { channel } = await onChannelChanged()
-        console.log(channel)
+        // console.log(channel)
         const cloneChannels = [...channels]
         cloneChannels.map((element) => {
             if (element.url === channel.url) {
@@ -275,23 +277,23 @@ export default function Dashboard() {
     }
 
     const props = {
-        onRemove: (file) => {
-            // this.setState((state) => {
-            // 	const index = state.fileList.indexOf(file)
-            // 	const newFileList = state.fileList.slice()
-            // 	newFileList.splice(index, 1)
-            // 	return {
-            // 		fileList: newFileList,
-            // 	}
-            // })
-        },
-        beforeUpload: (file) => {
-            // this.setState((state) => ({
-            // 	fileList: [...state.fileList, file],
-            // }))
+        beforeUpload: async (file) => {
+            // console.log(file)
+            try {
+                const fileMessage = await sendFileMessage(
+                    channel,
+                    file,
+                    file.name,
+                    file.size,
+                    file.type
+                )
+                message.success(fileMessage)
+            } catch (error) {
+                message.error(error)
+            }
+
             return false
         },
-        fileList,
     }
 
     function handleLogout() {
@@ -310,7 +312,30 @@ export default function Dashboard() {
     }
 
     const renderChannel = (channel) => {
+        // console.log(channel)
         const isUnread = channel.unreadMessageCount > 0
+        const isGroupChat = channel.joinedMemberCount <= 2
+
+        const renderLastMessage = (lastMessage) => {
+            let text = lastMessage.message
+            const isFile = lastMessage.messageType === 'file'
+            const isAuthor =
+                lastMessage._sender.userId === localStorage.getItem('userId')
+
+            if (isFile) {
+                text = 'sent an attachment'
+            }
+
+            if (isAuthor) {
+                text = 'You: ' + lastMessage.message
+            }
+
+            if (!isAuthor && isGroupChat) {
+                text = `${lastMessage._sender.userId}: ${lastMessage.message}`
+            }
+
+            return text
+        }
 
         return (
             <Row
@@ -338,20 +363,22 @@ export default function Dashboard() {
                         </Col>
                         <Col span={18}>
                             <Row>
-                                <Title
+                                <Text
                                     style={{ margin: 0, padding: '0 10px' }}
-                                    level={5}
+                                    strong={isUnread}
+                                    // level={5}
                                 >
                                     {channel.name}
-                                </Title>
+                                </Text>
                             </Row>
                             <Row>
                                 <Text
-                                    style={{ padding: '0 10px' }}
-                                    type="secondary"
+                                    style={{ padding: '0 10px', fontSize: 12 }}
+                                    type={!isUnread && 'secondary'}
                                     ellipsis={true}
+                                    strong={isUnread}
                                 >
-                                    {channel.lastMessage?.message}
+                                    {renderLastMessage(channel.lastMessage)}
                                 </Text>
                             </Row>
                         </Col>
@@ -369,9 +396,11 @@ export default function Dashboard() {
                         lg={20}
                         xl={20}
                     >
-                        {moment(channel.lastMessage?.createdAt).format(
-                            'HH:mm a'
-                        )}
+                        <Text strong={isUnread}>
+                            {moment(channel.lastMessage?.createdAt).format(
+                                'HH:mm a'
+                            )}
+                        </Text>
                     </Col>
                     <Col
                         style={{ display: 'flex', justifyContent: 'flex-end' }}
@@ -449,6 +478,7 @@ export default function Dashboard() {
     }
 
     const renderMessageBubble = (message) => {
+        // console.log(message)
         const renderLastMessageStatus = (status) => {
             if (status === 'sending') {
                 return <LoadingOutlined />
@@ -466,6 +496,7 @@ export default function Dashboard() {
                 return <Seen style={{ height: 14, width: 14 }} />
             }
         }
+
         return (
             <Tooltip
                 placement={message.isAuthor ? 'topLeft' : 'topRight'}
@@ -475,6 +506,10 @@ export default function Dashboard() {
                     />
                 }
                 color="#fff"
+                trigger="focus"
+                // onMouseEnter={() => console.log('onMouseEnter')}
+                // onMouseLeave={() => console.log('onMouseLeave')}
+                // onFocus={() => console.log('onFocus')}
             >
                 <div>
                     <MessageBubble
@@ -483,6 +518,8 @@ export default function Dashboard() {
                             message.isAuthor ? PRIMARY_COLOR : THIRD_COLOR
                         }
                         color={message.isAuthor ? '#fff' : '#000'}
+                        type={message.messageType}
+                        url={message.url}
                         content={message.message}
                     />
                 </div>
@@ -510,7 +547,7 @@ export default function Dashboard() {
     }
 
     function handleEmojiMart(emoji) {
-        setMessage((prevState) => prevState + emoji.native)
+        setTypingText((prevState) => prevState + emoji.native)
     }
 
     async function handleLoadMore() {
@@ -583,7 +620,7 @@ export default function Dashboard() {
         if (e.keyCode === 13) {
             const newMessage = await sendUserMessage(channel, message)
             setMessages((prevState) => [...prevState, newMessage])
-            setMessage('')
+            setTypingText('')
         }
     }
 
@@ -659,6 +696,7 @@ export default function Dashboard() {
                             }}
                         >
                             <MyAutoComplete
+                                ref={searchRef}
                                 style={{ width: '100%' }}
                                 options={options}
                                 onSelect={onSelectMyAutoComplete}
@@ -684,293 +722,324 @@ export default function Dashboard() {
                             </MySkeleton>
                         </div>
                     </Col>
-                    <Col xs={0} sm={18} md={18} lg={18} xl={18}>
-                        <Row
+                    {!channel ? (
+                        <Col
                             style={{
-                                height: 60,
                                 display: 'flex',
-                                justifyContent: 'space-between',
+                                justifyContent: 'center',
                                 alignItems: 'center',
-                                padding: '0 12px',
-                                borderBottom: `1px solid ${THIRD_COLOR}`,
                             }}
+                            xs={0}
+                            sm={18}
+                            md={18}
+                            lg={18}
+                            xl={18}
                         >
-                            <Col
+                            <Tag color={PRIMARY_COLOR}>Send Message</Tag>
+                        </Col>
+                    ) : (
+                        <Col xs={0} sm={18} md={18} lg={18} xl={18}>
+                            <Row
                                 style={{
+                                    height: 60,
                                     display: 'flex',
+                                    justifyContent: 'space-between',
                                     alignItems: 'center',
+                                    padding: '0 12px',
+                                    borderBottom: `1px solid ${THIRD_COLOR}`,
                                 }}
                             >
-                                <Avatar
+                                <Col
                                     style={{
-                                        color: PRIMARY_COLOR,
-                                        backgroundColor: SECONDARY_COLOR,
-                                        marginRight: 12,
-                                    }}
-                                    src={channel?.coverUrl}
-                                >
-                                    {channel?.name}
-                                </Avatar>
-                                <Title style={{ margin: 0 }} level={4}>
-                                    {channel?.name}
-                                </Title>
-                            </Col>
-                            <Col>
-                                <Button
-                                    style={{ border: 0 }}
-                                    type="ghost"
-                                    icon={
-                                        <PhoneOutlined
-                                            style={{ color: PRIMARY_COLOR }}
-                                        />
-                                    }
-                                    size="large"
-                                />
-                                <Button
-                                    style={{ border: 0 }}
-                                    type="ghost"
-                                    icon={
-                                        <VideoCameraOutlined
-                                            style={{ color: PRIMARY_COLOR }}
-                                        />
-                                    }
-                                    size="large"
-                                />
-                                <Button
-                                    style={{ border: 0 }}
-                                    type="ghost"
-                                    icon={
-                                        <InfoCircleOutlined
-                                            style={{
-                                                color:
-                                                    showDetail && PRIMARY_COLOR,
-                                            }}
-                                        />
-                                    }
-                                    size="large"
-                                    onClick={handleShowDetail}
-                                />
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col
-                                xs={0}
-                                sm={showDetail ? 16 : 24}
-                                md={showDetail ? 16 : 24}
-                                lg={showDetail ? 16 : 24}
-                                xl={showDetail ? 16 : 24}
-                            >
-                                <div
-                                    style={{
-                                        height: `calc(100vh - ${customHeight}px)`,
-                                        borderBottom: `1px solid ${THIRD_COLOR}`,
-                                        overflowY: 'auto',
-                                        paddingBottom: 30,
-                                    }}
-                                    ref={scrollRef}
-                                    onScroll={() => {
-                                        if (scrollRef.current.scrollTop === 0) {
-                                            // console.log(
-                                            //     scrollRef.current.scrollTop
-                                            // )
-                                            handleLoadMore()
-                                        }
+                                        display: 'flex',
+                                        alignItems: 'center',
                                     }}
                                 >
-                                    <MessageSkeleton
-                                        loading={loadingListMessages}
-                                        rows={13}
-                                        size="default"
-                                        avatar
+                                    <Avatar
+                                        style={{
+                                            color: PRIMARY_COLOR,
+                                            backgroundColor: SECONDARY_COLOR,
+                                            marginRight: 12,
+                                        }}
+                                        src={channel?.coverUrl}
                                     >
-                                        <MemoizedScrollToBottom>
-                                            {renderListMessages(messages)}
-                                        </MemoizedScrollToBottom>
-                                    </MessageSkeleton>
+                                        {channel?.name}
+                                    </Avatar>
+                                    <Title style={{ margin: 0 }} level={4}>
+                                        {channel?.name}
+                                    </Title>
+                                </Col>
+                                <Col>
+                                    <Button
+                                        style={{ border: 0 }}
+                                        type="ghost"
+                                        icon={
+                                            <PhoneOutlined
+                                                style={{ color: PRIMARY_COLOR }}
+                                            />
+                                        }
+                                        size="large"
+                                    />
+                                    <Button
+                                        style={{ border: 0 }}
+                                        type="ghost"
+                                        icon={
+                                            <VideoCameraOutlined
+                                                style={{ color: PRIMARY_COLOR }}
+                                            />
+                                        }
+                                        size="large"
+                                    />
+                                    <Button
+                                        style={{ border: 0 }}
+                                        type="ghost"
+                                        icon={
+                                            <InfoCircleOutlined
+                                                style={{
+                                                    color:
+                                                        showDetail &&
+                                                        PRIMARY_COLOR,
+                                                }}
+                                            />
+                                        }
+                                        size="large"
+                                        onClick={handleShowDetail}
+                                    />
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col
+                                    xs={0}
+                                    sm={showDetail ? 16 : 24}
+                                    md={showDetail ? 16 : 24}
+                                    lg={showDetail ? 16 : 24}
+                                    xl={showDetail ? 16 : 24}
+                                >
                                     <div
                                         style={{
-                                            position: 'absolute',
-                                            bottom: 66,
-                                            left: 12,
+                                            height: `calc(100vh - ${customHeight}px)`,
+                                            borderBottom: `1px solid ${THIRD_COLOR}`,
+                                            overflowY: 'auto',
+                                            paddingBottom: 30,
+                                        }}
+                                        ref={scrollRef}
+                                        onScroll={() => {
+                                            if (
+                                                scrollRef.current.scrollTop ===
+                                                0
+                                            ) {
+                                                // console.log(
+                                                //     scrollRef.current.scrollTop
+                                                // )
+                                                handleLoadMore()
+                                            }
                                         }}
                                     >
-                                        <Text
+                                        <MessageSkeleton
+                                            loading={loadingListMessages}
+                                            rows={13}
+                                            size="default"
+                                            avatar
+                                        >
+                                            <MemoizedScrollToBottom>
+                                                {renderListMessages(messages)}
+                                            </MemoizedScrollToBottom>
+                                        </MessageSkeleton>
+                                        <div
                                             style={{
-                                                fontSize: 12,
+                                                position: 'absolute',
+                                                bottom: 66,
+                                                left: 12,
                                             }}
-                                            type="secondary"
-                                            ellipsis={true}
                                         >
-                                            {typingMembers}
-                                        </Text>
-                                    </div>
-                                </div>
-                                <Row
-                                    style={{
-                                        height: 60,
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        borderBottom: `1px solid ${THIRD_COLOR}`,
-                                    }}
-                                >
-                                    <Col
-                                        style={{
-                                            padding: 12,
-                                            width: 'calc(100% - 120px)',
-                                        }}
-                                    >
-                                        <Input
-                                            placeholder="Type a message..."
-                                            value={message}
-                                            onChange={(e) =>
-                                                setMessage(e.target.value)
-                                            }
-                                            onKeyDown={handleSendMessage}
-                                            onFocus={() =>
-                                                channel?.startTyping()
-                                            }
-                                            onBlur={() => channel?.endTyping()}
-                                        />
-                                    </Col>
-                                    <Col
-                                        style={{
-                                            float: 'right',
-                                            display: 'flex',
-                                        }}
-                                    >
-                                        <Upload {...props}>
-                                            <Button
+                                            <Text
                                                 style={{
-                                                    border: 0,
-                                                    display: 'inline-block',
-                                                    cursor: 'pointer',
+                                                    fontSize: 12,
                                                 }}
-                                                type="ghost"
-                                                icon={<PictureOutlined />}
-                                                size="large"
-                                            />
-                                        </Upload>
-
-                                        <Tooltip
-                                            id="emoji-mart"
-                                            placement="topRight"
-                                            title={
-                                                <Picker
-                                                    style={{
-                                                        position: 'absolute',
-                                                        bottom: 0,
-                                                        right: 0,
-                                                    }}
-                                                    title="Pick your emoji…"
-                                                    emoji="point_up"
-                                                    size={20}
-                                                    emojiSize={20}
-                                                    color={PRIMARY_COLOR}
-                                                    showPreview={false}
-                                                    showSkinTones={false}
-                                                    set="apple"
-                                                    onSelect={handleEmojiMart}
-                                                />
-                                            }
-                                            color="transparent"
-                                            style={{ color: 'blue' }}
-                                            trigger="click"
+                                                type="secondary"
+                                                ellipsis={true}
+                                            >
+                                                {typingMembers}
+                                            </Text>
+                                        </div>
+                                    </div>
+                                    <Row
+                                        style={{
+                                            height: 60,
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            borderBottom: `1px solid ${THIRD_COLOR}`,
+                                        }}
+                                    >
+                                        <Col
+                                            style={{
+                                                padding: 12,
+                                                width: 'calc(100% - 120px)',
+                                            }}
                                         >
+                                            <Input
+                                                placeholder="Type a message..."
+                                                value={typingText}
+                                                onChange={(e) =>
+                                                    setTypingText(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                onKeyDown={handleSendMessage}
+                                                onFocus={() =>
+                                                    channel?.startTyping()
+                                                }
+                                                onBlur={() =>
+                                                    channel?.endTyping()
+                                                }
+                                            />
+                                        </Col>
+                                        <Col
+                                            style={{
+                                                float: 'right',
+                                                display: 'flex',
+                                            }}
+                                        >
+                                            <Upload {...props}>
+                                                <Button
+                                                    style={{
+                                                        border: 0,
+                                                        display: 'inline-block',
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    type="ghost"
+                                                    icon={<PictureOutlined />}
+                                                    size="large"
+                                                />
+                                            </Upload>
+
+                                            <Tooltip
+                                                id="emoji-mart"
+                                                placement="topRight"
+                                                title={
+                                                    <Picker
+                                                        style={{
+                                                            position:
+                                                                'absolute',
+                                                            bottom: 0,
+                                                            right: 0,
+                                                        }}
+                                                        title="Pick your emoji…"
+                                                        emoji="point_up"
+                                                        size={20}
+                                                        emojiSize={20}
+                                                        color={PRIMARY_COLOR}
+                                                        showPreview={false}
+                                                        showSkinTones={false}
+                                                        set="apple"
+                                                        onSelect={
+                                                            handleEmojiMart
+                                                        }
+                                                    />
+                                                }
+                                                color="transparent"
+                                                style={{ color: 'blue' }}
+                                                // trigger="click"
+                                            >
+                                                <Button
+                                                    style={{ border: 0 }}
+                                                    type="ghost"
+                                                    icon={<SmileOutlined />}
+                                                    size="large"
+                                                />
+                                            </Tooltip>
                                             <Button
                                                 style={{ border: 0 }}
                                                 type="ghost"
-                                                icon={<SmileOutlined />}
+                                                icon={
+                                                    <LikeOutlined
+                                                        style={{
+                                                            color: PRIMARY_COLOR,
+                                                        }}
+                                                    />
+                                                }
                                                 size="large"
                                             />
-                                        </Tooltip>
-                                        <Button
-                                            style={{ border: 0 }}
-                                            type="ghost"
-                                            icon={
-                                                <LikeOutlined
-                                                    style={{
-                                                        color: PRIMARY_COLOR,
-                                                    }}
-                                                />
-                                            }
-                                            size="large"
-                                        />
-                                    </Col>
-                                </Row>
-                            </Col>
-                            {showDetail && (
-                                <Col
-                                    style={{
-                                        height: 'calc(100vh - 60px)',
-                                        borderLeft: `1px solid ${THIRD_COLOR}`,
-                                        borderBottom: `1px solid ${THIRD_COLOR}`,
-                                    }}
-                                    xs={0}
-                                    sm={8}
-                                    md={8}
-                                    lg={8}
-                                    xl={8}
-                                >
-                                    <Row
-                                        style={{
-                                            height: 100,
-                                            padding: '0 12px',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <Avatar
-                                            style={{
-                                                color: PRIMARY_COLOR,
-                                                backgroundColor: SECONDARY_COLOR,
-                                                marginRight: 12,
-                                            }}
-                                            size={64}
-                                            src={channel?.coverUrl}
-                                        >
-                                            {channel?.name}
-                                        </Avatar>
-                                    </Row>
-                                    <Row
-                                        style={{
-                                            height: 20,
-                                            padding: '0 12px',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <Title style={{ margin: 0 }} level={3}>
-                                            {channel?.name}
-                                        </Title>
-                                    </Row>
-                                    <Divider />
-                                    <Row
-                                        style={{
-                                            height: 20,
-                                            padding: '0 12px',
-                                        }}
-                                    >
-                                        <Col>
-                                            <Title level={5}>Members</Title>
                                         </Col>
                                     </Row>
-                                    <Row
-                                        style={{
-                                            padding: 12,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                        }}
-                                    >
-                                        {renderMembers(channel?.members)}
-                                    </Row>
                                 </Col>
-                            )}
-                        </Row>
-                    </Col>
+                                {showDetail && (
+                                    <Col
+                                        style={{
+                                            height: 'calc(100vh - 60px)',
+                                            borderLeft: `1px solid ${THIRD_COLOR}`,
+                                            borderBottom: `1px solid ${THIRD_COLOR}`,
+                                        }}
+                                        xs={0}
+                                        sm={8}
+                                        md={8}
+                                        lg={8}
+                                        xl={8}
+                                    >
+                                        <Row
+                                            style={{
+                                                height: 100,
+                                                padding: '0 12px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <Avatar
+                                                style={{
+                                                    color: PRIMARY_COLOR,
+                                                    backgroundColor: SECONDARY_COLOR,
+                                                    marginRight: 12,
+                                                }}
+                                                size={64}
+                                                src={channel?.coverUrl}
+                                            >
+                                                {channel?.name}
+                                            </Avatar>
+                                        </Row>
+                                        <Row
+                                            style={{
+                                                height: 20,
+                                                padding: '0 12px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <Title
+                                                style={{ margin: 0 }}
+                                                level={3}
+                                            >
+                                                {channel?.name}
+                                            </Title>
+                                        </Row>
+                                        <Divider />
+                                        <Row
+                                            style={{
+                                                height: 20,
+                                                padding: '0 12px',
+                                            }}
+                                        >
+                                            <Col>
+                                                <Title level={5}>Members</Title>
+                                            </Col>
+                                        </Row>
+                                        <Row
+                                            style={{
+                                                padding: 12,
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                            }}
+                                        >
+                                            {renderMembers(channel?.members)}
+                                        </Row>
+                                    </Col>
+                                )}
+                            </Row>
+                        </Col>
+                    )}
                 </Row>
             </Loading>
         </Fragment>
