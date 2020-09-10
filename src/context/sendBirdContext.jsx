@@ -572,19 +572,21 @@ function SendBirdValue() {
 
     function channelListQuery() {
         return new Promise((resolve, reject) => {
-            var channelListQuery = sbRef.current.GroupChannel.createMyGroupChannelListQuery()
-            channelListQuery.includeEmpty = true
-            channelListQuery.order = 'latest_last_message' // 'chronological', 'latest_last_message', 'channel_name_alphabetical', and 'metadata_value_alphabetical'
-            channelListQuery.limit = 15 // The value of pagination limit could be set up to 100.
+            if (sbRef.current) {
+                var channelListQuery = sbRef.current.GroupChannel.createMyGroupChannelListQuery()
+                channelListQuery.includeEmpty = true
+                channelListQuery.order = 'latest_last_message' // 'chronological', 'latest_last_message', 'channel_name_alphabetical', and 'metadata_value_alphabetical'
+                channelListQuery.limit = 15 // The value of pagination limit could be set up to 100.
 
-            if (channelListQuery.hasNext) {
-                channelListQuery.next((channelList, error) => {
-                    if (error) {
-                        reject(error)
-                    }
+                if (channelListQuery.hasNext) {
+                    channelListQuery.next((channelList, error) => {
+                        if (error) {
+                            reject(error)
+                        }
 
-                    resolve(channelList)
-                })
+                        resolve(channelList)
+                    })
+                }
             }
         })
     }

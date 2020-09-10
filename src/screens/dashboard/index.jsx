@@ -5,7 +5,6 @@ import {
     Button,
     Avatar,
     Typography,
-    Dropdown,
     Upload,
     Divider,
     Tooltip,
@@ -13,11 +12,8 @@ import {
     Input,
     message,
     Collapse,
-    Result,
 } from 'antd'
 import {
-    SettingOutlined,
-    FormOutlined,
     PhoneOutlined,
     VideoCameraOutlined,
     InfoCircleOutlined,
@@ -31,17 +27,14 @@ import { Picker } from 'emoji-mart'
 
 import {
     Loading,
-    MyAutoComplete,
     Emoticons,
     MessageBubble,
-    MySkeleton,
     MessageSkeleton,
     MemoizedScrollToBottom,
 } from '../../components'
 import { ReactComponent as Sent } from '../../assets/chat/check.svg'
 import { ReactComponent as Delivered } from '../../assets/chat/tick.svg'
 import { ReactComponent as Seen } from '../../assets/chat/color-tick.svg'
-import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
 import {
     PRIMARY_COLOR,
     SECONDARY_COLOR,
@@ -51,12 +44,13 @@ import {
     OFFLINE,
 } from '../../constants'
 import { useAuth, useFirebase, useSendBird } from '../../context'
-import { MyMenu } from './components'
+import { ChannelsList, EmptyChannel } from './components'
 import {
     firstCharacterOfEachString,
     capitalizeFirstLetter,
     formatTypingUsers,
 } from '../../utils'
+// import { useDeviceDetect } from '../../hooks'
 
 const { Title, Text } = Typography
 const { Panel } = Collapse
@@ -85,8 +79,8 @@ export default function Dashboard() {
         joinChannel,
         leave,
         createChannelWithUserIds,
-        // inviteWithUserIds,
     } = useSendBird()
+    // const { isMobile } = useDeviceDetect()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
     const [showDetail, setShowDetail] = useState(true)
@@ -382,7 +376,7 @@ export default function Dashboard() {
         const isGroupChat = channel.joinedMemberCount <= 2
 
         const renderLastMessage = (lastMessage) => {
-            console.log(lastMessage?._sender)
+            // console.log(lastMessage?._sender)
             if (!lastMessage) {
                 return ''
             }
@@ -588,7 +582,7 @@ export default function Dashboard() {
                     />
                 }
                 color="#fff"
-                trigger="focus"
+                trigger={window.cordova ? 'click' : 'hover'}
                 // onMouseEnter={() => console.log('onMouseEnter')}
                 // onMouseLeave={() => console.log('onMouseLeave')}
                 // onFocus={() => console.log('onFocus')}
@@ -651,7 +645,7 @@ export default function Dashboard() {
     const renderMember = (member, i) => {
         const isOnline = member.connectionStatus === 'online'
         return (
-            <div style={{ display: 'flex', paddingBottom: 12 }}>
+            <div key={i} style={{ display: 'flex', paddingBottom: 12 }}>
                 <Badge dot color={isOnline ? ONLINE : OFFLINE}>
                     <Avatar
                         src={member.plainProfileUrl}
@@ -677,7 +671,7 @@ export default function Dashboard() {
                         }}
                         level={5}
                     >
-                        {member.userId}
+                        {member.nickname}
                     </Title>
                     <Text
                         style={{
@@ -741,113 +735,20 @@ export default function Dashboard() {
                         lg={6}
                         xl={6}
                     >
-                        <Row
-                            style={{
-                                height: 60,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                borderBottom: `1px solid ${THIRD_COLOR}`,
-                                padding: '0 12px',
-                            }}
-                        >
-                            <Col>
-                                <Dropdown
-                                    overlay={() =>
-                                        MyMenu({ logout: handleLogout })
-                                    }
-                                    placement="bottomLeft"
-                                    trigger={['click']}
-                                >
-                                    <Button
-                                        style={{ border: 0 }}
-                                        type="ghost"
-                                        icon={
-                                            <SettingOutlined
-                                                style={{ color: PRIMARY_COLOR }}
-                                            />
-                                        }
-                                        size="large"
-                                    />
-                                </Dropdown>
-                            </Col>
-                            <Col>
-                                <Button onClick={handleRefresh} type="text">
-                                    SendBird Messenger
-                                </Button>
-                            </Col>
-                            <Col>
-                                <Button
-                                    style={{ border: 0 }}
-                                    type="ghost"
-                                    icon={
-                                        <FormOutlined
-                                            style={{ color: PRIMARY_COLOR }}
-                                        />
-                                    }
-                                    size="large"
-                                />
-                            </Col>
-                        </Row>
-                        <Row
-                            style={{
-                                height: 60,
-                                borderBottom: `1px solid ${THIRD_COLOR}`,
-                                padding: 12,
-                            }}
-                        >
-                            <MyAutoComplete
-                                ref={searchRef}
-                                style={{ width: '100%' }}
-                                options={options}
-                                onSelect={onSelectMyAutoComplete}
-                                onSearch={onSearchMyAutoComplete}
-                            />
-                        </Row>
-
-                        <div
-                            style={{
-                                height: `calc(100vh - ${customHeight}px)`,
-                                overflowY: 'auto',
-                                borderBottom: `1px solid ${THIRD_COLOR}`,
-                                paddingBottom: 12,
-                            }}
-                        >
-                            <MySkeleton
-                                loading={loadingChannels}
-                                rows={13}
-                                size="default"
-                                avatar
-                            >
-                                {renderChannelList(channels)}
-                            </MySkeleton>
-                        </div>
+                        <ChannelsList
+                            handleLogout={handleLogout}
+                            handleRefresh={handleRefresh}
+                            searchRef={searchRef}
+                            options={options}
+                            onSelectMyAutoComplete={onSelectMyAutoComplete}
+                            onSearchMyAutoComplete={onSearchMyAutoComplete}
+                            loadingChannels={loadingChannels}
+                            renderChannelList={renderChannelList}
+                            channels={channels}
+                        />
                     </Col>
                     {!channel ? (
-                        <Col
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                            xs={0}
-                            sm={18}
-                            md={18}
-                            lg={18}
-                            xl={18}
-                        >
-                            <Result
-                                icon={<Logo />}
-                                title="Your Messages"
-                                subTitle="Send private photos and messages to a friend or group.
-"
-                                extra={[
-                                    <Button type="primary" key="console">
-                                        Send Message
-                                    </Button>,
-                                ]}
-                            />
-                        </Col>
+                        <EmptyChannel />
                     ) : (
                         <Col xs={0} sm={18} md={18} lg={18} xl={18}>
                             <Row

@@ -143,3 +143,6 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 -   WhatsApp-Engineering Inside-2 : https://medium.com/codingurukul/whatsapp-engineering-inside-2-bdd1ec354748
 
 -   How do you disable viewport zooming on Mobile Safari?:https://stackoverflow.com/questions/4389932/how-do-you-disable-viewport-zooming-on-mobile-safari
+
+-   How to Create a Custom useDeviceDetect() React Hook:
+    https://reedbarger.com/how-to-create-a-custom-usedevicedetect-react-hook/
