@@ -374,16 +374,23 @@ export default function Dashboard() {
         const isGroupChat = channel.joinedMemberCount <= 2
 
         const renderLastMessage = (lastMessage) => {
-            // console.log(lastMessage?._sender)
+            console.log(lastMessage)
             if (!lastMessage) {
                 return ''
             }
 
             let text = lastMessage?.message
 
+            const isAdmin = lastMessage?.messageType === 'admin'
+
+            if (isAdmin) {
+                return text
+            }
+
             const isFile = lastMessage?.messageType === 'file'
+
             const isAuthor =
-                lastMessage?._sender.userId === localStorage.getItem('userId')
+                lastMessage?._sender?.userId === localStorage.getItem('userId')
 
             if (isFile) {
                 text = 'sent an attachment'
@@ -394,7 +401,7 @@ export default function Dashboard() {
             }
 
             if (!isAuthor && isGroupChat) {
-                text = `${lastMessage?._sender.nickname}${
+                text = `${lastMessage?._sender?.nickname}${
                     isFile ? '' : ':'
                 } ${text}`
             }
@@ -497,9 +504,10 @@ export default function Dashboard() {
 
     const renderMessage = (message) => {
         // console.log(channel.joinedMemberCount)
+        message.isAdmin = message?.messageType === 'admin'
         message.isAuthor =
-            message._sender.userId === localStorage.getItem('userId')
-        message.status = message.isAuthor && checkStatus()
+            message?._sender?.userId === localStorage.getItem('userId')
+        message.status = message?.isAuthor && checkStatus()
 
         function checkStatus() {
             var unreadCount = channel.getReadReceipt(message)
@@ -536,17 +544,31 @@ export default function Dashboard() {
                         )}
                     </div>
                 </Row>
-                <Row
-                    style={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: message.isAuthor
-                            ? 'flex-end'
-                            : 'flex-start',
-                    }}
-                >
-                    {renderMessageBubble(message)}
-                </Row>
+
+                {message.isAdmin ? (
+                    <Row
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Text type="secondary">{message.message}</Text>
+                    </Row>
+                ) : (
+                    <Row
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: message.isAuthor
+                                ? 'flex-end'
+                                : 'flex-start',
+                        }}
+                    >
+                        {renderMessageBubble(message)}
+                    </Row>
+                )}
             </Row>
         )
     }
