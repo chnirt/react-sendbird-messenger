@@ -24,7 +24,6 @@
         "react-styleguidist": "^11.0.10",
         "react-topbar-progress-indicator": "^4.1.0",
         "sendbird": "^3.0.133",
-        "sendbird-uikit": "^1.2.1",
         "source-map-explorer": "^2.5.0"
     },
     "scripts": {

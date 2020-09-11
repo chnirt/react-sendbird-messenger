@@ -11086,11 +11086,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-moment@2.25.3:
-  version "2.25.3"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.3.tgz#252ff41319cf41e47761a1a88cab30edfe9808c0"
-  integrity sha512-PuYv0PHxZvzc15Sp8ybUCoQ+xpyPWvjOuK72a5ovzp2LI32rJXOiIfyoFoYvG3s6EwwrdkMyWuRiEHSZRLJNdg==
-
 moment@^2.24.0, moment@^2.25.3, moment@^2.27.0:
   version "2.27.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
@@ -13586,7 +13581,7 @@ react-docgen@^5.0.0:
     node-dir "^0.1.10"
     strip-indent "^3.0.0"
 
-react-dom@^16.13.1, react-dom@^16.8.3, react-dom@^16.8.6:
+react-dom@^16.13.1, react-dom@^16.8.3:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
   integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
@@ -13879,7 +13874,7 @@ react-topbar-progress-indicator@^4.1.0:
   dependencies:
     topbar "^0.1.3"
 
-react@^16.13.1, react@^16.8.3, react@^16.8.6:
+react@^16.13.1, react@^16.8.3:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
@@ -14680,17 +14675,7 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
-sendbird-uikit@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/sendbird-uikit/-/sendbird-uikit-1.2.1.tgz#f1714b84b8a8c7fa7d9dbe0da3a1d51458dee2cb"
-  integrity sha512-IptC/tIIbBrLIadT1MYbgobSsjGq/fiwQXi2/MMV5X19393SM2R+3jKz7zI0jndHEivsxw1Olpo2JaXrIvqdCg==
-  dependencies:
-    moment "2.25.3"
-    react "^16.8.6"
-    react-dom "^16.8.6"
-    sendbird "^3.0.132"
-
-sendbird@^3.0.132, sendbird@^3.0.133:
+sendbird@^3.0.133:
   version "3.0.133"
   resolved "https://registry.yarnpkg.com/sendbird/-/sendbird-3.0.133.tgz#e8f36fddd6836e717788185d3282515a2c84389e"
   integrity sha512-L/PgaqFaXowX2b2NsnM9dgiFxH50t0xySUCvlsdot77yrcyTwjz9py3qTdI+HOdFll6o7d7W67C0PsmwAtK9sw==

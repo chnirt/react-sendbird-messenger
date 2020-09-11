@@ -332,24 +332,20 @@ export default function Dashboard() {
         console.log(response)
     }
 
-    const props = {
-        beforeUpload: async (file) => {
-            // console.log(file)
-            try {
-                const fileMessage = await sendFileMessage(
-                    channel,
-                    file,
-                    file.name,
-                    file.size,
-                    file.type
-                )
-                message.success(fileMessage)
-            } catch (error) {
-                message.error(error)
-            }
-
-            return false
-        },
+    async function handleUploadFile(file) {
+        try {
+            const fileMessage = await sendFileMessage(
+                channel,
+                file,
+                file.name,
+                file.size,
+                file.type
+            )
+            setMessages((prevState) => [...prevState, fileMessage])
+            fileMessage && message.success('File updated successfully.')
+        } catch (error) {
+            message.error(error)
+        }
     }
 
     function handleLogout() {
@@ -374,7 +370,7 @@ export default function Dashboard() {
         const isGroupChat = channel.joinedMemberCount <= 2
 
         const renderLastMessage = (lastMessage) => {
-            console.log(lastMessage)
+            // console.log(lastMessage)
             if (!lastMessage) {
                 return ''
             }
@@ -871,13 +867,14 @@ export default function Dashboard() {
                                         }}
                                         ref={scrollRef}
                                         onScroll={() => {
+                                            // console.log(scrollRef.current.scrollTop)
                                             if (
                                                 scrollRef.current.scrollTop ===
                                                 0
                                             ) {
-                                                // console.log(
-                                                //     scrollRef.current.scrollTop
-                                                // )
+                                                console.log(
+                                                    scrollRef.current.scrollTop
+                                                )
                                                 handleLoadMore()
                                             }
                                         }}
@@ -948,7 +945,10 @@ export default function Dashboard() {
                                                 display: 'flex',
                                             }}
                                         >
-                                            <Upload {...props}>
+                                            <Upload
+                                                beforeUpload={handleUploadFile}
+                                                showUploadList={false}
+                                            >
                                                 <Button
                                                     style={{
                                                         border: 0,
