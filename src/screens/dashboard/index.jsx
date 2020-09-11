@@ -55,8 +55,6 @@ import {
 const { Title, Text } = Typography
 const { Panel } = Collapse
 
-const customHeight = 120
-
 export default function Dashboard() {
     const { logout } = useAuth()
     const { logoutFB, authRef } = useFirebase()
@@ -775,10 +773,18 @@ export default function Dashboard() {
                                         }}
                                         src={channel?.coverUrl}
                                     >
-                                        {channel?.name}
+                                        {channel.members.find(
+                                            (member) =>
+                                                member.userId !==
+                                                localStorage.getItem('userId')
+                                        ).nickname || ''}
                                     </Avatar>
                                     <Title style={{ margin: 0 }} level={4}>
-                                        {channel?.name}
+                                        {channel.members.find(
+                                            (member) =>
+                                                member.userId !==
+                                                localStorage.getItem('userId')
+                                        ).nickname || ''}
                                     </Title>
                                 </Col>
                                 <Col>
@@ -830,7 +836,7 @@ export default function Dashboard() {
                                 >
                                     <div
                                         style={{
-                                            height: `calc(100vh - ${customHeight}px)`,
+                                            height: 'calc(100vh - 120px)',
                                             borderBottom: `1px solid ${THIRD_COLOR}`,
                                             overflowY: 'auto',
                                             paddingBottom: 30,
@@ -1008,7 +1014,13 @@ export default function Dashboard() {
                                                 size={64}
                                                 src={channel?.coverUrl}
                                             >
-                                                {channel?.name}
+                                                {channel.members.find(
+                                                    (member) =>
+                                                        member.userId !==
+                                                        localStorage.getItem(
+                                                            'userId'
+                                                        )
+                                                ).nickname || ''}
                                             </Avatar>
                                         </Row>
                                         <Row
@@ -1024,7 +1036,13 @@ export default function Dashboard() {
                                                 style={{ margin: 0 }}
                                                 level={3}
                                             >
-                                                {channel?.name}
+                                                {channel.members.find(
+                                                    (member) =>
+                                                        member.userId !==
+                                                        localStorage.getItem(
+                                                            'userId'
+                                                        )
+                                                ).nickname || ''}
                                             </Title>
                                         </Row>
                                         <Divider />
