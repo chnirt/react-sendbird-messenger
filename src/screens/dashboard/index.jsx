@@ -384,13 +384,13 @@ export default function Dashboard() {
             const isAdmin = lastMessage?.messageType === 'admin'
 
             if (isAdmin) {
-                return text
+                return 'Admin: ' + text
             }
-
-            const isFile = lastMessage?.messageType === 'file'
 
             const isAuthor =
                 lastMessage?._sender?.userId === localStorage.getItem('userId')
+
+            const isFile = lastMessage?.messageType === 'file'
 
             if (isFile) {
                 text = 'sent an attachment'
@@ -398,12 +398,18 @@ export default function Dashboard() {
 
             if (isAuthor) {
                 text = 'You: ' + lastMessage?.message
-            }
 
-            if (!isAuthor && isGroupChat) {
-                text = `${lastMessage?._sender?.nickname}${
-                    isFile ? '' : ':'
-                } ${text}`
+                if (isFile) {
+                    text = 'You: sent an attachment'
+                }
+            } else {
+                if (isGroupChat) {
+                    text = `${lastMessage?._sender?.nickname}: ${lastMessage?.message}`
+
+                    if (isFile) {
+                        text = `${lastMessage?._sender?.nickname}: sent an attachment`
+                    }
+                }
             }
 
             return text
