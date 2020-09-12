@@ -91,7 +91,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 -   [x] CircleCI, GithubCI
 -   [x] Analyze source
 -   [ ] I18n
--   [ ] Dark mode
+-   [x] Dark mode
 -   [x] Sentry - error tracking
 
 ### Learn more
