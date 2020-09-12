@@ -8,7 +8,12 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
 
-import { FirebaseProvider, AuthProvider, SendBirdProvider } from './context'
+import {
+    DarkProvider,
+    FirebaseProvider,
+    AuthProvider,
+    SendBirdProvider,
+} from './context'
 
 if (process.env.NODE_ENV === 'production') {
     Sentry.init({
@@ -20,15 +25,17 @@ if (process.env.NODE_ENV === 'production') {
 
 ReactDOM.render(
     <React.StrictMode>
-        <FirebaseProvider>
-            <AuthProvider>
-                <SendBirdProvider>
-                    <Router>
-                        <App />
-                    </Router>
-                </SendBirdProvider>
-            </AuthProvider>
-        </FirebaseProvider>
+        <DarkProvider>
+            <FirebaseProvider>
+                <AuthProvider>
+                    <SendBirdProvider>
+                        <Router>
+                            <App />
+                        </Router>
+                    </SendBirdProvider>
+                </AuthProvider>
+            </FirebaseProvider>
+        </DarkProvider>
     </React.StrictMode>,
     document.getElementById('root')
 )

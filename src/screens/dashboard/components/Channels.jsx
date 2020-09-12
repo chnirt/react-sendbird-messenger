@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
-import { Row, Col, Dropdown, Button } from 'antd'
+import { Row, Col, Dropdown, Button, Menu, Switch } from 'antd'
 import { SettingOutlined, FormOutlined } from '@ant-design/icons'
 
-import { MyMenu } from './components/MyMenu'
 import { PRIMARY_COLOR, THIRD_COLOR } from '../../../constants'
 import { MyAutoComplete, MySkeleton } from '../../../components'
+import { useDark } from '../../../context'
 
 export function ChannelsList({
     handleLogout = () => {},
@@ -17,6 +17,7 @@ export function ChannelsList({
     renderChannelList = () => <div />,
     channels = [],
 }) {
+    const { isDark, toggleDark } = useDark()
     return (
         <Fragment>
             <Row
@@ -31,7 +32,36 @@ export function ChannelsList({
             >
                 <Col>
                     <Dropdown
-                        overlay={() => MyMenu({ logout: handleLogout })}
+                        overlay={
+                            <Menu id="my-menu">
+                                <Menu.Item>
+                                    <Button
+                                        // style={{ background: 'none' }}
+                                        // onClick={setting}
+                                        type="text"
+                                    >
+                                        Settings
+                                    </Button>
+                                </Menu.Item>
+                                <Menu.Item>
+                                    <Button onClick={toggleDark} type="text">
+                                        Dark mode
+                                    </Button>
+                                    <Switch
+                                        size="small"
+                                        checked={isDark}
+                                        onClick={toggleDark}
+                                    />
+                                </Menu.Item>
+                                <Menu.Divider />
+                                <Menu.Item>
+                                    <Button onClick={handleLogout} type="text">
+                                        Log out
+                                    </Button>
+                                </Menu.Item>
+                            </Menu>
+                        }
+                        // overlay={<MyMenu logout={handleLogout} />}
                         placement="bottomLeft"
                         trigger={['click']}
                     >

@@ -867,7 +867,7 @@ export default function Dashboard() {
                                         }}
                                         ref={scrollRef}
                                         onScroll={() => {
-                                            // console.log(scrollRef.current.scrollTop)
+                                            console.log(scrollRef.current)
                                             if (
                                                 scrollRef.current.scrollTop ===
                                                 0
