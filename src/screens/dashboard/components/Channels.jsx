@@ -2,14 +2,13 @@ import React, { Fragment } from 'react'
 import { Row, Col, Dropdown, Button, Menu, Switch } from 'antd'
 import { SettingOutlined, FormOutlined } from '@ant-design/icons'
 
-import { PRIMARY_COLOR, THIRD_COLOR } from '../../../constants'
-import { MyAutoComplete, MySkeleton } from '../../../components'
-import { useDark } from '../../../context'
+import { PRIMARY_COLOR, THIRD_COLOR } from '@constants'
+import { MyAutoComplete, MySkeleton } from '@components'
+import { useDark } from '@context'
 
-export function ChannelsList({
+export function Channels({
     handleLogout = () => {},
     handleRefresh = () => {},
-    searchRef = null,
     options = [],
     onSelectMyAutoComplete = () => {},
     onSearchMyAutoComplete = () => {},
@@ -98,7 +97,6 @@ export function ChannelsList({
                 }}
             >
                 <MyAutoComplete
-                    ref={searchRef}
                     style={{ width: '100%' }}
                     options={options}
                     onSelect={onSelectMyAutoComplete}

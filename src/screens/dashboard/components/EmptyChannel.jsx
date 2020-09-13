@@ -1,6 +1,7 @@
 import React from 'react'
 import { Col, Result, Button } from 'antd'
-import { ReactComponent as Logo } from '../../../assets/images/logo/ic-main-sendbird-logo-white.svg'
+
+import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-logo-white.svg'
 
 export function EmptyChannel() {
     return (

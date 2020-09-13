@@ -11,10 +11,10 @@ import {
 } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { ReactComponent as Logo } from '../../assets/images/logo/ic-main-sendbird-logo-white.svg'
-import { Loading } from '../../components'
-import { useAuth, useFirebase, useSendBird } from '../../context'
-import { PRIMARY_COLOR } from '../../constants'
+import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-logo-white.svg'
+import { Loading } from '@components'
+import { useAuth, useFirebase, useSendBird } from '@context'
+import { PRIMARY_COLOR } from '@constants'
 
 const { Title, Text } = Typography
 

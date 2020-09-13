@@ -1,5 +1,5 @@
 import React from 'react'
 
 export function LazyImage() {
-    return <div></div>
+    return <div>LazyImage</div>
 }

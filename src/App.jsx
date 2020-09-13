@@ -4,10 +4,9 @@ import TopBarProgress from 'react-topbar-progress-indicator'
 import './App.less'
 import 'emoji-mart/css/emoji-mart.css'
 
-import { PublicRoute, PrivateRoute } from './helpers'
-import { Layout } from './layout'
-import { Loadable } from './helpers'
-import { PRIMARY_COLOR } from './constants'
+import { PublicRoute, PrivateRoute, Loadable } from '@helpers'
+import { Layout } from '@layout'
+import { PRIMARY_COLOR } from '@constants'
 
 TopBarProgress.config({
     barColors: {

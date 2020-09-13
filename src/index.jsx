@@ -10,10 +10,11 @@ import { Integrations } from '@sentry/tracing'
 
 import {
     DarkProvider,
-    FirebaseProvider,
+    I18nProvider,
     AuthProvider,
+    FirebaseProvider,
     SendBirdProvider,
-} from './context'
+} from '@context'
 
 if (process.env.NODE_ENV === 'production') {
     Sentry.init({
@@ -26,15 +27,17 @@ if (process.env.NODE_ENV === 'production') {
 ReactDOM.render(
     <React.StrictMode>
         <DarkProvider>
-            <FirebaseProvider>
-                <AuthProvider>
-                    <SendBirdProvider>
-                        <Router>
-                            <App />
-                        </Router>
-                    </SendBirdProvider>
-                </AuthProvider>
-            </FirebaseProvider>
+            <I18nProvider>
+                <FirebaseProvider>
+                    <AuthProvider>
+                        <SendBirdProvider>
+                            <Router>
+                                <App />
+                            </Router>
+                        </SendBirdProvider>
+                    </AuthProvider>
+                </FirebaseProvider>
+            </I18nProvider>
         </DarkProvider>
     </React.StrictMode>,
     document.getElementById('root')

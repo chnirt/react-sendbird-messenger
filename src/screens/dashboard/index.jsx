@@ -31,10 +31,10 @@ import {
     MessageBubble,
     MessageSkeleton,
     MemoizedScrollToBottom,
-} from '../../components'
-import { ReactComponent as Sent } from '../../assets/images/chat/check.svg'
-import { ReactComponent as Delivered } from '../../assets/images/chat/tick.svg'
-import { ReactComponent as Seen } from '../../assets/images/chat/color-tick.svg'
+} from '@components'
+import { ReactComponent as Sent } from '@assets/images/chat/check.svg'
+import { ReactComponent as Delivered } from '@assets/images/chat/tick.svg'
+import { ReactComponent as Seen } from '@assets/images/chat/color-tick.svg'
 import {
     PRIMARY_COLOR,
     SECONDARY_COLOR,
@@ -42,15 +42,15 @@ import {
     FOURTH_COLOR,
     ONLINE,
     OFFLINE,
-} from '../../constants'
-import { useAuth, useFirebase, useSendBird } from '../../context'
-import { ChannelsList, EmptyChannel } from './components'
+} from '@constants'
+import { useAuth, useFirebase, useSendBird } from '@context'
+import { Channels, EmptyChannel } from './components'
 import {
     firstCharacterOfEachString,
     capitalizeFirstLetter,
     formatTypingUsers,
-} from '../../utils'
-// import { useDeviceDetect } from '../../hooks'
+} from '@utils'
+// import { useDeviceDetect } from '@hooks'
 
 const { Title, Text } = Typography
 const { Panel } = Collapse
@@ -99,8 +99,6 @@ export default function Dashboard() {
     const [prevMessageListQuery, setPrevMessageListQuery] = useState(null)
 
     const scrollRef = useRef()
-
-    const searchRef = useRef()
 
     /**
      * MyAutoComplete - State
@@ -760,10 +758,9 @@ export default function Dashboard() {
                         lg={6}
                         xl={6}
                     >
-                        <ChannelsList
+                        <Channels
                             handleLogout={handleLogout}
                             handleRefresh={handleRefresh}
-                            searchRef={searchRef}
                             options={options}
                             onSelectMyAutoComplete={onSelectMyAutoComplete}
                             onSearchMyAutoComplete={onSearchMyAutoComplete}

@@ -7,10 +7,11 @@ import React, {
     useState,
 } from 'react'
 import SendBird from 'sendbird'
-import { uuidv4 } from '../utils'
+
+import { uuidv4 } from '@utils'
+import { SB_APP_ID } from '@constants'
 
 const UNIQUE_HANDLER_ID = uuidv4()
-const REACT_APP_SB_APP_ID = '7AE1264D-2D61-4D37-A25C-AEDF55FD631D'
 
 const SendBirdContext = createContext()
 
@@ -49,7 +50,7 @@ function SendBirdValue() {
 
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
-            appId: process.env.REACT_APP_SB_APP_ID || REACT_APP_SB_APP_ID,
+            appId: SB_APP_ID,
         })
 
         if (userId) {
