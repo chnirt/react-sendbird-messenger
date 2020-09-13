@@ -664,10 +664,13 @@ export default function Dashboard() {
         return members.map((member) => renderMember(member))
     }
 
-    const renderMember = (member, i) => {
+    const renderMember = (member) => {
         const isOnline = member.connectionStatus === 'online'
         return (
-            <div key={i} style={{ display: 'flex', paddingBottom: 12 }}>
+            <div
+                key={member.userId}
+                style={{ display: 'flex', paddingBottom: 12 }}
+            >
                 <Badge dot color={isOnline ? ONLINE : OFFLINE}>
                     <Avatar
                         src={member.plainProfileUrl}
@@ -867,7 +870,7 @@ export default function Dashboard() {
                                         }}
                                         ref={scrollRef}
                                         onScroll={() => {
-                                            console.log(scrollRef.current)
+                                            // console.log(scrollRef.current)
                                             if (
                                                 scrollRef.current.scrollTop ===
                                                 0

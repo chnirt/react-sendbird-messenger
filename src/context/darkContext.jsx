@@ -13,23 +13,21 @@ export function DarkProvider({ children }) {
     )
 
     useLayoutEffect(() => {
-        document.documentElement.style.setProperty(
-            'filter',
-            isDark === false ? 'none' : 'invert(1) hue-rotate(180deg)'
-        )
-        document.querySelectorAll('.ant-image-img').forEach((result) => {
-            result.classList.toggle('invert')
-        })
-        // class="ant-image-img"
+        isDark === true && document.documentElement.classList.add('dark-mode')
+        // document.documentElement.style.setProperty(
+        //     'filter',
+        //     isDark === false ? 'none' : 'invert(1) hue-rotate(180deg)'
+        // )
     }, [isDark])
 
     function toggleDark() {
-        localStorage.setItem('darkMode', !isDark)
-        setIsDark((prevState) => !prevState)
+        document.documentElement.classList.toggle('dark-mode')
         // document.documentElement.style.setProperty(
         //     'filter',
         //     isDark === false ? 'invert(1) hue-rotate(180deg)' : 'none'
         // )
+        localStorage.setItem('darkMode', !isDark)
+        setIsDark((prevState) => !prevState)
     }
 
     return (

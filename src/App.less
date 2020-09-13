@@ -48,3 +48,12 @@
 #file-image .ant-image-img {
   border-radius: 12px;
 }
+
+:root.dark-mode {
+  filter: invert(1) hue-rotate(180deg);
+
+  img,
+  .emoji {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}

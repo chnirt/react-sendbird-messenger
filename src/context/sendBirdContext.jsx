@@ -4,6 +4,7 @@ import React, {
     useRef,
     useLayoutEffect,
     useCallback,
+    useState,
 } from 'react'
 import SendBird from 'sendbird'
 import { uuidv4 } from '../utils'
@@ -31,12 +32,15 @@ function SendBirdValue() {
     const userId = localStorage.getItem('userId')
     const nickName = localStorage.getItem('displayName')
 
+    const [connected, setConnected] = useState(false)
+
     const connectWrapper = useCallback((USER_ID = null, NICK_NAME = null) => {
         return new Promise((resolve, reject) => {
             sbRef.current.connect(USER_ID, async (user, error) => {
                 if (error) reject(error)
 
                 // console.log('connect', user)
+                setConnected(true)
                 await updateCurrentUserInfo(NICK_NAME)
                 resolve(user)
             })
@@ -578,7 +582,7 @@ function SendBirdValue() {
                 channelListQuery.order = 'latest_last_message' // 'chronological', 'latest_last_message', 'channel_name_alphabetical', and 'metadata_value_alphabetical'
                 channelListQuery.limit = 15 // The value of pagination limit could be set up to 100.
 
-                if (channelListQuery.hasNext) {
+                if (connected && channelListQuery.hasNext) {
                     channelListQuery.next((channelList, error) => {
                         if (error) {
                             reject(error)

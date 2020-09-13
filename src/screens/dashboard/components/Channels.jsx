@@ -36,7 +36,6 @@ export function ChannelsList({
                             <Menu id="my-menu">
                                 <Menu.Item>
                                     <Button
-                                        // style={{ background: 'none' }}
                                         // onClick={setting}
                                         type="text"
                                     >
