@@ -69,7 +69,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ---
 
-<img src="src/assets/images/banners/5.png" alt="sendbird-messenger">
+<img src="src/assets/images/banners/6.png" alt="sendbird-messenger">
 
 ### Life cycle processes.
 
