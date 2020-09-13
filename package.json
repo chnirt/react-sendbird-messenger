@@ -10,6 +10,7 @@
         "@testing-library/react": "^9.3.2",
         "@testing-library/user-event": "^7.1.2",
         "antd": "^4.6.2",
+        "babel-eslint": "^10.1.0",
         "babel-jest": "24.9.0",
         "craco-antd": "^1.18.1",
         "craco-less": "^1.17.0",
