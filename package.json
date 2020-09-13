@@ -85,5 +85,18 @@
         "prettier": "^2.1.1",
         "progress-bar-webpack-plugin": "^2.1.0",
         "react-is": "^16.13.1"
+    },
+    "jest": {
+        "moduleNameMapper": {
+            "^@assets(.*)$": "<rootDir>/src/assets$1",
+            "^@components(.*)$": "<rootDir>/src/components$1",
+            "^@constants(.*)$": "<rootDir>/src/constants$1",
+            "^@context(.*)$": "<rootDir>/src/context$1",
+            "^@helpers(.*)$": "<rootDir>/src/helpers$1",
+            "^@hooks(.*)$": "<rootDir>/src/hooks$1",
+            "^@layout(.*)$": "<rootDir>/src/layout$1",
+            "^@screens(.*)$": "<rootDir>/src/screens$1",
+            "^@utils(.*)$": "<rootDir>/src/utils$1"
+        }
     }
 }

@@ -105,6 +105,8 @@ export default function Dashboard() {
      */
     const [options, setOptions] = useState([])
 
+    const [showSettingDrawer, setShowSettingDrawer] = useState(false)
+
     /**
      * Firebase - Effect
      */

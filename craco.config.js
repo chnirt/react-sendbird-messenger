@@ -49,7 +49,6 @@ module.exports = {
                 },
             },
         },
-        // { plugin: require('craco-preact') },
         {
             plugin: CracoAntDesignPlugin,
             options: {
