@@ -32,9 +32,9 @@ import {
     MessageSkeleton,
     MemoizedScrollToBottom,
 } from '../../components'
-import { ReactComponent as Sent } from '../../assets/chat/check.svg'
-import { ReactComponent as Delivered } from '../../assets/chat/tick.svg'
-import { ReactComponent as Seen } from '../../assets/chat/color-tick.svg'
+import { ReactComponent as Sent } from '../../assets/images/chat/check.svg'
+import { ReactComponent as Delivered } from '../../assets/images/chat/tick.svg'
+import { ReactComponent as Seen } from '../../assets/images/chat/color-tick.svg'
 import {
     PRIMARY_COLOR,
     SECONDARY_COLOR,

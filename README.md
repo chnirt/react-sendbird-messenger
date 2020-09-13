@@ -69,6 +69,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ---
 
+<img src="src/assets/images/banners/5.png" alt="sendbird-messenger">
+
 ### Life cycle processes.
 
 [![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger)

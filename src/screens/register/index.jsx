@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Row, Col, Typography, Form, Input, Button, notification } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
+import { ReactComponent as Logo } from '../../assets/images/logo/ic-main-sendbird-logo-white.svg'
 import { Loading } from '../../components'
 import { PRIMARY_COLOR } from '../../constants'
 import { useFirebase } from '../../context'

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Button, Col, Typography } from 'antd'
 import { useNavigate } from 'react-router-dom'
 
-import background from '../../assets/undraw_not_found_60pq.png'
+import background from '../../assets/images/404/undraw_not_found_60pq.png'
 
 const { Title, Paragraph } = Typography
 
