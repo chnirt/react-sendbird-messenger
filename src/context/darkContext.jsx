@@ -14,18 +14,10 @@ export function DarkProvider({ children }) {
 
     useLayoutEffect(() => {
         isDark === true && document.documentElement.classList.add('dark-mode')
-        // document.documentElement.style.setProperty(
-        //     'filter',
-        //     isDark === false ? 'none' : 'invert(1) hue-rotate(180deg)'
-        // )
     }, [isDark])
 
     function toggleDark() {
         document.documentElement.classList.toggle('dark-mode')
-        // document.documentElement.style.setProperty(
-        //     'filter',
-        //     isDark === false ? 'invert(1) hue-rotate(180deg)' : 'none'
-        // )
         localStorage.setItem('darkMode', !isDark)
         setIsDark((prevState) => !prevState)
     }
