@@ -96,3 +96,5 @@
     https://reedbarger.com/how-to-create-a-custom-usedevicedetect-react-hook/
 
 -   How to set alias path via webpack in CRA (create-react-app) and craco?: https://stackoverflow.com/questions/56387849/how-to-set-alias-path-via-webpack-in-cra-create-react-app-and-craco
+
+-   Configuring absolute paths in React for Web without ejecting [en-US] : https://dev.to/bybruno/configuring-absolute-paths-in-react-for-web-without-ejecting-en-us-52h6

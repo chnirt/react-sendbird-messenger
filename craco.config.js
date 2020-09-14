@@ -37,6 +37,21 @@ module.exports = {
             }),
         ],
     },
+    jest: {
+        configure: {
+            moduleNameMapper: {
+                '^@assets(.*)$': '<rootDir>/src/assets$1',
+                '^@components(.*)$': '<rootDir>/src/components$1',
+                '^@constants(.*)$': '<rootDir>/src/constants$1',
+                '^@context(.*)$': '<rootDir>/src/context$1',
+                '^@helpers(.*)$': '<rootDir>/src/helpers$1',
+                '^@hooks(.*)$': '<rootDir>/src/hooks$1',
+                '^@layout(.*)$': '<rootDir>/src/layout$1',
+                '^@screens(.*)$': '<rootDir>/src/screens$1',
+                '^@utils(.*)$': '<rootDir>/src/utils$1',
+            },
+        },
+    },
     plugins: [
         {
             plugin: CracoLessPlugin,
