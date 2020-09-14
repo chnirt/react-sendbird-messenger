@@ -4,6 +4,7 @@ const path = require('path')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const chalk = require('chalk')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
     webpack: {
@@ -35,7 +36,32 @@ module.exports = {
                 incomplete: '▱',
                 clear: false,
             }),
+            new MiniCssExtractPlugin({
+                // Options similar to the same options in webpackOptions.output
+                // both options are optional
+                filename: '[name].css',
+                chunkFilename: '[id].css',
+            }),
         ],
+        module: {
+            rules: [
+                {
+                    test: /\.css$/i,
+                    use: [
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                            options: {
+                                // only enable hot in development
+                                hmr: process.env.NODE_ENV === 'development',
+                                // if hmr does not work, this is a forceful method.
+                                reloadAll: true,
+                            },
+                        },
+                        'css-loader',
+                    ],
+                },
+            ],
+        },
     },
     jest: {
         configure: {

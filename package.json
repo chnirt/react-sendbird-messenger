@@ -45,7 +45,7 @@
         "start": "craco start",
         "start:stag": "env-cmd -f .env.staging craco start",
         "start:prod": "env-cmd -f .env.production craco start",
-        "build": "CI=true craco build",
+        "build": "craco build",
         "build:stag": "env-cmd -f .env.staging craco build",
         "build:prod": "env-cmd -f .env.production craco build",
         "test": "craco test",
@@ -85,6 +85,7 @@
         "husky": "^4.2.5",
         "jest-canvas-mock": "^2.2.0",
         "lint-staged": "^10.3.0",
+        "mini-css-extract-plugin": "^0.11.2",
         "prettier": "^2.1.1",
         "progress-bar-webpack-plugin": "^2.1.0",
         "react-is": "^16.13.1"
