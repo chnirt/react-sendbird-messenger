@@ -14,7 +14,6 @@
         "babel-jest": "^24.9.0",
         "craco-antd": "^1.18.1",
         "craco-less": "^1.17.0",
-        "craco-preact": "^1.1.0",
         "emoji-mart": "^3.0.0",
         "env-cmd": "^10.1.0",
         "eslint": "^6.6.0",
