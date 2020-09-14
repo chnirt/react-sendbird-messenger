@@ -142,6 +142,9 @@ export default function Dashboard() {
             setLoadingChannels(true)
             const channels = await channelListQuery()
             // console.log(channels)
+            channels
+                .filter((channel) => channel.channelType === 'group')
+                .map((channel) => channel.markAsDelivered())
             setChannels(channels)
             setLoadingChannels(false)
         }
@@ -234,20 +237,39 @@ export default function Dashboard() {
 
     async function listenOnDeliveryReceiptUpdated() {
         const { groupChannel } = await onDeliveryReceiptUpdated()
-        console.log('delivered', groupChannel)
+
+        // console.log('delivered', groupChannel)
+
+        if (groupChannel.url === channel?.url) {
+            setMessages((prevState) =>
+                prevState.map((message) => {
+                    if (
+                        message.messageId === groupChannel.lastMessage.messageId
+                    ) {
+                        return groupChannel.lastMessage
+                    }
+                    return message
+                })
+            )
+        }
     }
 
     async function listenOnReadReceiptUpdated() {
         const { groupChannel } = await onReadReceiptUpdated()
 
-        console.log('read', groupChannel)
+        // console.log('read', groupChannel)
 
         if (groupChannel.url === channel?.url) {
-            const cloneMessages = messages.map((message) => ({
-                ...message,
-                unreadCount: groupChannel.getReadReceipt(message),
-            }))
-            setMessages(cloneMessages)
+            setMessages((prevState) =>
+                prevState.map((message) => {
+                    if (
+                        message.messageId === groupChannel.lastMessage.messageId
+                    ) {
+                        return groupChannel.lastMessage
+                    }
+                    return message
+                })
+            )
         }
     }
 
@@ -505,21 +527,24 @@ export default function Dashboard() {
     }
 
     const renderMessage = (message) => {
-        // console.log(channel.joinedMemberCount)
+        // message?.messageType === 'file' && console.log(message)
         message.isAdmin = message?.messageType === 'admin'
         message.isAuthor =
             message?._sender?.userId === localStorage.getItem('userId')
         message.status = message?.isAuthor && checkStatus()
 
         function checkStatus() {
-            var unreadCount = channel.getReadReceipt(message)
-            // console.log(unreadCount)
-            if (unreadCount <= 0) {
-                // All members have read the message.
+            const unreadCount = channel.getReadReceipt(message)
+            const undeliveredCount = channel.getUndeliveredMemberCount(message)
+            // console.log( unreadCount, undeliveredCount)
+
+            if (unreadCount === 0) {
                 return 'seen'
-            } else {
-                // Some of members haven't read the message yet.
+            }
+            if (undeliveredCount === 0) {
                 return 'delivered'
+            } else {
+                return 'sent'
             }
         }
 
@@ -719,8 +744,9 @@ export default function Dashboard() {
 
     async function handleSendMessage(e) {
         if (e.keyCode === 13) {
-            const newMessage = await sendUserMessage(channel, typingText)
-            setMessages((prevState) => [...prevState, newMessage])
+            const newUserMessage = await sendUserMessage(channel, typingText)
+            console.log(newUserMessage)
+            setMessages((prevState) => [...prevState, newUserMessage])
             setTypingText('')
         }
     }

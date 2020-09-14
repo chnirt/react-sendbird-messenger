@@ -33,7 +33,7 @@
         "react-topbar-progress-indicator": "^4.1.0",
         "sendbird": "^3.0.133",
         "source-map-explorer": "^2.5.0",
-        "webpack": "^4.42.0",
+        "webpack": "4.42.0",
         "webpack-bundle-analyzer": "^3.8.0"
     },
     "scripts": {
