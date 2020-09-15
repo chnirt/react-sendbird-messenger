@@ -31,6 +31,23 @@ jobs:
         node-version: [12.x]
 
     steps:
+      - shell: bash
+        env:
+          REACT_APP_FB_API_KEY: ${{ secrets.REACT_APP_FB_API_KEY }}
+          REACT_APP_FB_APP_IP: ${{ secrets.REACT_APP_FB_APP_IP }}
+          REACT_APP_FB_AUTH_DOMAIN: ${{ secrets.REACT_APP_FB_AUTH_DOMAIN }}
+          REACT_APP_FB_DB_URL: ${{ secrets.REACT_APP_FB_DB_URL }}
+          REACT_APP_FB_MEASUREMENT_ID: ${{ secrets.REACT_APP_FB_MEASUREMENT_ID }}
+          REACT_APP_FB_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_FB_MESSAGING_SENDER_ID }}
+          REACT_APP_FB_PROJECT_ID: ${{ secrets.REACT_APP_FB_PROJECT_ID }}
+          REACT_APP_FB_STORAGE_BUCKET: ${{ secrets.REACT_APP_FB_STORAGE_BUCKET }}
+          REACT_APP_NOT_SECRET_CODE: ${{ secrets.REACT_APP_NOT_SECRET_CODE }}
+          REACT_APP_SB_APP_ID: ${{ secrets.REACT_APP_SB_APP_ID }}
+          REACT_APP_ST_DSN: ${{ secrets.REACT_APP_ST_DSN }}
+
+        run: |
+          example-command "$REACT_APP_FB_API_KEY"
+
       - name: Checkout repository
         uses: actions/checkout@v2
 

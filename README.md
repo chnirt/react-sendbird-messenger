@@ -102,3 +102,5 @@
 -   How to fix build failures with `create-react-app` in production: https://community.netlify.com/t/how-to-fix-build-failures-with-create-react-app-in-production/17752
 
 -   Icon :https://www.flaticon.com/
+
+-   Creating and storing encrypted secrets : https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
