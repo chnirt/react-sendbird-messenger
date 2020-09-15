@@ -46,7 +46,7 @@ jobs:
           REACT_APP_ST_DSN: ${{ secrets.REACT_APP_ST_DSN }}
 
         run: |
-          echo "$REACT_APP_FB_API_KEY"
+          echo "${{ secrets.REACT_APP_FB_API_KEY }}"
 
       - name: Checkout repository
         uses: actions/checkout@v2
