@@ -100,3 +100,5 @@
 -   Configuring absolute paths in React for Web without ejecting [en-US] : https://dev.to/bybruno/configuring-absolute-paths-in-react-for-web-without-ejecting-en-us-52h6
 
 -   How to fix build failures with `create-react-app` in production: https://community.netlify.com/t/how-to-fix-build-failures-with-create-react-app-in-production/17752
+
+-   Icon :https://www.flaticon.com/

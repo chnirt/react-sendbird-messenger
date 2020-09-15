@@ -22,7 +22,7 @@ export default function Login() {
     const { login } = useAuth()
     const { loginFB } = useFirebase()
     const navigate = useNavigate()
-    const { connect } = useSendBird()
+    const { connect, authenticate } = useSendBird()
 
     const [loading, setLoading] = useState(false)
 
@@ -40,6 +40,7 @@ export default function Login() {
                 // console.log(idToken)
                 login(user, idToken)
                 connect(user.email, user.displayName)
+                authenticate(user.email)
             })
         } catch (error) {
             // console.log(error.message)

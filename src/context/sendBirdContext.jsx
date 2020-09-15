@@ -7,6 +7,7 @@ import React, {
     useState,
 } from 'react'
 import SendBird from 'sendbird'
+import SendBirdCall from 'sendbird-calls'
 
 import { uuidv4 } from '@utils'
 import { SB_APP_ID } from '@constants'
@@ -26,12 +27,14 @@ export function SendBirdProvider({ children }) {
 export const useSendBird = () => useContext(SendBirdContext)
 
 function SendBirdValue() {
+    const nickName = localStorage.getItem('displayName')
+
+    const [userId, setUserId] = useState(null)
+
     const sbRef = useRef(null)
     const channelHandler = useRef(null)
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
-    const userId = localStorage.getItem('userId')
-    const nickName = localStorage.getItem('displayName')
 
     const [connected, setConnected] = useState(false)
 
@@ -48,13 +51,53 @@ function SendBirdValue() {
         })
     }, [])
 
+    const connectCallWrapper = useCallback(
+        (USER_ID = null, ACCESS_TOKEN = null) => {
+            return new Promise((resolve, reject) => {
+                // Authentication
+                const authOption = {
+                    userId: USER_ID,
+                    // accessToken: ACCESS_TOKEN,
+                }
+
+                SendBirdCall.authenticate(authOption, (res, error) => {
+                    if (error) {
+                        console.log('Authentication failed', error)
+                        reject(error)
+                    }
+
+                    // Authentication succeeded
+                    console.log('Authentication succeeded', res)
+
+                    // Establishing websocket connection
+                    SendBirdCall.connectWebSocket()
+                        .then((res) => {
+                            /* Succeeded to connect */
+                            console.log('Succeeded to connect', res)
+                        })
+                        .catch((error) => {
+                            /* Failed to connect */
+                            console.log('Failed to connect', error)
+                        })
+
+                    resolve(res)
+                })
+            })
+        },
+        []
+    )
+
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
             appId: SB_APP_ID,
         })
+        SendBirdCall.init(SB_APP_ID)
 
-        if (userId) {
-            connectWrapper(userId, nickName)
+        const localStorageUserId = localStorage.getItem('userId')
+
+        if (localStorageUserId) {
+            connectWrapper(localStorageUserId, nickName)
+            connectCallWrapper(localStorageUserId)
         }
 
         channelHandler.current = new sbRef.current.ChannelHandler()
@@ -74,12 +117,54 @@ function SendBirdValue() {
             connectionHandler.current
         )
 
+        //The UNIQUE_HANDLER_ID below is a unique user-defined ID for a specific event handler.
+        SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
+            onRinging: (call) => {
+                // ...
+                console.log(call)
+                call.onEstablished = (call) => {
+                    // ...
+                }
+
+                call.onConnected = (call) => {
+                    // ...
+                }
+
+                call.onEnded = (call) => {
+                    // ...
+                }
+
+                call.onRemoteAudioSettingsChanged = (call) => {
+                    // ...
+                }
+
+                call.onRemoteVideoSettingsChanged = (call) => {
+                    // ...
+                }
+
+                const acceptParams = {
+                    callOption: {
+                        localMediaView: document.getElementById(
+                            'local_video_element_id'
+                        ),
+                        remoteMediaView: document.getElementById(
+                            'remote_video_element_id'
+                        ),
+                        audioEnabled: true,
+                        videoEnabled: true,
+                    },
+                }
+
+                call.accept(acceptParams)
+            },
+        })
+
         return () => {
             sbRef.current.removeChannelHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
         }
-    }, [connectWrapper, nickName, userId])
+    }, [connectWrapper, connectCallWrapper, nickName, userId])
 
     function connect(USER_ID = null, NICK_NAME = null) {
         return new Promise((resolve, reject) => {
@@ -87,7 +172,8 @@ function SendBirdValue() {
                 if (error) reject(error)
 
                 // console.log('connect', user)
-                await updateCurrentUserInfo(NICK_NAME)
+                setUserId(USER_ID)
+                NICK_NAME && (await updateCurrentUserInfo(NICK_NAME))
                 resolve(user)
             })
         })
@@ -99,6 +185,39 @@ function SendBirdValue() {
                 // console.log('disconnect')
                 // A current user is discconected from Sendbird server.
                 resolve(true)
+            })
+        })
+    }
+
+    function authenticate(USER_ID = null, ACCESS_TOKEN = null) {
+        return new Promise((resolve, reject) => {
+            // Authentication
+            const authOption = {
+                userId: USER_ID,
+                // accessToken: ACCESS_TOKEN,
+            }
+
+            SendBirdCall.authenticate(authOption, (res, error) => {
+                if (error) {
+                    console.log('Authentication failed', error)
+                    reject(error)
+                }
+
+                // Authentication succeeded
+                console.log('Authentication succeeded', res)
+
+                // Establishing websocket connection
+                SendBirdCall.connectWebSocket()
+                    .then((res) => {
+                        /* Succeeded to connect */
+                        console.log('Succeeded to connect', res)
+                    })
+                    .catch((error) => {
+                        /* Failed to connect */
+                        console.log('Failed to connect', error)
+                    })
+
+                resolve(res)
             })
         })
     }
@@ -518,10 +637,8 @@ function SendBirdValue() {
     function joinChannel(groupChannel = null) {
         return new Promise((resolve, reject) => {
             if (groupChannel.isPublic) {
-                groupChannel.join(function (response, error) {
-                    if (error) {
-                        reject(error)
-                    }
+                groupChannel.join((response, error) => {
+                    if (error) reject(error)
 
                     resolve(response)
                 })
@@ -531,10 +648,8 @@ function SendBirdValue() {
 
     function leave(groupChannel = null) {
         return new Promise((resolve, reject) => {
-            groupChannel.leave(function (response, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.leave((response, error) => {
+                if (error) reject(error)
 
                 resolve(response)
             })
@@ -543,10 +658,8 @@ function SendBirdValue() {
 
     function deleteChannel(groupChannel = null) {
         return new Promise((resolve, reject) => {
-            groupChannel.delete(function (response, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.delete((response, error) => {
+                if (error) reject(error)
 
                 resolve(response)
             })
@@ -585,9 +698,7 @@ function SendBirdValue() {
 
                 if (connected && channelListQuery.hasNext) {
                     channelListQuery.next((channelList, error) => {
-                        if (error) {
-                            reject(error)
-                        }
+                        if (error) reject(error)
 
                         resolve(channelList)
                     })
@@ -601,9 +712,7 @@ function SendBirdValue() {
             sbRef.current.GroupChannel.getChannel(
                 CHANNEL_URL,
                 (groupChannel, error) => {
-                    if (error) {
-                        reject(error)
-                    }
+                    if (error) reject(error)
 
                     resolve(groupChannel)
                     // TODO: Implement what is needed with the contents of the response in the groupChannel parameter.
@@ -632,9 +741,7 @@ function SendBirdValue() {
             // params.pushNotificationDeliveryOption = "default"; // Either 'default' or 'suppress'
 
             groupChannel.sendUserMessage(params, (message, error) => {
-                if (error) {
-                    reject(error)
-                }
+                if (error) reject(error)
 
                 resolve(message)
             })
@@ -669,10 +776,8 @@ function SendBirdValue() {
             // params.translationTargetLanguages = ['fe', 'de'] // French and German
             // params.pushNotificationDeliveryOption = 'default' // Either 'default' or 'suppress'
 
-            groupChannel.sendFileMessage(params, function (fileMessage, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.sendFileMessage(params, (fileMessage, error) => {
+                if (error) reject(error)
 
                 // var thumbnailFirst = fileMessage.thumbnails[0]
                 // var thumbnailSecond = fileMessage.thumbnails[1]
@@ -719,10 +824,9 @@ function SendBirdValue() {
 
     function refresh(groupChannel = null) {
         return new Promise((resolve, reject) => {
-            groupChannel.refresh(function (response, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.refresh((response, error) => {
+                if (error) reject(error)
+
                 resolve(response)
             })
         })
@@ -752,9 +856,7 @@ function SendBirdValue() {
                 INCLUDE_META_ARRAY,
                 INCLUDE_REACTION,
                 (messages, error) => {
-                    if (error) {
-                        reject(error)
-                    }
+                    if (error) reject(error)
 
                     // A list of messages sent before the specified timestamp is successfully retrieved.
                     resolve(messages)
@@ -771,6 +873,8 @@ function SendBirdValue() {
         sbRef,
         connect,
         disconnect,
+
+        authenticate,
 
         onMessageReceived,
         onMessageUpdated,
