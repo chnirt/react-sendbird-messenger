@@ -7,7 +7,6 @@ import React, {
     useState,
 } from 'react'
 import SendBird from 'sendbird'
-import SendBirdCall from 'sendbird-calls'
 
 import { uuidv4 } from '@utils'
 import { SB_APP_ID } from '@constants'
@@ -51,53 +50,16 @@ function SendBirdValue() {
         })
     }, [])
 
-    const connectCallWrapper = useCallback(
-        (USER_ID = null, ACCESS_TOKEN = null) => {
-            return new Promise((resolve, reject) => {
-                // Authentication
-                const authOption = {
-                    userId: USER_ID,
-                    // accessToken: ACCESS_TOKEN,
-                }
-
-                SendBirdCall.authenticate(authOption, (res, error) => {
-                    if (error) {
-                        console.log('Authentication failed', error)
-                        reject(error)
-                    }
-
-                    // Authentication succeeded
-                    console.log('Authentication succeeded', res)
-
-                    // Establishing websocket connection
-                    SendBirdCall.connectWebSocket()
-                        .then((res) => {
-                            /* Succeeded to connect */
-                            console.log('Succeeded to connect', res)
-                        })
-                        .catch((error) => {
-                            /* Failed to connect */
-                            console.log('Failed to connect', error)
-                        })
-
-                    resolve(res)
-                })
-            })
-        },
-        []
-    )
-
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
             appId: SB_APP_ID,
         })
-        SendBirdCall.init(SB_APP_ID)
 
         const localStorageUserId = localStorage.getItem('userId')
 
         if (localStorageUserId) {
             connectWrapper(localStorageUserId, nickName)
-            connectCallWrapper(localStorageUserId)
+            // connectCallWrapper(localStorageUserId)
         }
 
         channelHandler.current = new sbRef.current.ChannelHandler()
@@ -117,54 +79,12 @@ function SendBirdValue() {
             connectionHandler.current
         )
 
-        //The UNIQUE_HANDLER_ID below is a unique user-defined ID for a specific event handler.
-        SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
-            onRinging: (call) => {
-                // ...
-                console.log(call)
-                call.onEstablished = (call) => {
-                    // ...
-                }
-
-                call.onConnected = (call) => {
-                    // ...
-                }
-
-                call.onEnded = (call) => {
-                    // ...
-                }
-
-                call.onRemoteAudioSettingsChanged = (call) => {
-                    // ...
-                }
-
-                call.onRemoteVideoSettingsChanged = (call) => {
-                    // ...
-                }
-
-                const acceptParams = {
-                    callOption: {
-                        localMediaView: document.getElementById(
-                            'local_video_element_id'
-                        ),
-                        remoteMediaView: document.getElementById(
-                            'remote_video_element_id'
-                        ),
-                        audioEnabled: true,
-                        videoEnabled: true,
-                    },
-                }
-
-                call.accept(acceptParams)
-            },
-        })
-
         return () => {
             sbRef.current.removeChannelHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
         }
-    }, [connectWrapper, connectCallWrapper, nickName, userId])
+    }, [connectWrapper, nickName, userId])
 
     function connect(USER_ID = null, NICK_NAME = null) {
         return new Promise((resolve, reject) => {
@@ -185,39 +105,6 @@ function SendBirdValue() {
                 // console.log('disconnect')
                 // A current user is discconected from Sendbird server.
                 resolve(true)
-            })
-        })
-    }
-
-    function authenticate(USER_ID = null, ACCESS_TOKEN = null) {
-        return new Promise((resolve, reject) => {
-            // Authentication
-            const authOption = {
-                userId: USER_ID,
-                // accessToken: ACCESS_TOKEN,
-            }
-
-            SendBirdCall.authenticate(authOption, (res, error) => {
-                if (error) {
-                    console.log('Authentication failed', error)
-                    reject(error)
-                }
-
-                // Authentication succeeded
-                console.log('Authentication succeeded', res)
-
-                // Establishing websocket connection
-                SendBirdCall.connectWebSocket()
-                    .then((res) => {
-                        /* Succeeded to connect */
-                        console.log('Succeeded to connect', res)
-                    })
-                    .catch((error) => {
-                        /* Failed to connect */
-                        console.log('Failed to connect', error)
-                    })
-
-                resolve(res)
             })
         })
     }
@@ -873,8 +760,6 @@ function SendBirdValue() {
         sbRef,
         connect,
         disconnect,
-
-        authenticate,
 
         onMessageReceived,
         onMessageUpdated,
