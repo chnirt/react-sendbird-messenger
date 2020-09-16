@@ -10,6 +10,7 @@ import {
     notification,
 } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-logo-white.svg'
 import { Loading } from '@components'
@@ -23,6 +24,7 @@ export default function Login() {
     const { loginFB } = useFirebase()
     const navigate = useNavigate()
     const { connect } = useSendBird()
+    const { t } = useTranslation()
 
     const [loading, setLoading] = useState(false)
 
@@ -101,9 +103,7 @@ export default function Login() {
                                     height: '5vh',
                                 }}
                             >
-                                <Text>
-                                    Sign in with SendBird to get started.
-                                </Text>
+                                <Text>{t('src.screens.login.SIWSTGS')}</Text>
                             </Row>
                             <Form
                                 style={{ padding: '0 5vw' }}
@@ -155,7 +155,7 @@ export default function Login() {
                                         }}
                                     >
                                         <Button type="link" htmlType="submit">
-                                            Continue
+                                            {t('src.screens.login.Continue')}
                                         </Button>
                                     </div>
                                 </Form.Item>
@@ -175,7 +175,9 @@ export default function Login() {
                                         valuePropName="checked"
                                         noStyle
                                     >
-                                        <Checkbox>Keep me signed in</Checkbox>
+                                        <Checkbox>
+                                            {t('src.screens.login.KMSI')}
+                                        </Checkbox>
                                     </Form.Item>
                                 </div>
                             </Form>
@@ -189,7 +191,7 @@ export default function Login() {
                             }}
                         >
                             <Button onClick={navigateRegister} type="link">
-                                Not on SendBird?
+                                {t('src.screens.login.NOS')}
                             </Button>
                         </div>
                     </Col>

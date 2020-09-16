@@ -62,22 +62,24 @@ function SendBirdValue() {
             // connectCallWrapper(localStorageUserId)
         }
 
-        channelHandler.current = new sbRef.current.ChannelHandler()
-        userEventHandler.current = new sbRef.current.UserEventHandler()
-        connectionHandler.current = new sbRef.current.ConnectionHandler()
+        if (sbRef.current) {
+            channelHandler.current = new sbRef.current.ChannelHandler()
+            userEventHandler.current = new sbRef.current.UserEventHandler()
+            connectionHandler.current = new sbRef.current.ConnectionHandler()
 
-        sbRef.current.addChannelHandler(
-            UNIQUE_HANDLER_ID,
-            channelHandler.current
-        )
-        sbRef.current.addUserEventHandler(
-            UNIQUE_HANDLER_ID,
-            userEventHandler.current
-        )
-        sbRef.current.addConnectionHandler(
-            UNIQUE_HANDLER_ID,
-            connectionHandler.current
-        )
+            sbRef.current.addChannelHandler(
+                UNIQUE_HANDLER_ID,
+                channelHandler.current
+            )
+            sbRef.current.addUserEventHandler(
+                UNIQUE_HANDLER_ID,
+                userEventHandler.current
+            )
+            sbRef.current.addConnectionHandler(
+                UNIQUE_HANDLER_ID,
+                connectionHandler.current
+            )
+        }
 
         return () => {
             sbRef.current.removeChannelHandler(UNIQUE_HANDLER_ID)

@@ -1,33 +1,31 @@
 import React from 'react'
-import { Col, Result, Button } from 'antd'
+import { Result, Button } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-logo-white.svg'
 
 export function EmptyChannel() {
+    const { t } = useTranslation()
+
     return (
-        <Col
+        <div
             style={{
+                height: 'calc(100vh - 2px)',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
             }}
-            xs={0}
-            sm={18}
-            md={18}
-            lg={18}
-            xl={18}
         >
             <Result
                 icon={<Logo />}
-                title="Your Messages"
-                subTitle="Send private photos and messages to a friend or group.
-"
+                title={t('src.screens.dashboard.components.YM')}
+                subTitle={t('src.screens.dashboard.components.SPPAMTAFOG')}
                 extra={[
                     <Button type="primary" key="console">
-                        Send Message
+                        {t('src.screens.dashboard.components.SM')}
                     </Button>,
                 ]}
             />
-        </Col>
+        </div>
     )
 }

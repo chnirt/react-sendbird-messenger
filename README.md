@@ -29,7 +29,7 @@
 -   [x] Pre-commit with husky
 -   [x] CircleCI, GithubCI
 -   [x] Analyze source
--   [ ] I18n
+-   [x] I18n
 -   [x] Dark mode - css one line
 -   [x] Sentry - error tracking
 

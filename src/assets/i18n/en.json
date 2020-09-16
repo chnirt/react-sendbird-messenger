@@ -1,3 +1,37 @@
 {
-    "hello": "Hello!"
+    "hello": "Hello!",
+
+    "src": {
+        "screens": {
+            "dashboard": {
+                "Settings": "Settings",
+                "Profile": "Profile",
+                "Language": "Language",
+                "DM": "Dark mode",
+                "LO": "Log out",
+
+                "components": {
+                    "YM": "Your Messages",
+                    "SPPAMTAFOG": "Send private photos and messages to a friend or group.",
+                    "SM": "Send Message"
+                }
+            },
+            "login": {
+                "SIWSTGS": "Sign in with SendBird to get started.",
+                "Continue": "Continue",
+                "KMSI": "Keep me signed in",
+                "NOS": "Not on SendBird?"
+            },
+            "notfound": {},
+            "register": {
+                "WEONCPUTRY": "What email or number can people use to reach you?",
+                "CA": "Create account",
+                "BCYAITYATT": "By continuing, you are indicating that you agree to the",
+                "PP": " Privacy Policy ",
+                "And": "and",
+                "Terms": " Terms.",
+                "LWS": "Login with SendBird"
+            }
+        }
+    }
 }

@@ -12,6 +12,7 @@ import {
     Input,
     message,
     Collapse,
+    Drawer,
 } from 'antd'
 import {
     PhoneOutlined,
@@ -21,6 +22,7 @@ import {
     SmileOutlined,
     LikeOutlined,
     LoadingOutlined,
+    LeftOutlined,
 } from '@ant-design/icons'
 import moment from 'moment'
 import { Picker } from 'emoji-mart'
@@ -49,8 +51,9 @@ import {
     firstCharacterOfEachString,
     capitalizeFirstLetter,
     formatTypingUsers,
+    formatLastTime,
 } from '@utils'
-// import { useDeviceDetect } from '@hooks'
+import { useDeviceDetect } from '@hooks'
 
 const { Title, Text } = Typography
 const { Panel } = Collapse
@@ -78,10 +81,10 @@ export default function Dashboard() {
         leave,
         createChannelWithUserIds,
     } = useSendBird()
-    // const { isMobile } = useDeviceDetect()
+    const { isMobile } = useDeviceDetect()
 
     const [loadingLogout, setLoadingLogout] = useState(false)
-    const [showDetail, setShowDetail] = useState(true)
+    const [showDetail, setShowDetail] = useState(false)
 
     const [channels, setChannels] = useState([])
     const [loadingChannels, setLoadingChannels] = useState(false)
@@ -99,13 +102,14 @@ export default function Dashboard() {
     const [prevMessageListQuery, setPrevMessageListQuery] = useState(null)
 
     const scrollRef = useRef()
+    const scrollBodyDrawerRef = useRef()
+
+    const [showChannel, setShowChannel] = useState(false)
 
     /**
      * MyAutoComplete - State
      */
     const [options, setOptions] = useState([])
-
-    // const [showSettingDrawer, setShowSettingDrawer] = useState(false)
 
     /**
      * Firebase - Effect
@@ -389,7 +393,7 @@ export default function Dashboard() {
         // console.log(channel)
 
         const isUnread = channel.unreadMessageCount > 0
-        const isGroupChat = channel.joinedMemberCount <= 2
+        const isGroupChat = channel.joinedMemberCount > 2
 
         const renderLastMessage = (lastMessage) => {
             // console.log(lastMessage)
@@ -448,75 +452,82 @@ export default function Dashboard() {
                 key={channel.url}
                 onClick={() => {
                     setChannelUrl(channel.url)
+                    console.log(isMobile)
+                    isMobile && setShowChannel(true)
                 }}
             >
-                <Col span={18}>
-                    <Row>
-                        <Col span={4}>
-                            <Avatar src={channel.coverUrl} size="large">
-                                {/* {channel.name} */}
-                                {channel.members.find(
+                <Col xs={3} sm={3} md={3} lg={4} xl={3}>
+                    <Avatar
+                        style={{ marginRight: 12 }}
+                        src={
+                            channel.members.filter(
+                                (member) =>
+                                    member.userId !==
+                                    localStorage.getItem('userId')
+                            )[0].profileUrl
+                        }
+                        size="large"
+                    >
+                        {/* {channel.name} */}
+                        {capitalizeFirstLetter(
+                            firstCharacterOfEachString(
+                                channel.members.filter(
                                     (member) =>
                                         member.userId !==
                                         localStorage.getItem('userId')
-                                ).nickname || ''}
-                            </Avatar>
-                        </Col>
-                        <Col span={18}>
-                            <Row>
-                                <Text
-                                    style={{ margin: 0, padding: '0 10px' }}
-                                    strong={isUnread}
-                                    // level={5}
-                                >
-                                    {channel.members.find(
-                                        (member) =>
-                                            member.userId !==
-                                            localStorage.getItem('userId')
-                                    ).nickname || ''}
-                                </Text>
-                            </Row>
-                            <Row>
-                                <Text
-                                    style={{ padding: '0 10px', fontSize: 12 }}
-                                    type={!isUnread && 'secondary'}
-                                    ellipsis={true}
-                                    strong={isUnread}
-                                >
-                                    {renderLastMessage(channel.lastMessage)}
-                                </Text>
-                            </Row>
-                        </Col>
+                                )[0].nickname
+                            )
+                        )}
+                    </Avatar>
+                </Col>
+                <Col xs={14} sm={14} md={14} lg={12} xl={14}>
+                    <Row>
+                        <Text
+                            style={{ margin: 0, padding: '0 10px' }}
+                            strong={isUnread}
+                            // level={5}
+                        >
+                            {
+                                channel.members.filter(
+                                    (member) =>
+                                        member.userId !==
+                                        localStorage.getItem('userId')
+                                )[0].nickname
+                            }
+                        </Text>
+                    </Row>
+                    <Row>
+                        <Text
+                            style={{ padding: '0 10px', fontSize: 12 }}
+                            type={!isUnread && 'secondary'}
+                            ellipsis={true}
+                            strong={isUnread}
+                        >
+                            {renderLastMessage(channel.lastMessage)}
+                        </Text>
                     </Row>
                 </Col>
                 <Col
-                    style={{ display: 'flex', justifyContent: 'flex-end' }}
-                    span={6}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                    }}
+                    xs={7}
+                    sm={7}
+                    md={7}
+                    lg={8}
+                    xl={7}
                 >
-                    <Col
-                        style={{ display: 'flex', justifyContent: 'flex-end' }}
-                        xs={18}
-                        sm={20}
-                        md={20}
-                        lg={20}
-                        xl={20}
-                    >
-                        <Text strong={isUnread}>
-                            {moment(channel.lastMessage?.createdAt).format(
-                                'HH:mm a'
-                            )}
-                        </Text>
-                    </Col>
-                    <Col
-                        style={{ display: 'flex', justifyContent: 'flex-end' }}
-                        xs={6}
-                        sm={4}
-                        md={4}
-                        lg={4}
-                        xl={4}
-                    >
-                        {isUnread && <Badge color={PRIMARY_COLOR} />}
-                    </Col>
+                    <Text strong={isUnread}>
+                        {formatLastTime(channel.lastMessage?.createdAt)}
+                    </Text>
+                    {isUnread && (
+                        <Badge
+                            style={{ marginLeft: 12 }}
+                            color={PRIMARY_COLOR}
+                        />
+                    )}
                 </Col>
             </Row>
         )
@@ -680,7 +691,7 @@ export default function Dashboard() {
                     return console.log(error)
                 }
 
-                // setMessages((prevState) => [...messages, ...prevState])
+                setMessages((prevState) => [...messages, ...prevState])
             })
         }
     }
@@ -734,7 +745,7 @@ export default function Dashboard() {
                         {`Last active: ${
                             isOnline
                                 ? 'just now'
-                                : moment(member.lastSeenAt).format('HH:mm A')
+                                : formatLastTime(member.lastSeenAt)
                         }`}
                     </Text>
                 </div>
@@ -744,6 +755,11 @@ export default function Dashboard() {
 
     async function handleSendMessage(e) {
         if (e.keyCode === 13) {
+            const scrollTop = scrollRef.current?.scrollTop
+            const clientHeight = scrollRef.current?.clientHeight
+            const scrollHeight = scrollRef.current?.scrollHeight
+            const endReached = scrollTop + clientHeight >= scrollHeight
+            console.log(scrollTop, clientHeight, scrollHeight, endReached)
             const newUserMessage = await sendUserMessage(channel, typingText)
             console.log(newUserMessage)
             setMessages((prevState) => [...prevState, newUserMessage])
@@ -771,9 +787,7 @@ export default function Dashboard() {
             <Loading spinning={loadingLogout}>
                 <Row
                     style={{
-                        // borderTop: `1px solid ${THIRD_COLOR}`,
-                        borderLeft: `1px solid ${THIRD_COLOR}`,
-                        borderRight: `1px solid ${THIRD_COLOR}`,
+                        border: `1px solid ${THIRD_COLOR}`,
                     }}
                 >
                     <Col
@@ -798,7 +812,9 @@ export default function Dashboard() {
                         />
                     </Col>
                     {!channel ? (
-                        <EmptyChannel />
+                        <Col xs={0} sm={18} md={18} lg={18} xl={18}>
+                            <EmptyChannel />
+                        </Col>
                     ) : (
                         <Col xs={0} sm={18} md={18} lg={18} xl={18}>
                             <Row
@@ -823,20 +839,38 @@ export default function Dashboard() {
                                             backgroundColor: SECONDARY_COLOR,
                                             marginRight: 12,
                                         }}
-                                        src={channel?.coverUrl}
+                                        src={
+                                            channel?.members.filter(
+                                                (member) =>
+                                                    member.userId !==
+                                                    localStorage.getItem(
+                                                        'userId'
+                                                    )
+                                            )[0].profileUrl
+                                        }
                                     >
-                                        {channel.members.find(
-                                            (member) =>
-                                                member.userId !==
-                                                localStorage.getItem('userId')
-                                        ).nickname || ''}
+                                        {capitalizeFirstLetter(
+                                            firstCharacterOfEachString(
+                                                channel?.members.filter(
+                                                    (member) =>
+                                                        member.userId !==
+                                                        localStorage.getItem(
+                                                            'userId'
+                                                        )
+                                                )[0].nickname
+                                            )
+                                        )}
                                     </Avatar>
                                     <Title style={{ margin: 0 }} level={4}>
-                                        {channel.members.find(
-                                            (member) =>
-                                                member.userId !==
-                                                localStorage.getItem('userId')
-                                        ).nickname || ''}
+                                        {
+                                            channel?.members.filter(
+                                                (member) =>
+                                                    member.userId !==
+                                                    localStorage.getItem(
+                                                        'userId'
+                                                    )
+                                            )[0].nickname
+                                        }
                                     </Title>
                                 </Col>
                                 <Col>
@@ -888,14 +922,16 @@ export default function Dashboard() {
                                 >
                                     <div
                                         style={{
-                                            height: 'calc(100vh - 120px)',
+                                            height: 'calc(100vh - 122px)',
                                             borderBottom: `1px solid ${THIRD_COLOR}`,
                                             overflowY: 'auto',
                                             paddingBottom: 30,
                                         }}
                                         ref={scrollRef}
                                         onScroll={() => {
-                                            // console.log(scrollRef.current)
+                                            console.log(
+                                                scrollRef.current.scrollTop
+                                            )
                                             if (
                                                 scrollRef.current.scrollTop ===
                                                 0
@@ -941,7 +977,6 @@ export default function Dashboard() {
                                             display: 'flex',
                                             justifyContent: 'space-between',
                                             alignItems: 'center',
-                                            borderBottom: `1px solid ${THIRD_COLOR}`,
                                         }}
                                     >
                                         <Col
@@ -1042,9 +1077,8 @@ export default function Dashboard() {
                                 {showDetail && (
                                     <Col
                                         style={{
-                                            height: 'calc(100vh - 60px)',
+                                            height: 'calc(100vh - 62px)',
                                             borderLeft: `1px solid ${THIRD_COLOR}`,
-                                            borderBottom: `1px solid ${THIRD_COLOR}`,
                                         }}
                                         xs={0}
                                         sm={8}
@@ -1068,15 +1102,27 @@ export default function Dashboard() {
                                                     marginRight: 12,
                                                 }}
                                                 size={64}
-                                                src={channel?.coverUrl}
+                                                src={
+                                                    channel?.members.filter(
+                                                        (member) =>
+                                                            member.userId !==
+                                                            localStorage.getItem(
+                                                                'userId'
+                                                            )
+                                                    )[0].profileUrl
+                                                }
                                             >
-                                                {channel.members.find(
-                                                    (member) =>
-                                                        member.userId !==
-                                                        localStorage.getItem(
-                                                            'userId'
-                                                        )
-                                                ).nickname || ''}
+                                                {capitalizeFirstLetter(
+                                                    firstCharacterOfEachString(
+                                                        channel?.members.filter(
+                                                            (member) =>
+                                                                member.userId !==
+                                                                localStorage.getItem(
+                                                                    'userId'
+                                                                )
+                                                        )[0].nickname
+                                                    )
+                                                )}
                                             </Avatar>
                                         </Row>
                                         <Row
@@ -1092,13 +1138,15 @@ export default function Dashboard() {
                                                 style={{ margin: 0 }}
                                                 level={3}
                                             >
-                                                {channel.members.find(
-                                                    (member) =>
-                                                        member.userId !==
-                                                        localStorage.getItem(
-                                                            'userId'
-                                                        )
-                                                ).nickname || ''}
+                                                {
+                                                    channel?.members.filter(
+                                                        (member) =>
+                                                            member.userId !==
+                                                            localStorage.getItem(
+                                                                'userId'
+                                                            )
+                                                    )[0].nickname
+                                                }
                                             </Title>
                                         </Row>
                                         <Divider />
@@ -1135,6 +1183,216 @@ export default function Dashboard() {
                         </Col>
                     )}
                 </Row>
+
+                {/* Channel Drawer */}
+                <Drawer
+                    headerStyle={{
+                        height: 60,
+                        padding: 0,
+                    }}
+                    title={
+                        <Row
+                            style={{
+                                height: 60,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                padding: '0 12px',
+                            }}
+                        >
+                            <Col
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-start',
+                                }}
+                                span={3}
+                            >
+                                <Button
+                                    style={{ border: 0 }}
+                                    type="ghost"
+                                    icon={
+                                        <LeftOutlined
+                                            style={{ color: PRIMARY_COLOR }}
+                                        />
+                                    }
+                                    size="large"
+                                    onClick={() => setShowChannel(false)}
+                                />
+                            </Col>
+                            <Col
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}
+                                span={18}
+                            >
+                                {
+                                    channel?.members.filter(
+                                        (member) =>
+                                            member.userId !==
+                                            localStorage.getItem('userId')
+                                    )[0].nickname
+                                }
+                            </Col>
+                            <Col
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                }}
+                                span={3}
+                            />
+                        </Row>
+                    }
+                    footerStyle={{ padding: 0 }}
+                    footer={
+                        <Row
+                            style={{
+                                height: 60,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Col
+                                style={{
+                                    padding: 12,
+                                    width: 'calc(100% - 120px)',
+                                }}
+                            >
+                                <Input
+                                    placeholder="Type a message..."
+                                    value={typingText}
+                                    onChange={(e) =>
+                                        setTypingText(e.target.value)
+                                    }
+                                    onKeyDown={handleSendMessage}
+                                    onFocus={() => channel?.startTyping()}
+                                    onBlur={() => channel?.endTyping()}
+                                />
+                            </Col>
+                            <Col
+                                style={{
+                                    float: 'right',
+                                    display: 'flex',
+                                }}
+                            >
+                                <Upload
+                                    beforeUpload={handleUploadFile}
+                                    showUploadList={false}
+                                >
+                                    <Button
+                                        style={{
+                                            border: 0,
+                                            display: 'inline-block',
+                                            cursor: 'pointer',
+                                        }}
+                                        type="ghost"
+                                        icon={<PictureOutlined />}
+                                        size="large"
+                                    />
+                                </Upload>
+
+                                <Tooltip
+                                    id="emoji-mart"
+                                    placement="topRight"
+                                    title={
+                                        <Picker
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: 0,
+                                                right: 0,
+                                            }}
+                                            title="Pick your emoji…"
+                                            emoji="point_up"
+                                            size={20}
+                                            emojiSize={20}
+                                            color={PRIMARY_COLOR}
+                                            showPreview={false}
+                                            showSkinTones={false}
+                                            set="apple"
+                                            onSelect={handleEmojiMart}
+                                        />
+                                    }
+                                    color="transparent"
+                                    style={{ color: 'blue' }}
+                                    // trigger="click"
+                                >
+                                    <Button
+                                        style={{ border: 0 }}
+                                        type="ghost"
+                                        icon={<SmileOutlined />}
+                                        size="large"
+                                    />
+                                </Tooltip>
+                                <Button
+                                    style={{ border: 0 }}
+                                    type="ghost"
+                                    icon={
+                                        <LikeOutlined
+                                            style={{
+                                                color: PRIMARY_COLOR,
+                                            }}
+                                        />
+                                    }
+                                    size="large"
+                                />
+                            </Col>
+                        </Row>
+                    }
+                    bodyStyle={{ padding: 0 }}
+                    placement="right"
+                    closable={false}
+                    onClose={() => setShowChannel(false)}
+                    visible={showChannel}
+                    width="100%"
+                >
+                    <div
+                        style={{
+                            height: 'calc(100vh - 122px)',
+                            borderBottom: `1px solid ${THIRD_COLOR}`,
+                            overflowY: 'auto',
+                            paddingBottom: 30,
+                        }}
+                        ref={scrollBodyDrawerRef}
+                        onScroll={() => {
+                            // console.log(scrollRef.current)
+                            if (scrollBodyDrawerRef.current.scrollTop === 0) {
+                                console.log(
+                                    scrollBodyDrawerRef.current.scrollTop
+                                )
+                                handleLoadMore()
+                            }
+                        }}
+                    >
+                        <MessageSkeleton
+                            loading={loadingListMessages}
+                            rows={13}
+                            size="default"
+                            avatar
+                        >
+                            <MemoizedScrollToBottom>
+                                {renderListMessages(messages)}
+                            </MemoizedScrollToBottom>
+                        </MessageSkeleton>
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: 66,
+                                left: 12,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 12,
+                                }}
+                                type="secondary"
+                                ellipsis={true}
+                            >
+                                {typingMembers}
+                            </Text>
+                        </div>
+                    </div>
+                </Drawer>
             </Loading>
         </Fragment>
     )
