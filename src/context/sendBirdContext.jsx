@@ -7,7 +7,7 @@ import React, {
     useState,
 } from 'react'
 import SendBird from 'sendbird'
-import SendBirdCall from 'sendbird-calls'
+// import SendBirdCall from 'sendbird-calls'
 
 import { uuidv4 } from '@utils'
 import { SB_APP_ID } from '@constants'
@@ -49,54 +49,54 @@ function SendBirdValue() {
         })
     }, [])
 
-    const connectCallWrapper = useCallback(
-        (USER_ID = null, ACCESS_TOKEN = null) => {
-            return new Promise((resolve, reject) => {
-                // Authentication
-                const authOption = {
-                    userId: USER_ID,
-                    // accessToken: ACCESS_TOKEN,
-                }
+    // const connectCallWrapper = useCallback(
+    //     (USER_ID = null, ACCESS_TOKEN = null) => {
+    //         return new Promise((resolve, reject) => {
+    //             // Authentication
+    //             const authOption = {
+    //                 userId: USER_ID,
+    //                 // accessToken: ACCESS_TOKEN,
+    //             }
 
-                SendBirdCall.authenticate(authOption, (res, error) => {
-                    if (error) {
-                        // Authentication failed
-                        console.log('Authentication failed', error)
-                        reject(error)
-                    } else {
-                        // Authentication succeeded
+    //             SendBirdCall.authenticate(authOption, (res, error) => {
+    //                 if (error) {
+    //                     // Authentication failed
+    //                     console.log('Authentication failed', error)
+    //                     reject(error)
+    //                 } else {
+    //                     // Authentication succeeded
 
-                        // Establishing websocket connection
-                        SendBirdCall.connectWebSocket()
-                            .then((res) => {
-                                /* Succeeded to connect */
-                                console.log('Succeeded to connect', res)
-                            })
-                            .catch((error) => {
-                                /* Failed to connect */
-                                console.log('Failed to connect', error)
-                            })
-                        console.log('Authentication succeeded', res)
-                        resolve(res)
-                    }
-                })
-            })
-        },
-        []
-    )
+    //                     // Establishing websocket connection
+    //                     SendBirdCall.connectWebSocket()
+    //                         .then((res) => {
+    //                             /* Succeeded to connect */
+    //                             console.log('Succeeded to connect', res)
+    //                         })
+    //                         .catch((error) => {
+    //                             /* Failed to connect */
+    //                             console.log('Failed to connect', error)
+    //                         })
+    //                     console.log('Authentication succeeded', res)
+    //                     resolve(res)
+    //                 }
+    //             })
+    //         })
+    //     },
+    //     []
+    // )
 
     useLayoutEffect(() => {
         sbRef.current = new SendBird({
             appId: SB_APP_ID,
         })
-        SendBirdCall.init(SB_APP_ID)
+        // SendBirdCall.init(SB_APP_ID)
 
         const localStorageUserId = localStorage.getItem('userId')
         const nickName = localStorage.getItem('displayName')
 
-        if (localStorageUserId) {
+        if (!userId && localStorageUserId) {
             connectWrapper(localStorageUserId, nickName)
-            connectCallWrapper(localStorageUserId)
+            // connectCallWrapper(localStorageUserId)
         }
 
         channelHandler.current = new sbRef.current.ChannelHandler()
@@ -117,52 +117,56 @@ function SendBirdValue() {
         )
 
         //The UNIQUE_HANDLER_ID below is a unique user-defined ID for a specific event handler.
-        SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
-            onRinging: (call) => {
-                console.log(call)
-                call.onEstablished = (call) => {
-                    // ...
-                }
+        // SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
+        //     onRinging: (call) => {
+        //         console.log(call)
+        //         call.onEstablished = (call) => {
+        //             // ...
+        //         }
 
-                call.onConnected = (call) => {
-                    // ...
-                }
+        //         call.onConnected = (call) => {
+        //             // ...
+        //         }
 
-                call.onEnded = (call) => {
-                    // ...
-                }
+        //         call.onEnded = (call) => {
+        //             // ...
+        //         }
 
-                call.onRemoteAudioSettingsChanged = (call) => {
-                    // ...
-                }
+        //         call.onRemoteAudioSettingsChanged = (call) => {
+        //             // ...
+        //         }
 
-                call.onRemoteVideoSettingsChanged = (call) => {
-                    // ...
-                }
+        //         call.onRemoteVideoSettingsChanged = (call) => {
+        //             // ...
+        //         }
 
-                const acceptParams = {
-                    callOption: {
-                        localMediaView: document.getElementById(
-                            'local_video_element_id'
-                        ),
-                        remoteMediaView: document.getElementById(
-                            'remote_video_element_id'
-                        ),
-                        audioEnabled: true,
-                        videoEnabled: true,
-                    },
-                }
+        //         const acceptParams = {
+        //             callOption: {
+        //                 localMediaView: document.getElementById(
+        //                     'local_video_element_id'
+        //                 ),
+        //                 remoteMediaView: document.getElementById(
+        //                     'remote_video_element_id'
+        //                 ),
+        //                 audioEnabled: true,
+        //                 videoEnabled: true,
+        //             },
+        //         }
 
-                call.accept(acceptParams)
-            },
-        })
+        //         call.accept(acceptParams)
+        //     },
+        // })
 
         return () => {
             sbRef.current.removeChannelHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
         }
-    }, [connectWrapper, connectCallWrapper, userId])
+    }, [
+        connectWrapper,
+        // connectCallWrapper,
+        userId,
+    ])
 
     function connect(USER_ID = null, NICK_NAME = null) {
         return new Promise((resolve, reject) => {
@@ -854,15 +858,15 @@ function SendBirdValue() {
                 },
             }
 
-            SendBirdCall.dial(dialParams, (call, error) => {
-                if (error) {
-                    // Dialing failed
-                    reject(error)
-                }
+            // SendBirdCall.dial(dialParams, (call, error) => {
+            //     if (error) {
+            //         // Dialing failed
+            //         reject(error)
+            //     }
 
-                // Dialing succeeded
-                resolve(call)
-            })
+            //     // Dialing succeeded
+            //     resolve(call)
+            // })
         })
     }
 
