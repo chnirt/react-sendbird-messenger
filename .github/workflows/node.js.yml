@@ -45,10 +45,8 @@ jobs:
           REACT_APP_NOT_SECRET_CODE: ${{ secrets.REACT_APP_NOT_SECRET_CODE }}
           REACT_APP_SB_APP_ID: ${{ secrets.REACT_APP_SB_APP_ID }}
           REACT_APP_ST_DSN: ${{ secrets.REACT_APP_ST_DSN }}
+        run: echo "${{ secrets.REACT_APP_FB_API_KEY }}"
 
-
-        # run: |
-        #   echo "${{ secrets.REACT_APP_FB_API_KEY }}"
       - name: Checkout repository
         uses: actions/checkout@v2
 
