@@ -15348,6 +15348,11 @@ send@0.17.1:
     range-parser "~1.2.1"
     statuses "~1.5.0"
 
+sendbird-calls@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/sendbird-calls/-/sendbird-calls-1.2.5.tgz#0d1f6db195da090885918969267fc2b6802c3802"
+  integrity sha512-HsPo6lpHi7wjhMNF9U7Gf6CH5vUWvLJ4qBFwEWOHx9203xkXf8JqsxXUo0je6nKtviWNAmDwP0BUABzy3rcV8g==
+
 sendbird@^3.0.133:
   version "3.0.133"
   resolved "https://registry.yarnpkg.com/sendbird/-/sendbird-3.0.133.tgz#e8f36fddd6836e717788185d3282515a2c84389e"

@@ -5,12 +5,12 @@ function ScrollToBottom({ style, handleLoadMore = () => {}, children }) {
     const messagesEndRef = useRef(null)
 
     const scrollToBottom = () => {
-        console.log('🤬')
+        // console.log('🤬')
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
 
     useLayoutEffect(() => {
-        console.log('😭')
+        // console.log('😭')
         scrollToBottom()
     }, [])
 
@@ -23,7 +23,7 @@ function ScrollToBottom({ style, handleLoadMore = () => {}, children }) {
         if (endReached) {
             scrollToBottom()
         } else {
-            console.log('new Message')
+            // console.log('new Message')
         }
     }, [children])
 

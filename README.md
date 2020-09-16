@@ -1,6 +1,6 @@
 ## SendBird messenger
 
-<img src="src/assets/images/banners/6.png" alt="sendbird-messenger">
+<img src="src/assets/images/banners/7.png" alt="sendbird-messenger">
 
 ---
 

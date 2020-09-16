@@ -30,7 +30,7 @@ function App() {
             path: '/',
             element: (
                 <PublicRoute>
-                    <Loadable route="login" />
+                    <Loadable route="Login" />
                 </PublicRoute>
             ),
         },
@@ -38,7 +38,7 @@ function App() {
             path: '/register',
             element: (
                 <PublicRoute>
-                    <Loadable route="register" />
+                    <Loadable route="Register" />
                 </PublicRoute>
             ),
         },
@@ -47,14 +47,14 @@ function App() {
             element: (
                 <PrivateRoute>
                     <Layout>
-                        <Loadable route="dashboard" />
+                        <Loadable route="Dashboard" />
                     </Layout>
                 </PrivateRoute>
             ),
         },
         {
             path: '*',
-            element: <Loadable route="notfound" />,
+            element: <Loadable route="Notfound" />,
         },
     ])
 

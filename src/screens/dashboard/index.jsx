@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useLayoutEffect, useState } from 'react'
+import React, { Fragment, useLayoutEffect, useState } from 'react'
 import {
     Row,
     Col,
@@ -46,7 +46,6 @@ import {
     OFFLINE,
 } from '@constants'
 import { useAuth, useFirebase, useSendBird } from '@context'
-import { Channels, EmptyChannel } from './components'
 import {
     firstCharacterOfEachString,
     capitalizeFirstLetter,
@@ -54,6 +53,7 @@ import {
     formatLastTime,
 } from '@utils'
 import { useDeviceDetect } from '@hooks'
+import { Channels, EmptyChannel } from './components'
 
 const { Title, Text } = Typography
 const { Panel } = Collapse
@@ -100,8 +100,6 @@ export default function Dashboard() {
     const [channelUrl, setChannelUrl] = useState(null)
 
     const [prevMessageListQuery, setPrevMessageListQuery] = useState(null)
-
-    const scrollRef = useRef()
 
     const [showChannel, setShowChannel] = useState(false)
     const [showEmojiMart, setShowEmojiMart] = useState(false)
@@ -636,14 +634,13 @@ export default function Dashboard() {
                 placement={message.isAuthor ? 'topLeft' : 'topRight'}
                 title={
                     <Emoticons
-                        handleEmoji={(value) => handleEmoji(message.id, value)}
+                        handleEmoji={(value) =>
+                            handleEmoji(message.messageId, value)
+                        }
                     />
                 }
                 color="#fff"
                 trigger={window.cordova ? 'click' : 'hover'}
-                // onMouseEnter={() => console.log('onMouseEnter')}
-                // onMouseLeave={() => console.log('onMouseLeave')}
-                // onFocus={() => console.log('onFocus')}
             >
                 <div>
                     <MessageBubble
@@ -755,14 +752,8 @@ export default function Dashboard() {
 
     async function handleSendMessage(e) {
         if (e.keyCode === 13) {
-            const scrollTop = scrollRef.current?.scrollTop
-            const clientHeight = scrollRef.current?.clientHeight
-            const scrollHeight = scrollRef.current?.scrollHeight
-            const endReached = scrollTop + clientHeight >= scrollHeight
-            console.log(scrollTop, clientHeight, scrollHeight, endReached)
-
             const newUserMessage = await sendUserMessage(channel, typingText)
-            console.log(newUserMessage)
+            // console.log(newUserMessage)
             setMessages((prevState) => [...prevState, newUserMessage])
             setTypingText('')
         }
@@ -781,11 +772,6 @@ export default function Dashboard() {
     function handleToggleEmojiMart() {
         setShowEmojiMart((prevState) => !prevState)
     }
-
-    // async function handleInvite(userId) {
-    //     const response = await inviteWithUserIds(channel, [userId])
-    //     console.log(response)
-    // }
 
     return (
         <Fragment>
@@ -1032,9 +1018,6 @@ export default function Dashboard() {
                                                     showSkinTones={false}
                                                     set="apple"
                                                     onSelect={handleEmojiMart}
-                                                    onBlur={
-                                                        handleToggleEmojiMart
-                                                    }
                                                 />
                                             )}
                                             <Button
@@ -1370,7 +1353,6 @@ export default function Dashboard() {
                             <MemoizedScrollToBottom
                                 style={{
                                     height: 'calc(100vh - 122px)',
-                                    borderBottom: `1px solid ${THIRD_COLOR}`,
                                     paddingBottom: 30,
                                     overflowX: 'hidden',
                                     overflowY: 'scroll',
