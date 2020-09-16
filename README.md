@@ -34,14 +34,14 @@
 -   [x] Sentry - error tracking
 
 -   [ ] Filter firebase
--   [ ] Design setting
+-   [x] Design settings
 -   [ ] DTO
 -   [ ] Mock data
 -   [ ] Full testing
 -   [ ] Lazy image
--   [ ] Scroll bottom
+-   [x] Scroll to bottom
 -   [ ] Load more
--   [ ] Responsive mobile
+-   [x] Responsive mobile
 -   [ ] Design calling
 -   [ ] Calling
 
