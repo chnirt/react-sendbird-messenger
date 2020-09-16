@@ -105,6 +105,7 @@ export default function Dashboard() {
     const scrollBodyDrawerRef = useRef()
 
     const [showChannel, setShowChannel] = useState(false)
+    const [showEmojiMart, setShowEmojiMart] = useState(false)
 
     /**
      * MyAutoComplete - State
@@ -222,7 +223,7 @@ export default function Dashboard() {
 
             // console.log(members)
 
-            members = members.map((member) => member.userId)
+            members = members.map((member) => member.nickname)
             const typingUsers = formatTypingUsers(members)
 
             setTypingMembers(typingUsers)
@@ -452,7 +453,7 @@ export default function Dashboard() {
                 key={channel.url}
                 onClick={() => {
                     setChannelUrl(channel.url)
-                    console.log(isMobile)
+                    // console.log(isMobile)
                     isMobile && setShowChannel(true)
                 }}
             >
@@ -777,6 +778,10 @@ export default function Dashboard() {
         setChannel(null)
     }
 
+    function handleToggleEmojiMart() {
+        setShowEmojiMart((prevState) => !prevState)
+    }
+
     // async function handleInvite(userId) {
     //     const response = await inviteWithUserIds(channel, [userId])
     //     console.log(response)
@@ -1024,41 +1029,35 @@ export default function Dashboard() {
                                                 />
                                             </Upload>
 
-                                            <Tooltip
-                                                id="emoji-mart"
-                                                placement="topRight"
-                                                title={
-                                                    <Picker
-                                                        style={{
-                                                            position:
-                                                                'absolute',
-                                                            bottom: 0,
-                                                            right: 0,
-                                                        }}
-                                                        title="Pick your emoji…"
-                                                        emoji="point_up"
-                                                        size={20}
-                                                        emojiSize={20}
-                                                        color={PRIMARY_COLOR}
-                                                        showPreview={false}
-                                                        showSkinTones={false}
-                                                        set="apple"
-                                                        onSelect={
-                                                            handleEmojiMart
-                                                        }
-                                                    />
-                                                }
-                                                color="transparent"
-                                                style={{ color: 'blue' }}
-                                                // trigger="click"
-                                            >
-                                                <Button
-                                                    style={{ border: 0 }}
-                                                    type="ghost"
-                                                    icon={<SmileOutlined />}
-                                                    size="large"
+                                            {showEmojiMart && (
+                                                <Picker
+                                                    style={{
+                                                        position: 'absolute',
+                                                        bottom: 42,
+                                                        right: 42,
+                                                    }}
+                                                    title="Pick your emoji…"
+                                                    emoji="point_up"
+                                                    size={20}
+                                                    emojiSize={20}
+                                                    color={PRIMARY_COLOR}
+                                                    showPreview={false}
+                                                    showSkinTones={false}
+                                                    set="apple"
+                                                    onSelect={handleEmojiMart}
+                                                    onBlur={
+                                                        handleToggleEmojiMart
+                                                    }
                                                 />
-                                            </Tooltip>
+                                            )}
+                                            <Button
+                                                style={{ border: 0 }}
+                                                type="ghost"
+                                                icon={<SmileOutlined />}
+                                                size="large"
+                                                onClick={handleToggleEmojiMart}
+                                            />
+
                                             <Button
                                                 style={{ border: 0 }}
                                                 type="ghost"
@@ -1224,7 +1223,7 @@ export default function Dashboard() {
                                     display: 'flex',
                                     justifyContent: 'center',
                                 }}
-                                span={18}
+                                span={12}
                             >
                                 {
                                     channel?.members.filter(
@@ -1239,8 +1238,42 @@ export default function Dashboard() {
                                     display: 'flex',
                                     justifyContent: 'flex-end',
                                 }}
-                                span={3}
-                            />
+                                span={9}
+                            >
+                                <Button
+                                    style={{ border: 0 }}
+                                    type="ghost"
+                                    icon={
+                                        <PhoneOutlined
+                                            style={{ color: PRIMARY_COLOR }}
+                                        />
+                                    }
+                                    size="large"
+                                />
+                                <Button
+                                    style={{ border: 0 }}
+                                    type="ghost"
+                                    icon={
+                                        <VideoCameraOutlined
+                                            style={{ color: PRIMARY_COLOR }}
+                                        />
+                                    }
+                                    size="large"
+                                />
+                                <Button
+                                    style={{ border: 0 }}
+                                    type="ghost"
+                                    icon={
+                                        <InfoCircleOutlined
+                                            style={{
+                                                color:
+                                                    showDetail && PRIMARY_COLOR,
+                                            }}
+                                        />
+                                    }
+                                    size="large"
+                                />
+                            </Col>
                         </Row>
                     }
                     footerStyle={{ padding: 0 }}
@@ -1292,38 +1325,32 @@ export default function Dashboard() {
                                     />
                                 </Upload>
 
-                                <Tooltip
-                                    id="emoji-mart"
-                                    placement="topRight"
-                                    title={
-                                        <Picker
-                                            style={{
-                                                position: 'absolute',
-                                                bottom: 0,
-                                                right: 0,
-                                            }}
-                                            title="Pick your emoji…"
-                                            emoji="point_up"
-                                            size={20}
-                                            emojiSize={20}
-                                            color={PRIMARY_COLOR}
-                                            showPreview={false}
-                                            showSkinTones={false}
-                                            set="apple"
-                                            onSelect={handleEmojiMart}
-                                        />
-                                    }
-                                    color="transparent"
-                                    style={{ color: 'blue' }}
-                                    // trigger="click"
-                                >
-                                    <Button
-                                        style={{ border: 0 }}
-                                        type="ghost"
-                                        icon={<SmileOutlined />}
-                                        size="large"
+                                {showEmojiMart && (
+                                    <Picker
+                                        style={{
+                                            position: 'absolute',
+                                            bottom: 42,
+                                            right: 42,
+                                        }}
+                                        title="Pick your emoji…"
+                                        emoji="point_up"
+                                        size={20}
+                                        emojiSize={20}
+                                        color={PRIMARY_COLOR}
+                                        showPreview={false}
+                                        showSkinTones={false}
+                                        set="apple"
+                                        onSelect={handleEmojiMart}
                                     />
-                                </Tooltip>
+                                )}
+                                <Button
+                                    style={{ border: 0 }}
+                                    type="ghost"
+                                    icon={<SmileOutlined />}
+                                    size="large"
+                                    onClick={handleToggleEmojiMart}
+                                />
+
                                 <Button
                                     style={{ border: 0 }}
                                     type="ghost"
@@ -1349,7 +1376,6 @@ export default function Dashboard() {
                     <div
                         style={{
                             height: 'calc(100vh - 122px)',
-                            borderBottom: `1px solid ${THIRD_COLOR}`,
                             overflowY: 'auto',
                             paddingBottom: 30,
                         }}
