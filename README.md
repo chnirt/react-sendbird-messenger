@@ -104,3 +104,5 @@
 -   Icon :https://www.flaticon.com/
 
 -   Creating and storing encrypted secrets : https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+
+-   Setting an Environment Variable in a Project: https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
