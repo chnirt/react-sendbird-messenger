@@ -158,10 +158,13 @@ export function Channels({
                             alignItems: 'center',
                             backgroundColor: 'transparent',
                         }}
-                        onClick={toggleDark}
                     >
                         {t('src.screens.dashboard.DM')}
-                        <Switch size="small" checked={isDark} />
+                        <Switch
+                            size="small"
+                            checked={isDark}
+                            onClick={toggleDark}
+                        />
                     </Menu.Item>
                     <Divider />
                     <Menu.Item

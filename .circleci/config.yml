@@ -75,15 +75,24 @@ workflows:
       - test:
           requires:
             - prepare
-      - hold:
-          type: approval
+      - build:
           requires:
             - prepare
             - test
-      - build:
-          requires:
-            - hold
-          # filters:
-          #   branches:
-          #     only:
-          #       - master
+    # jobs:
+    #   - prepare
+    #   - test:
+    #       requires:
+    #         - prepare
+    #   - hold:
+    #       type: approval
+    #       requires:
+    #         - prepare
+    #         - test
+    #   - build:
+    #       requires:
+    #         - hold
+    #       filters:
+    #         branches:
+    #           only:
+    #             - master

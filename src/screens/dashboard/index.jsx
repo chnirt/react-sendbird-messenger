@@ -102,7 +102,6 @@ export default function Dashboard() {
     const [prevMessageListQuery, setPrevMessageListQuery] = useState(null)
 
     const scrollRef = useRef()
-    const scrollBodyDrawerRef = useRef()
 
     const [showChannel, setShowChannel] = useState(false)
     const [showEmojiMart, setShowEmojiMart] = useState(false)
@@ -546,8 +545,8 @@ export default function Dashboard() {
         message.status = message?.isAuthor && checkStatus()
 
         function checkStatus() {
-            const unreadCount = channel.getReadReceipt(message)
-            const undeliveredCount = channel.getUndeliveredMemberCount(message)
+            const unreadCount = channel?.getReadReceipt(message)
+            const undeliveredCount = channel?.getUndeliveredMemberCount(message)
             // console.log( unreadCount, undeliveredCount)
 
             if (unreadCount === 0) {
@@ -761,6 +760,7 @@ export default function Dashboard() {
             const scrollHeight = scrollRef.current?.scrollHeight
             const endReached = scrollTop + clientHeight >= scrollHeight
             console.log(scrollTop, clientHeight, scrollHeight, endReached)
+
             const newUserMessage = await sendUserMessage(channel, typingText)
             console.log(newUserMessage)
             setMessages((prevState) => [...prevState, newUserMessage])
@@ -925,36 +925,23 @@ export default function Dashboard() {
                                     lg={showDetail ? 16 : 24}
                                     xl={showDetail ? 16 : 24}
                                 >
-                                    <div
-                                        style={{
-                                            height: 'calc(100vh - 122px)',
-                                            borderBottom: `1px solid ${THIRD_COLOR}`,
-                                            overflowY: 'auto',
-                                            paddingBottom: 30,
-                                        }}
-                                        ref={scrollRef}
-                                        onScroll={() => {
-                                            console.log(
-                                                scrollRef.current.scrollTop
-                                            )
-                                            if (
-                                                scrollRef.current.scrollTop ===
-                                                0
-                                            ) {
-                                                console.log(
-                                                    scrollRef.current.scrollTop
-                                                )
-                                                handleLoadMore()
-                                            }
-                                        }}
-                                    >
+                                    <div>
                                         <MessageSkeleton
                                             loading={loadingListMessages}
                                             rows={13}
                                             size="default"
                                             avatar
                                         >
-                                            <MemoizedScrollToBottom>
+                                            <MemoizedScrollToBottom
+                                                style={{
+                                                    height:
+                                                        'calc(100vh - 122px)',
+                                                    borderBottom: `1px solid ${THIRD_COLOR}`,
+                                                    overflowY: 'auto',
+                                                    paddingBottom: 30,
+                                                }}
+                                                handleLoadMore={handleLoadMore}
+                                            >
                                                 {renderListMessages(messages)}
                                             </MemoizedScrollToBottom>
                                         </MessageSkeleton>
@@ -1373,30 +1360,24 @@ export default function Dashboard() {
                     visible={showChannel}
                     width="100%"
                 >
-                    <div
-                        style={{
-                            height: 'calc(100vh - 122px)',
-                            overflowY: 'auto',
-                            paddingBottom: 30,
-                        }}
-                        ref={scrollBodyDrawerRef}
-                        onScroll={() => {
-                            // console.log(scrollRef.current)
-                            if (scrollBodyDrawerRef.current.scrollTop === 0) {
-                                console.log(
-                                    scrollBodyDrawerRef.current.scrollTop
-                                )
-                                handleLoadMore()
-                            }
-                        }}
-                    >
+                    <div>
                         <MessageSkeleton
                             loading={loadingListMessages}
                             rows={13}
                             size="default"
                             avatar
                         >
-                            <MemoizedScrollToBottom>
+                            <MemoizedScrollToBottom
+                                style={{
+                                    height: 'calc(100vh - 122px)',
+                                    borderBottom: `1px solid ${THIRD_COLOR}`,
+                                    paddingBottom: 30,
+                                    overflowX: 'hidden',
+                                    overflowY: 'scroll',
+                                    WebkitOverflowScrolling: 'touch',
+                                }}
+                                handleLoadMore={handleLoadMore}
+                            >
                                 {renderListMessages(messages)}
                             </MemoizedScrollToBottom>
                         </MessageSkeleton>
