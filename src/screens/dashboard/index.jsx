@@ -246,6 +246,7 @@ export default function Dashboard() {
             setMessages((prevState) =>
                 prevState.map((message) => {
                     if (
+                        groupChannel.lastMessage &&
                         message.messageId === groupChannel.lastMessage.messageId
                     ) {
                         return groupChannel.lastMessage
