@@ -25,7 +25,7 @@ module.exports = {
                 : []),
             new ProgressBarPlugin({
                 format:
-                    chalk.hex('#6c5ce7')('build ') +
+                    chalk.hex('#6c5ce7')('process: ') +
                     chalk.hex('#0984e3')('▯:bar▯ ') +
                     // chalk.red('▯ :bar ▯ ') +
                     chalk.hex('#00b894')('(:percent) ') +

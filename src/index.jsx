@@ -7,10 +7,7 @@ import * as serviceWorker from './serviceWorker'
 import { BrowserRouter as Router, matchPath } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import * as Sentry from '@sentry/react'
-import {
-    Integrations,
-    ReportingObserver as ReportingObserverIntegration,
-} from '@sentry/tracing'
+import { Integrations } from '@sentry/tracing'
 
 import {
     DarkProvider,
@@ -47,7 +44,6 @@ if (process.env.NODE_ENV === 'production') {
                     matchPath
                 ),
             }),
-            new ReportingObserverIntegration(),
         ],
         tracesSampleRate: 1.0,
     })
