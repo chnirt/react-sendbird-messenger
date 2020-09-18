@@ -4,7 +4,7 @@ import './index.less'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-import { BrowserRouter as Router, matchPath } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
@@ -40,8 +40,7 @@ if (process.env.NODE_ENV === 'production') {
                 // Can also use reactRouterV4Instrumentation
                 routingInstrumentation: Sentry.reactRouterV5Instrumentation(
                     history,
-                    routes,
-                    matchPath
+                    routes
                 ),
             }),
         ],
