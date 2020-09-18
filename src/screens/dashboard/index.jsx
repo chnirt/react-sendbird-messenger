@@ -142,8 +142,11 @@ export default function Dashboard() {
 
         async function fetchChannels() {
             setLoadingChannels(true)
+
             const channels = await channelListQuery()
-            // console.log(channels)
+
+            console.log(channels)
+
             channels
                 .filter((channel) => channel.channelType === 'group')
                 .map((channel) => channel.markAsDelivered())

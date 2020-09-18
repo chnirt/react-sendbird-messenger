@@ -11,6 +11,7 @@ module.exports = {
         alias: {
             '@assets': path.resolve(__dirname, './src/assets'),
             '@components': path.resolve(__dirname, './src/components'),
+            '@configs': path.resolve(__dirname, './src/configs'),
             '@constants': path.resolve(__dirname, './src/constants'),
             '@context': path.resolve(__dirname, './src/context'),
             '@helpers': path.resolve(__dirname, './src/helpers'),
@@ -68,6 +69,7 @@ module.exports = {
             moduleNameMapper: {
                 '^@assets(.*)$': '<rootDir>/src/assets$1',
                 '^@components(.*)$': '<rootDir>/src/components$1',
+                '^@configs(.*)$': '<rootDir>/src/configs$1',
                 '^@constants(.*)$': '<rootDir>/src/constants$1',
                 '^@context(.*)$': '<rootDir>/src/context$1',
                 '^@helpers(.*)$': '<rootDir>/src/helpers$1',

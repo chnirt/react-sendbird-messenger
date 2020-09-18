@@ -16,6 +16,9 @@ import {
     FirebaseProvider,
     SendBirdProvider,
 } from '@context'
+import { MyConsole } from '@configs'
+
+MyConsole.run()
 
 if (process.env.NODE_ENV === 'production') {
     const history = createBrowserHistory()
