@@ -22,3 +22,7 @@ export const ONLINE = '#73d13d'
 export const OFFLINE = '#ff4d4f'
 
 export const BASENAME = 'chnirt'
+
+export const USERNAME =
+    process.env.NODE_ENV !== 'production' ? 'chnirt@gmail.com' : ''
+export const PASSWORD = process.env.NODE_ENV !== 'production' ? '123456' : ''

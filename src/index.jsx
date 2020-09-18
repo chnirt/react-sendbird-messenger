@@ -4,9 +4,13 @@ import './index.less'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, matchPath } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 import * as Sentry from '@sentry/react'
-import { Integrations } from '@sentry/tracing'
+import {
+    Integrations,
+    ReportingObserver as ReportingObserverIntegration,
+} from '@sentry/tracing'
 
 import {
     DarkProvider,
@@ -17,9 +21,34 @@ import {
 } from '@context'
 
 if (process.env.NODE_ENV === 'production') {
+    const history = createBrowserHistory()
+
+    // Array of Route Config Objects
+    const routes = [
+        { path: '/' },
+        { path: '/register' },
+        { path: '/dashboard' },
+        { path: '/*' },
+    ]
+
     Sentry.init({
+        environment: process.env.NODE_ENV,
         dsn: process.env.REACT_APP_ST_DSN,
-        integrations: [new Integrations.BrowserTracing()],
+        release: 'react-sendbird-messenger@' + process.env.npm_package_version,
+        integrations: [
+            new Integrations.BrowserTracing({
+                tracingOrigins: [
+                    'https://react-sendbird-messenger.vercel.app/',
+                ],
+                // Can also use reactRouterV4Instrumentation
+                routingInstrumentation: Sentry.reactRouterV5Instrumentation(
+                    history,
+                    routes,
+                    matchPath
+                ),
+            }),
+            new ReportingObserverIntegration(),
+        ],
         tracesSampleRate: 1.0,
     })
 }

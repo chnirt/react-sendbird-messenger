@@ -1,6 +1,7 @@
 import React, { Suspense, Fragment } from 'react'
 import { useRoutes } from 'react-router-dom'
 import TopBarProgress from 'react-topbar-progress-indicator'
+import * as Sentry from '@sentry/react'
 import './App.less'
 import 'emoji-mart/css/emoji-mart.css'
 
@@ -82,4 +83,4 @@ function App() {
     )
 }
 
-export default App
+export default Sentry.withProfiler(App, { name: 'CustomAppName' })

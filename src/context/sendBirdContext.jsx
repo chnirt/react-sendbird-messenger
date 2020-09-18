@@ -123,45 +123,45 @@ function SendBirdValue() {
             }
 
             // The UNIQUE_HANDLER_ID below is a unique user-defined ID for a specific event handler.
-            SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
-                onRinging: (call) => {
-                    console.log(call)
-                    call.onEstablished = (call) => {
-                        // ...
-                    }
+            // SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
+            //     onRinging: (call) => {
+            //         console.log(call)
+            //         call.onEstablished = (call) => {
+            //             // ...
+            //         }
 
-                    call.onConnected = (call) => {
-                        // ...
-                    }
+            //         call.onConnected = (call) => {
+            //             // ...
+            //         }
 
-                    call.onEnded = (call) => {
-                        // ...
-                    }
+            //         call.onEnded = (call) => {
+            //             // ...
+            //         }
 
-                    call.onRemoteAudioSettingsChanged = (call) => {
-                        // ...
-                    }
+            //         call.onRemoteAudioSettingsChanged = (call) => {
+            //             // ...
+            //         }
 
-                    call.onRemoteVideoSettingsChanged = (call) => {
-                        // ...
-                    }
+            //         call.onRemoteVideoSettingsChanged = (call) => {
+            //             // ...
+            //         }
 
-                    const acceptParams = {
-                        callOption: {
-                            localMediaView: document.getElementById(
-                                'local_video_element_id'
-                            ),
-                            remoteMediaView: document.getElementById(
-                                'remote_video_element_id'
-                            ),
-                            audioEnabled: true,
-                            videoEnabled: true,
-                        },
-                    }
+            //         const acceptParams = {
+            //             callOption: {
+            //                 localMediaView: document.getElementById(
+            //                     'local_video_element_id'
+            //                 ),
+            //                 remoteMediaView: document.getElementById(
+            //                     'remote_video_element_id'
+            //                 ),
+            //                 audioEnabled: true,
+            //                 videoEnabled: true,
+            //             },
+            //         }
 
-                    call.accept(acceptParams)
-                },
-            })
+            //         call.accept(acceptParams)
+            //     },
+            // })
         } else {
             console.log('not supported')
         }
