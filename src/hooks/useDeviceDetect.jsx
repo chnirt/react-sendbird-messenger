@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
 export function useDeviceDetect() {
-    const [isMobile, setIsMobile] = useState(null)
+    const [isMobile, setIsMobile] = useState(false)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const userAgent =
             typeof navigator === 'undefined' ? '' : navigator.userAgent
         const mobile = Boolean(

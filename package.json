@@ -34,7 +34,6 @@
         "sendbird": "^3.0.133",
         "sendbird-calls": "^1.2.5",
         "source-map-explorer": "^2.5.0",
-        "terser": "3.14.1",
         "webpack": "4.42.0",
         "webpack-bundle-analyzer": "^3.8.0"
     },
@@ -49,7 +48,7 @@
         "start:mock": "env-cmd -f .env.mock craco start",
         "start:stag": "env-cmd -f .env.staging craco start",
         "start:prod": "env-cmd -f .env.production craco start",
-        "build": "CI= craco build",
+        "build": "CI= craco --max-old-space-size=8192 build",
         "build:desi": "env-cmd -f .env.design craco build",
         "build:mock": "env-cmd -f .env.mock craco build",
         "build:stag": "env-cmd -f .env.staging craco build",

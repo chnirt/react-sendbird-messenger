@@ -1,14 +1,10 @@
 import React, { Fragment } from 'react'
 
-import { Loading } from '@components'
-import { Channels, Channel } from './components'
+import { useDeviceDetect } from '@hooks'
+import Web from './web'
+import Mobile from './mobile'
 
 export default function Dashboard() {
-    return (
-        <Fragment>
-            <Loading spinning={false}>
-                Dashboard <Channels /> <Channel />
-            </Loading>
-        </Fragment>
-    )
+    const { isMobile } = useDeviceDetect()
+    return <Fragment>{isMobile ? <Mobile /> : <Web />}</Fragment>
 }

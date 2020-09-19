@@ -121,3 +121,5 @@
 -   Hide 🙈 all console logs in production with just 3 lines of code: https://dev.to/sharmakushal/hide-all-console-logs-in-production-with-just-3-lines-of-code-pp4
 
 -   Extend console's methods without losing line information: https://dev.to/maxbvrn/extend-console-s-methods-without-losing-line-information-2d68
+
+-   Builds fail in CI: https://www.gitmemory.com/issue/timarney/react-app-rewired/391/489176960
