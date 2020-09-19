@@ -36,6 +36,7 @@ function AuthValue() {
     const logout = () => {
         localStorage.removeItem('email')
         localStorage.removeItem('userId')
+        localStorage.removeItem('displayName')
         localStorage.removeItem('accessToken')
         setIsAuth(false)
     }

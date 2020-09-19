@@ -1,9 +1,10 @@
 {
-    "name": "messenger",
+    "name": "react-sendbird-messenger",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
         "@craco/craco": "^5.6.4",
+        "@sentry/integrations": "^5.23.0",
         "@sentry/react": "^5.23.0",
         "@sentry/tracing": "^5.23.0",
         "@testing-library/jest-dom": "^4.2.4",

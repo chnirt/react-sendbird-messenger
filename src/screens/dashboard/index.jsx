@@ -25,7 +25,6 @@ import {
     LeftOutlined,
 } from '@ant-design/icons'
 import moment from 'moment'
-import { Picker } from 'emoji-mart'
 
 import {
     Loading,
@@ -33,6 +32,7 @@ import {
     MessageBubble,
     MessageSkeleton,
     MemoizedScrollToBottom,
+    MyPicker,
 } from '@components'
 import { ReactComponent as Sent } from '@assets/images/chat/check.svg'
 import { ReactComponent as Delivered } from '@assets/images/chat/tick.svg'
@@ -142,8 +142,11 @@ export default function Dashboard() {
 
         async function fetchChannels() {
             setLoadingChannels(true)
+
             const channels = await channelListQuery()
-            // console.log(channels)
+
+            console.log(channels)
+
             channels
                 .filter((channel) => channel.channelType === 'group')
                 .map((channel) => channel.markAsDelivered())
@@ -1003,24 +1006,21 @@ export default function Dashboard() {
                                                 />
                                             </Upload>
 
-                                            {showEmojiMart && (
-                                                <Picker
-                                                    style={{
-                                                        position: 'absolute',
-                                                        bottom: 42,
-                                                        right: 42,
-                                                    }}
-                                                    title="Pick your emoji…"
-                                                    emoji="point_up"
-                                                    size={20}
-                                                    emojiSize={20}
-                                                    color={PRIMARY_COLOR}
-                                                    showPreview={false}
-                                                    showSkinTones={false}
-                                                    set="apple"
-                                                    onSelect={handleEmojiMart}
-                                                />
-                                            )}
+                                            <MyPicker
+                                                style={{
+                                                    position: 'absolute',
+                                                    bottom: 42,
+                                                    right: 42,
+                                                }}
+                                                show={showEmojiMart}
+                                                handleEmojiMart={
+                                                    handleEmojiMart
+                                                }
+                                                handleClickOutSide={() =>
+                                                    setShowEmojiMart(false)
+                                                }
+                                            />
+
                                             <Button
                                                 style={{ border: 0 }}
                                                 type="ghost"
@@ -1296,24 +1296,18 @@ export default function Dashboard() {
                                     />
                                 </Upload>
 
-                                {showEmojiMart && (
-                                    <Picker
-                                        style={{
-                                            position: 'absolute',
-                                            bottom: 42,
-                                            right: 42,
-                                        }}
-                                        title="Pick your emoji…"
-                                        emoji="point_up"
-                                        size={20}
-                                        emojiSize={20}
-                                        color={PRIMARY_COLOR}
-                                        showPreview={false}
-                                        showSkinTones={false}
-                                        set="apple"
-                                        onSelect={handleEmojiMart}
-                                    />
-                                )}
+                                <MyPicker
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: 42,
+                                        right: 42,
+                                    }}
+                                    show={showEmojiMart}
+                                    handleEmojiMart={handleEmojiMart}
+                                    handleClickOutSide={() =>
+                                        setShowEmojiMart(false)
+                                    }
+                                />
                                 <Button
                                     style={{ border: 0 }}
                                     type="ghost"

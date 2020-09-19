@@ -112,3 +112,7 @@
 -   Setting an Environment Variable in a Project: https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
 
 -   Shields.io: https://github.com/badges/shields
+
+-   How can I reference package version in npm script?: https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script
+
+-   Override console.log(); for production [duplicate]: https://stackoverflow.com/questions/7042611/override-console-log-for-production

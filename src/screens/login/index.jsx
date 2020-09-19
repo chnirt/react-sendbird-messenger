@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-logo-white.svg'
 import { Loading } from '@components'
 import { useAuth, useFirebase, useSendBird } from '@context'
-import { PRIMARY_COLOR } from '@constants'
+import { PRIMARY_COLOR, USERNAME, PASSWORD } from '@constants'
 
 const { Title, Text } = Typography
 
@@ -110,10 +110,8 @@ export default function Login() {
                                 name="normal_login"
                                 className="login-form"
                                 initialValues={{
-                                    // emailOrYourPhoneNumber: 'chnirt@gmail.com',
-                                    // password: '123456',
-                                    emailOrYourPhoneNumber: '',
-                                    password: '',
+                                    emailOrYourPhoneNumber: USERNAME,
+                                    password: PASSWORD,
                                     remember: true,
                                 }}
                                 onFinish={onFinish}

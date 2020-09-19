@@ -34,15 +34,12 @@ function SendBirdValue() {
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
 
-    const [connected, setConnected] = useState(false)
-
     const connectWrapper = useCallback((USER_ID = null, NICK_NAME = null) => {
         return new Promise((resolve, reject) => {
             sbRef.current.connect(USER_ID, async (user, error) => {
                 if (error) reject(error)
 
                 // console.log('connect', user)
-                setConnected(true)
                 await updateCurrentUserInfo(NICK_NAME)
                 resolve(user)
             })
@@ -61,7 +58,7 @@ function SendBirdValue() {
                 SendBirdCall.authenticate(authOption, (res, error) => {
                     if (error) {
                         // Authentication failed
-                        console.log('Authentication failed', error)
+                        // console.log('Authentication failed', error)
                         reject(error)
                     } else {
                         // Authentication succeeded
@@ -70,13 +67,13 @@ function SendBirdValue() {
                         SendBirdCall.connectWebSocket()
                             .then((res) => {
                                 /* Succeeded to connect */
-                                console.log('Succeeded to connect', res)
+                                // console.log('Succeeded to connect', res)
                             })
                             .catch((error) => {
                                 /* Failed to connect */
-                                console.log('Failed to connect', error)
+                                // console.log('Failed to connect', error)
                             })
-                        console.log('Authentication succeeded', res)
+                        // console.log('Authentication succeeded', res)
                         resolve(res)
                     }
                 })
@@ -115,10 +112,10 @@ function SendBirdValue() {
         )
 
         if (window.RTCPeerConnection) {
-            console.log('supported')
+            // console.log('supported')
             SendBirdCall.init(SB_APP_ID)
 
-            if (!userId && localStorageUserId && window.RTCPeerConnection) {
+            if (!userId && localStorageUserId) {
                 connectCallWrapper(localStorageUserId)
             }
 
@@ -163,7 +160,7 @@ function SendBirdValue() {
                 },
             })
         } else {
-            console.log('not supported')
+            // console.log('not supported')
         }
 
         return () => {
@@ -670,10 +667,10 @@ function SendBirdValue() {
                 channelListQuery.order = 'latest_last_message' // 'chronological', 'latest_last_message', 'channel_name_alphabetical', and 'metadata_value_alphabetical'
                 channelListQuery.limit = 15 // The value of pagination limit could be set up to 100.
 
-                if (connected && channelListQuery.hasNext) {
+                if (channelListQuery.hasNext) {
                     channelListQuery.next((channelList, error) => {
                         if (error) reject(error)
-
+                        // console.log('channelList -->', channelList)
                         resolve(channelList)
                     })
                 }
