@@ -2,6 +2,8 @@ import React, { Fragment } from 'react'
 import { Divider, Drawer, Menu, Select, Switch } from 'antd'
 import { useTranslation } from 'react-i18next'
 
+import { useDark, useI18n } from '@context'
+
 const { Option } = Select
 
 export function MyMenu({
@@ -9,7 +11,13 @@ export function MyMenu({
     visible = false,
     onClose = () => {},
 }) {
+    const { isDark, toggleDark } = useDark()
+    const { language, changeLanguage } = useI18n()
     const { t } = useTranslation()
+
+    function handleLanguageChange(value) {
+        changeLanguage(value)
+    }
 
     return (
         <Fragment>
@@ -43,14 +51,14 @@ export function MyMenu({
                         {t('src.screens.dashboard.Language')}
                         <div id="my-language">
                             <Select
-                                defaultValue={'en'}
+                                defaultValue={language}
                                 style={{
                                     width: 60,
                                     textAlign: 'right',
                                 }}
                                 bordered={false}
                                 showArrow={false}
-                                onChange={() => {}}
+                                onChange={handleLanguageChange}
                             >
                                 <Option value="en">EN</Option>
                                 <Option value="vi">VI</Option>
@@ -68,8 +76,8 @@ export function MyMenu({
                         {t('src.screens.dashboard.DM')}
                         <Switch
                             size="small"
-                            checked={false}
-                            onClick={() => {}}
+                            checked={isDark}
+                            onClick={toggleDark}
                         />
                     </Menu.Item>
                     <Divider />

@@ -13,11 +13,10 @@ export function Chat({ detailVisible = false }) {
                 lg={detailVisible ? 16 : 24}
                 xl={detailVisible ? 16 : 24}
             >
-                <div>
-                    <Messages />
+                <Messages />
 
-                    <Typing />
-                </div>
+                <Typing />
+
                 <Row
                     style={{
                         height: 60,
