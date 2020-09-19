@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
+import { Loading } from '@components'
 import { Channels, Channel } from './components'
 
 export default function Dashboard() {
     return (
-        <div>
-            Dashboard <Channels /> <Channel />
-        </div>
+        <Fragment>
+            <Loading spinning={false}>
+                Dashboard <Channels /> <Channel />
+            </Loading>
+        </Fragment>
     )
 }
