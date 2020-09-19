@@ -19,7 +19,6 @@ import {
     VideoCameraOutlined,
     InfoCircleOutlined,
     PictureOutlined,
-    SmileOutlined,
     LikeOutlined,
     LoadingOutlined,
     LeftOutlined,
@@ -32,7 +31,7 @@ import {
     MessageBubble,
     MessageSkeleton,
     MemoizedScrollToBottom,
-    MyPicker,
+    PickerButton,
 } from '@components'
 import { ReactComponent as Sent } from '@assets/images/chat/check.svg'
 import { ReactComponent as Delivered } from '@assets/images/chat/tick.svg'
@@ -102,7 +101,6 @@ export default function Dashboard() {
     const [prevMessageListQuery, setPrevMessageListQuery] = useState(null)
 
     const [showChannel, setShowChannel] = useState(false)
-    const [showEmojiMart, setShowEmojiMart] = useState(false)
 
     /**
      * MyAutoComplete - State
@@ -773,10 +771,6 @@ export default function Dashboard() {
         setChannel(null)
     }
 
-    function handleToggleEmojiMart() {
-        setShowEmojiMart((prevState) => !prevState)
-    }
-
     return (
         <Fragment>
             <Loading spinning={loadingLogout}>
@@ -1006,27 +1000,15 @@ export default function Dashboard() {
                                                 />
                                             </Upload>
 
-                                            <MyPicker
+                                            <PickerButton
                                                 style={{
                                                     position: 'absolute',
                                                     bottom: 42,
                                                     right: 42,
                                                 }}
-                                                show={showEmojiMart}
                                                 handleEmojiMart={
                                                     handleEmojiMart
                                                 }
-                                                handleClickOutSide={() =>
-                                                    setShowEmojiMart(false)
-                                                }
-                                            />
-
-                                            <Button
-                                                style={{ border: 0 }}
-                                                type="ghost"
-                                                icon={<SmileOutlined />}
-                                                size="large"
-                                                onClick={handleToggleEmojiMart}
                                             />
 
                                             <Button
@@ -1296,24 +1278,13 @@ export default function Dashboard() {
                                     />
                                 </Upload>
 
-                                <MyPicker
+                                <PickerButton
                                     style={{
                                         position: 'absolute',
                                         bottom: 42,
                                         right: 42,
                                     }}
-                                    show={showEmojiMart}
                                     handleEmojiMart={handleEmojiMart}
-                                    handleClickOutSide={() =>
-                                        setShowEmojiMart(false)
-                                    }
-                                />
-                                <Button
-                                    style={{ border: 0 }}
-                                    type="ghost"
-                                    icon={<SmileOutlined />}
-                                    size="large"
-                                    onClick={handleToggleEmojiMart}
                                 />
 
                                 <Button

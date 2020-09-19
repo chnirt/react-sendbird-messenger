@@ -4,9 +4,10 @@ import { Col, Row } from 'antd'
 import { Loading } from '@components'
 import { THIRD_COLOR } from '@constants'
 
-import { Channels, Channel } from './components'
+import { Channels, Channel, EmptyChannel } from './components'
 
 export default function Web() {
+    const channel = true
     return (
         <Fragment>
             <Loading spinning={false}>
@@ -27,7 +28,9 @@ export default function Web() {
                     >
                         <Channels />
                     </Col>
-                    <Channel />
+                    <Col xs={0} sm={18} md={18} lg={18} xl={18}>
+                        {channel ? <Channel /> : <EmptyChannel />}
+                    </Col>
                 </Row>
             </Loading>
         </Fragment>
