@@ -44,6 +44,7 @@
 -   [x] Responsive mobile
 -   [ ] Design calling
 -   [ ] Calling
+-   [x] Custom console.log for dev, prod
 
 ### Learn more
 
@@ -116,3 +117,7 @@
 -   How can I reference package version in npm script?: https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script
 
 -   Override console.log(); for production [duplicate]: https://stackoverflow.com/questions/7042611/override-console-log-for-production
+
+-   Hide 🙈 all console logs in production with just 3 lines of code: https://dev.to/sharmakushal/hide-all-console-logs-in-production-with-just-3-lines-of-code-pp4
+
+-   Extend console's methods without losing line information: https://dev.to/maxbvrn/extend-console-s-methods-without-losing-line-information-2d68

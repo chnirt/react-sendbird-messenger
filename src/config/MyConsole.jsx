@@ -2,37 +2,66 @@ import { LOG, INFO, WARN, ERROR } from '@constants'
 
 export const MyConsole = {
     run() {
-        // define a new console
-        function config(status, oldCons, msg) {
-            if (process.env.NODE_ENV === 'production') return
-
-            if (typeof msg === 'object') {
-                oldCons.log(msg)
-                return
-            }
-            switch (status) {
-                case 'log':
-                    oldCons.log('%c' + msg, `color:${LOG};font-weight:bold;`)
-                    break
-                case 'info':
-                    oldCons.log('%c' + msg, `color:${INFO};font-weight:bold;`)
-                    break
-                case 'warm':
-                    oldCons.log('%c' + msg, `color:${WARN};font-weight:bold;`)
-                    break
-                default:
-                    oldCons.log('%c' + msg, `color:${ERROR};font-weight:bold;`)
-            }
+        if (process.env.NODE_ENV === 'production') {
+            console.log = function () {}
+            console.info = function () {}
+            console.warn = function () {}
+            console.error = function () {}
         }
 
-        var console = ((oldCons) => ({
-            log: (msg) => config('log', oldCons, msg),
-            info: (msg) => config('info', oldCons, msg),
-            warn: (msg) => config('warn', oldCons, msg),
-            error: (msg) => config('error', oldCons, msg),
-        }))(window.console)
+        var LOG_PREFIX =
+            // new Date().getDate() +
+            // '.' +
+            // new Date().getMonth() +
+            // '.' +
+            // new Date().getFullYear() +
+            // ' / ' +
+            new Date().getHours() +
+            ':' +
+            new Date().getMinutes() +
+            ':' +
+            new Date().getSeconds()
 
-        //Then redefine the old console
-        window.console = console
+        const styles = (color) =>
+            [
+                `background: ${color}`,
+                'border-radius: 3px',
+                'color: white',
+                'font-weight: bold',
+                'padding: 2px 5px',
+            ].join(';')
+
+        console.log = (function () {
+            return Function.prototype.bind.call(
+                console.log,
+                console,
+                `%c${LOG_PREFIX} Log`,
+                styles(LOG)
+            )
+        })()
+        console.info = (function () {
+            return Function.prototype.bind.call(
+                console.info,
+                console,
+                `%c${LOG_PREFIX} Info`,
+                styles(INFO)
+            )
+        })()
+        console.warn = (function () {
+            return Function.prototype.bind.call(
+                console.warn,
+                console,
+                `%c${LOG_PREFIX} Warn`,
+                styles(WARN)
+            )
+        })()
+        console.error = (function () {
+            return Function.prototype.bind.call(
+                console.error,
+                console,
+                `%c${LOG_PREFIX} Error`,
+                styles(ERROR)
+            )
+        })()
     },
 }
