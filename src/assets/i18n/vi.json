@@ -22,7 +22,10 @@
                 "KMSI": "Giữ tôi đăng nhập",
                 "NOS": "Không có trên SendBird?"
             },
-            "notfound": {},
+            "notfound": {
+                "STPYVDNE": "Xin lỗi, trang bạn đã truy cập không tồn tại.",
+                "BH": "Về trang chủ"
+            },
             "register": {
                 "WEONCPUTRY": "Mọi người có thể sử dụng email hoặc số nào để liên hệ với bạn?",
                 "CA": "Tạo tài khoản",

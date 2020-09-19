@@ -22,7 +22,10 @@
                 "KMSI": "Keep me signed in",
                 "NOS": "Not on SendBird?"
             },
-            "notfound": {},
+            "notfound": {
+                "STPYVDNE": "Sorry, the page you visited does not exist.",
+                "BH": "Back Home"
+            },
             "register": {
                 "WEONCPUTRY": "What email or number can people use to reach you?",
                 "CA": "Create account",

@@ -62,7 +62,14 @@ export default function Login() {
                                 <Logo fill={PRIMARY_COLOR} />
                             </Row>
                             <Row style={{ justifyContent: 'center' }}>
-                                <Title level={2}>SendBird Messenger</Title>
+                                <Title
+                                    style={{
+                                        fontFamily: '"Hanalei", cursive',
+                                    }}
+                                    level={2}
+                                >
+                                    SendBird Messenger
+                                </Title>
                             </Row>
                             <Row
                                 style={{
