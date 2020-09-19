@@ -42,6 +42,7 @@ export default function Login() {
                 // console.log(idToken)
                 login(user, idToken)
                 connect(user.email, user.displayName)
+                setLoading(false)
             })
         } catch (error) {
             // console.log(error.message)
@@ -53,9 +54,8 @@ export default function Login() {
                 },
                 placement: 'bottomRight',
             })
+            setLoading(false)
         }
-
-        setLoading(false)
     }
 
     function onFinishFailed(errorInfo) {

@@ -5,46 +5,46 @@ import { Layout } from '@layout'
 export const designRoutes = [
     {
         path: '/',
-        element: <Loadable route="Login" folder="design" />,
+        element: <Loadable route="login" folder="design" />,
     },
     {
         path: '/register',
-        element: <Loadable route="Register" folder="design" />,
+        element: <Loadable route="register" folder="design" />,
     },
     {
         path: 'dashboard',
         element: (
             <Layout>
-                <Loadable route="Dashboard" folder="design" />
+                <Loadable route="dashboard" folder="design" />
             </Layout>
         ),
     },
     {
         path: '*',
-        element: <Loadable route="Notfound" folder="design" />,
+        element: <Loadable route="notfound" folder="design" />,
     },
 ]
 
 export const mockRoutes = [
     {
         path: '/',
-        element: <Loadable route="Login" folder="mock" />,
+        element: <Loadable route="login" folder="mock" />,
     },
     {
         path: '/register',
-        element: <Loadable route="Register" folder="mock" />,
+        element: <Loadable route="register" folder="mock" />,
     },
     {
         path: 'dashboard',
         element: (
             <Layout>
-                <Loadable route="Dashboard" folder="mock" />
+                <Loadable route="dashboard" folder="mock" />
             </Layout>
         ),
     },
     {
         path: '*',
-        element: <Loadable route="Notfound" folder="mock" />,
+        element: <Loadable route="notfound" folder="mock" />,
     },
 ]
 
@@ -55,7 +55,7 @@ export const appRoutes = [
         path: '/',
         element: (
             <PublicRoute>
-                <Loadable route="Login" folder="screens" />
+                <Loadable route="login" folder="screens" />
             </PublicRoute>
         ),
     },
@@ -63,7 +63,7 @@ export const appRoutes = [
         path: '/register',
         element: (
             <PublicRoute>
-                <Loadable route="Register" folder="screens" />
+                <Loadable route="register" folder="screens" />
             </PublicRoute>
         ),
     },
@@ -72,13 +72,13 @@ export const appRoutes = [
         element: (
             <PrivateRoute>
                 <Layout>
-                    <Loadable route="Dashboard" folder="screens" />
+                    <Loadable route="dashboard" folder="screens" />
                 </Layout>
             </PrivateRoute>
         ),
     },
     {
         path: '*',
-        element: <Loadable route="Notfound" folder="screens" />,
+        element: <Loadable route="notfound" folder="screens" />,
     },
 ]

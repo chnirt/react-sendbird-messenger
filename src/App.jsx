@@ -18,10 +18,10 @@ TopBarProgress.config({
 })
 
 function App() {
-    console.log(process.env.REACT_APP_TARGET_ENV)
-    console.info(process.env.REACT_APP_TARGET_ENV)
-    console.warn(process.env.REACT_APP_TARGET_ENV)
-    console.error(process.env.REACT_APP_TARGET_ENV)
+    // console.log(process.env.REACT_APP_TARGET_ENV)
+    // console.info(process.env.REACT_APP_TARGET_ENV)
+    // console.warn(process.env.REACT_APP_TARGET_ENV)
+    // console.error(process.env.REACT_APP_TARGET_ENV)
 
     // We removed the <BrowserRouter> element from App because the
     // useRoutes hook needs to be in the context of a <BrowserRouter>
