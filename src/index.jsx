@@ -9,8 +9,8 @@ import { createBrowserHistory } from 'history'
 import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
 
-import '@assets/fonts/CutiveMono-Regular.ttf'
-import '@assets/fonts/Hanalei-Regular.ttf'
+// import '@assets/fonts/CutiveMono-Regular.ttf'
+// import '@assets/fonts/Hanalei-Regular.ttf'
 import {
     DarkProvider,
     I18nProvider,
