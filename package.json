@@ -48,7 +48,7 @@
         "start:mock": "env-cmd -f .env.mock craco start",
         "start:stag": "env-cmd -f .env.staging craco start",
         "start:prod": "env-cmd -f .env.production craco start",
-        "build": "CI= craco --max-old-space-size=8192 build",
+        "build": "CI= craco build",
         "build:desi": "env-cmd -f .env.design craco build",
         "build:mock": "env-cmd -f .env.mock craco build",
         "build:stag": "env-cmd -f .env.staging craco build",

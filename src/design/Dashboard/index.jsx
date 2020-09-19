@@ -6,5 +6,6 @@ import Mobile from './mobile'
 
 export default function Dashboard() {
     const { isMobile } = useDeviceDetect()
+
     return <Fragment>{isMobile ? <Mobile /> : <Web />}</Fragment>
 }
