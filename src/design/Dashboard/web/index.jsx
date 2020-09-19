@@ -25,8 +25,9 @@ export default function Web() {
                         lg={6}
                         xl={6}
                     >
-                        Dashboard <Channels /> <Channel />
+                        <Channels />
                     </Col>
+                    <Channel />
                 </Row>
             </Loading>
         </Fragment>
