@@ -1,8 +1,8 @@
 import React, { lazy } from 'react'
 
-export const Loadable = ({ route = '', ...rest }) => {
+export const Loadable = ({ route = 'Login', folder = 'screens', ...rest }) => {
     const MyComponent = lazy(() => {
-        return import(`../screens/${route}`)
+        return import(`../${folder}/${route}`)
     })
 
     return <MyComponent {...rest} />

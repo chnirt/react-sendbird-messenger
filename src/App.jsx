@@ -5,9 +5,8 @@ import * as Sentry from '@sentry/react'
 import './App.less'
 import 'emoji-mart/css/emoji-mart.css'
 
-import { PublicRoute, PrivateRoute, Loadable } from '@helpers'
-import { Layout } from '@layout'
 import { PRIMARY_COLOR } from '@constants'
+import { designRoutes, mockRoutes, appRoutes } from '@routes'
 
 TopBarProgress.config({
     barColors: {
@@ -19,45 +18,20 @@ TopBarProgress.config({
 })
 
 function App() {
+    console.log(process.env.REACT_APP_TARGET_ENV)
+
     // We removed the <BrowserRouter> element from App because the
     // useRoutes hook needs to be in the context of a <BrowserRouter>
     // element. This is a common pattern with React Router apps that
     // are rendered in different environments. To render an <App>,
     // you'll need to wrap it in your own <BrowserRouter> element.
-    let element = useRoutes([
-        // A route object has the same properties as a <Route>
-        // element. The `children` is just an array of child routes.
-        {
-            path: '/',
-            element: (
-                <PublicRoute>
-                    <Loadable route="login" />
-                </PublicRoute>
-            ),
-        },
-        {
-            path: '/register',
-            element: (
-                <PublicRoute>
-                    <Loadable route="register" />
-                </PublicRoute>
-            ),
-        },
-        {
-            path: 'dashboard',
-            element: (
-                <PrivateRoute>
-                    <Layout>
-                        <Loadable route="dashboard" />
-                    </Layout>
-                </PrivateRoute>
-            ),
-        },
-        {
-            path: '*',
-            element: <Loadable route="notfound" />,
-        },
-    ])
+    let element = useRoutes(
+        process.env.REACT_APP_TARGET_ENV === 'design'
+            ? designRoutes
+            : process.env.REACT_APP_TARGET_ENV === 'mock'
+            ? mockRoutes
+            : appRoutes
+    )
 
     return (
         <Fragment>
