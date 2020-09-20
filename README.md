@@ -6,7 +6,8 @@
 
 ### Life cycle processes.
 
-[![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger)
+<!-- [![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger) -->
+
 ![CI/CD](https://github.com/chnirt/react-sendbird-messenger/workflows/GithubCI/badge.svg)
 [![GitHub issues](https://img.shields.io/github/issues/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger/issues)
 [![GitHub forks](https://img.shields.io/github/forks/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger/network)

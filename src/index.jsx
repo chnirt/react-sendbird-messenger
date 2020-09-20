@@ -17,6 +17,8 @@ import {
     SendBirdProvider,
 } from '@context'
 import { MyConsole } from '@config'
+import '@assets/fonts/CutiveMono-Regular.ttf'
+import '@assets/fonts/Hanalei-Regular.ttf'
 
 MyConsole.run()
 

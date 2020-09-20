@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = {
     webpack: {
         alias: {
+            '@animations': path.resolve(__dirname, './src/animations'),
             '@assets': path.resolve(__dirname, './src/assets'),
             '@components': path.resolve(__dirname, './src/components'),
             '@config': path.resolve(__dirname, './src/config'),
@@ -68,6 +69,7 @@ module.exports = {
     jest: {
         configure: {
             moduleNameMapper: {
+                '^@animations(.*)$': '<rootDir>/src/animations$1',
                 '^@assets(.*)$': '<rootDir>/src/assets$1',
                 '^@components(.*)$': '<rootDir>/src/components$1',
                 '^@config(.*)$': '<rootDir>/src/config$1',

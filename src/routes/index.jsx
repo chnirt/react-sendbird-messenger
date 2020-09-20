@@ -1,11 +1,17 @@
 import React from 'react'
+
 import { PublicRoute, PrivateRoute, Loadable } from '@helpers'
 import { Layout } from '@layout'
+import { Fade } from '@animations'
 
 export const designRoutes = [
     {
         path: '/',
-        element: <Loadable route="login" folder="design" />,
+        element: (
+            <Fade>
+                <Loadable route="login" folder="design" />
+            </Fade>
+        ),
     },
     {
         path: '/register',
@@ -14,9 +20,11 @@ export const designRoutes = [
     {
         path: 'dashboard',
         element: (
-            <Layout>
-                <Loadable route="dashboard" folder="design" />
-            </Layout>
+            <Fade>
+                <Layout>
+                    <Loadable route="dashboard" folder="design" />
+                </Layout>
+            </Fade>
         ),
     },
     {
