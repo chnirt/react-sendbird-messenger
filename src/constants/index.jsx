@@ -24,6 +24,8 @@ export const THIRD_COLOR = '#d9d9d9'
 export const FOURTH_COLOR = '#f0f0f0'
 export const ONLINE = '#73d13d'
 export const OFFLINE = '#ff4d4f'
+export const ACCEPT = '#52c41a'
+export const REJECT = '#f5222d'
 
 // console.log
 export const LOG = '#52c41a'

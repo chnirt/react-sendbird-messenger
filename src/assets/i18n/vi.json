@@ -2,6 +2,9 @@
     "hello": "Xin chào!",
 
     "src": {
+        "components": {
+            "IC": "Cuộc gọi đến"
+        },
         "screens": {
             "dashboard": {
                 "Settings": "Cài đặt",

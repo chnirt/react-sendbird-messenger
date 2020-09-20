@@ -20,11 +20,9 @@ export const designRoutes = [
     {
         path: 'dashboard',
         element: (
-            <Fade>
-                <Layout>
-                    <Loadable route="dashboard" folder="design" />
-                </Layout>
-            </Fade>
+            <Layout>
+                <Loadable route="dashboard" folder="design" />
+            </Layout>
         ),
     },
     {

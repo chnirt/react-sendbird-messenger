@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Button, Col, Row, Typography, Avatar } from 'antd'
 import {
     PhoneOutlined,
@@ -7,11 +7,27 @@ import {
 } from '@ant-design/icons'
 
 import { PRIMARY_COLOR, SECONDARY_COLOR, THIRD_COLOR } from '@constants'
+import { IncomingCallModal } from '@components'
 
 const { Title } = Typography
 
 export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
     const nickname = 'Chnirt'
+    const [showIncomingCall, setShowIncomingCall] = useState(!false)
+
+    function handleAudioCall() {
+        setShowIncomingCall((prevState) => !prevState)
+    }
+
+    function handleVideoCall() {
+        setShowIncomingCall((prevState) => !prevState)
+    }
+
+    function handleOk() {}
+
+    function handleCancel() {
+        setShowIncomingCall(false)
+    }
 
     return (
         <Fragment>
@@ -76,6 +92,7 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
                             <PhoneOutlined style={{ color: PRIMARY_COLOR }} />
                         }
                         size="large"
+                        onClick={handleAudioCall}
                     />
                     <Button
                         style={{ border: 0 }}
@@ -86,6 +103,7 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
                             />
                         }
                         size="large"
+                        onClick={handleVideoCall}
                     />
                     <Button
                         style={{ border: 0 }}
@@ -102,6 +120,12 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
                     />
                 </Col>
             </Row>
+
+            <IncomingCallModal
+                visible={showIncomingCall}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            />
         </Fragment>
     )
 }

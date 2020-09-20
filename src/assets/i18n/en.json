@@ -2,6 +2,9 @@
     "hello": "Hello!",
 
     "src": {
+        "components": {
+            "IC": "Incoming Call"
+        },
         "screens": {
             "dashboard": {
                 "Settings": "Settings",
