@@ -1,98 +1,100 @@
 version: 2.1
 orbs:
-  slack: circleci/slack@3.4.2
+    slack: circleci/slack@3.4.2
 jobs:
-  prepare:
-    # pre-built images: https://circleci.com/docs/2.0/circleci-images/
-    docker:
-      - image: circleci/node:10-browsers
-    steps:
-      - checkout
-      # - run:
-      #     name: Install yarn
-      #     command: curl -o- -L https://yarnpkg.com/install.sh | bash
-      - run:
-          name: Compute version number
-          command: echo "0.0.${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1:0:7}" | tee version.txt
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Dependencies
-          command: yarn install
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-            - node_modules
-      - store_artifacts:
-          path: yarn.lock
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-  test:
-    docker:
-      - image: circleci/node:10-browsers
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Test
-          command: yarn test
-      # - slack/notify:
-      #     color: '#762FDD'
-      #     mentions: ''
-      #     message: Test successfully 👻, Merge code please!!!
-      # - slack/status:
-      #     fail_only: true
-      #     mentions: ''
-  build:
-    docker:
-      - image: circleci/node:10-browsers
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Build
-          command: yarn build
-      - slack/notify:
-          color: "#762FDD"
-          mentions: ""
-          message: Build successfully 👻
-      - slack/status:
-          fail_only: true
-          mentions: ""
+    prepare:
+        # pre-built images: https://circleci.com/docs/2.0/circleci-images/
+        docker:
+            - image: circleci/node:10-browsers
+        steps:
+            - checkout
+            # - run:
+            #     name: Install yarn
+            #     command: curl -o- -L https://yarnpkg.com/install.sh | bash
+            - run:
+                  name: Compute version number
+                  command: echo "0.0.${CIRCLE_BUILD_NUM}-${CIRCLE_SHA1:0:7}" | tee version.txt
+            - restore_cache:
+                  name: Restore Yarn Package Cache
+                  keys:
+                      - yarn-packages-{{ checksum "yarn.lock" }}
+            - run:
+                  name: Install Dependencies
+                  command: yarn install
+            - save_cache:
+                  name: Save Yarn Package Cache
+                  key: yarn-packages-{{ checksum "yarn.lock" }}
+                  paths:
+                      - ~/.cache/yarn
+                      - node_modules
+            - store_artifacts:
+                  path: yarn.lock
+            - persist_to_workspace:
+                  root: .
+                  paths:
+                      - .
+    test:
+        docker:
+            - image: circleci/node:10-browsers
+        steps:
+            - checkout
+            - attach_workspace:
+                  at: .
+            - run:
+                  name: Test
+                  command: yarn test
+            # - slack/notify:
+            #     color: '#762FDD'
+            #     mentions: ''
+            #     message: Test successfully 👻, Merge code please!!!
+            # - slack/status:
+            #     fail_only: true
+            #     mentions: ''
+    build:
+        docker:
+            - image: circleci/node:10-browsers
+        steps:
+            - checkout
+            - attach_workspace:
+                  at: .
+            - run:
+                  name: Build
+                  command: yarn build
+                  environment:
+                      NODE_OPTIONS: --max_old_space_size=8192
+            - slack/notify:
+                  color: '#762FDD'
+                  mentions: ''
+                  message: Build successfully 👻
+            - slack/status:
+                  fail_only: true
+                  mentions: ''
 # Orchestrate our job run sequence
 workflows:
-  build_and_test:
-    jobs:
-      - prepare
-      - test:
-          requires:
+    build_and_test:
+        jobs:
             - prepare
-      - build:
-          requires:
-            - prepare
-            - test
-    # jobs:
-    #   - prepare
-    #   - test:
-    #       requires:
-    #         - prepare
-    #   - hold:
-    #       type: approval
-    #       requires:
-    #         - prepare
-    #         - test
-    #   - build:
-    #       requires:
-    #         - hold
-    #       filters:
-    #         branches:
-    #           only:
-    #             - master
+            - test:
+                  requires:
+                      - prepare
+            - build:
+                  requires:
+                      - prepare
+                      - test
+        # jobs:
+        #   - prepare
+        #   - test:
+        #       requires:
+        #         - prepare
+        #   - hold:
+        #       type: approval
+        #       requires:
+        #         - prepare
+        #         - test
+        #   - build:
+        #       requires:
+        #         - hold
+        #       filters:
+        #         branches:
+        #           only:
+        #             - master

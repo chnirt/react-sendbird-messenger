@@ -123,3 +123,5 @@
 -   Extend console's methods without losing line information: https://dev.to/maxbvrn/extend-console-s-methods-without-losing-line-information-2d68
 
 -   Builds fail in CI: https://www.gitmemory.com/issue/timarney/react-app-rewired/391/489176960
+
+-   UNIT TESTS-ENOMEM: not enough memory, read: https://discuss.circleci.com/t/unit-tests-enomem-not-enough-memory-read/35695
