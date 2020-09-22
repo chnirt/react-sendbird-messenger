@@ -2,16 +2,11 @@ import React from 'react'
 
 import { PublicRoute, PrivateRoute, Loadable } from '@helpers'
 import { Layout } from '@layout'
-import { Fade } from '@animations'
 
 export const designRoutes = [
     {
         path: '/',
-        element: (
-            <Fade>
-                <Loadable route="login" folder="design" />
-            </Fade>
-        ),
+        element: <Loadable route="login" folder="design" />,
     },
     {
         path: '/register',

@@ -15,7 +15,7 @@ export function MyMenu({
     const { language, changeLanguage } = useI18n()
     const { t } = useTranslation()
 
-    function handleLanguageChange(value) {
+    const handleLanguageChange = (value) => {
         changeLanguage(value)
     }
 

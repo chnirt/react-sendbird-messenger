@@ -3,10 +3,18 @@ import { Row, Col, Button } from 'antd'
 import { SettingOutlined, FormOutlined } from '@ant-design/icons'
 
 import { PRIMARY_COLOR, THIRD_COLOR } from '@constants'
+import { useDashboard } from '@context'
 import { MyMenu } from './components'
 
 export function Header() {
+    const { setChannel } = useDashboard()
+
     const [showMenu, setShowMenu] = useState(false)
+
+    const navigateDashboard = () => {
+        setChannel(null)
+    }
+
     return (
         <Fragment>
             <Row
@@ -37,7 +45,7 @@ export function Header() {
                     style={{ display: 'flex', justifyContent: 'center' }}
                     span={18}
                 >
-                    <Button onClick={() => {}} type="link">
+                    <Button onClick={navigateDashboard} type="link">
                         SendBird Messenger
                     </Button>
                 </Col>

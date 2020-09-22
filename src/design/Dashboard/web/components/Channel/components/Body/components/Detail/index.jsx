@@ -1,13 +1,38 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Avatar, Button, Col, Collapse, Divider, Row, Typography } from 'antd'
+import { useTranslation } from 'react-i18next'
 
 import { PRIMARY_COLOR, SECONDARY_COLOR, THIRD_COLOR } from '@constants'
+import { useDashboard } from '@context'
+import { capitalizeFirstLetter, firstCharacterOfEachString } from '@utils'
+import { getMembers } from '@mock'
+import { MemberItem } from './components'
 
 const { Title } = Typography
 const { Panel } = Collapse
 
 export function Detail() {
-    const nickname = 'Chnirt'
+    const { t } = useTranslation()
+    const { channel } = useDashboard()
+
+    const [members, setMembers] = useState([])
+
+    useEffect(() => {
+        const fetchMembers = async () => {
+            const memberList = await getMembers()
+            setMembers(memberList)
+        }
+        fetchMembers()
+    }, [])
+
+    const handleLeaveRoom = () => {}
+
+    const url = channel.url
+    const shortName = capitalizeFirstLetter(
+        firstCharacterOfEachString(channel.name)
+    )
+    const name = channel.name
+
     return (
         <Fragment>
             <Col
@@ -37,25 +62,9 @@ export function Detail() {
                             marginRight: 12,
                         }}
                         size={64}
-                        src={
-                            // channel?.members.filter(
-                            //     (member) =>
-                            //         member.userId !==
-                            //         localStorage.getItem('userId')
-                            // )[0].profileUrl
-                            nickname
-                        }
+                        src={url}
                     >
-                        {/* {capitalizeFirstLetter(
-                            firstCharacterOfEachString(
-                                channel?.members.filter(
-                                    (member) =>
-                                        member.userId !==
-                                        localStorage.getItem('userId')
-                                )[0].nickname
-                            )
-                        )} */}
-                        {nickname}
+                        {shortName}
                     </Avatar>
                 </Row>
                 <Row
@@ -68,14 +77,7 @@ export function Detail() {
                     }}
                 >
                     <Title style={{ margin: 0 }} level={3}>
-                        {/* {
-                            channel?.members.filter(
-                                (member) =>
-                                    member.userId !==
-                                    localStorage.getItem('userId')
-                            )[0].nickname
-                        } */}
-                        {nickname}
+                        {name}
                     </Title>
                 </Row>
                 <Divider />
@@ -91,13 +93,15 @@ export function Detail() {
                         key={0}
                         // showArrow={false}
                     >
-                        {/* {renderMembers(channel?.members)} */}
+                        {members.map((member) => (
+                            <MemberItem member={member} />
+                        ))}
                     </Panel>
                 </Collapse>
                 <Divider />
                 <Row>
-                    <Button onClick={() => {}} danger type="link">
-                        Leave Room
+                    <Button onClick={handleLeaveRoom} danger type="link">
+                        {t('src.screens.dashboard.components.LR')}
                     </Button>
                 </Row>
             </Col>

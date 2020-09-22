@@ -2,7 +2,6 @@ import React, { Suspense, Fragment } from 'react'
 import { useRoutes } from 'react-router-dom'
 import TopBarProgress from 'react-topbar-progress-indicator'
 import * as Sentry from '@sentry/react'
-import { AnimatePresence } from 'framer-motion'
 import './App.less'
 import 'emoji-mart/css/emoji-mart.css'
 
@@ -55,7 +54,7 @@ function App() {
                     </div>
                 }
             >
-                <AnimatePresence exitBeforeEnter>{element}</AnimatePresence>
+                {element}
             </Suspense>
         </Fragment>
     )

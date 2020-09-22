@@ -3,11 +3,12 @@ import { Col, Row } from 'antd'
 
 import { Loading } from '@components'
 import { THIRD_COLOR } from '@constants'
-
+import { useDashboard } from '@context'
 import { Channels, Channel, EmptyChannel } from './components'
 
 export default function Web() {
-    const channel = true
+    const { channel } = useDashboard()
+
     return (
         <Fragment>
             <Loading spinning={false}>

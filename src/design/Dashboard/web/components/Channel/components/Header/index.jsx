@@ -8,26 +8,35 @@ import {
 
 import { PRIMARY_COLOR, SECONDARY_COLOR, THIRD_COLOR } from '@constants'
 import { IncomingCallModal } from '@components'
+import { useDashboard } from '@context'
+import { capitalizeFirstLetter, firstCharacterOfEachString } from '@utils'
 
 const { Title } = Typography
 
 export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
-    const nickname = 'Chnirt'
-    const [showIncomingCall, setShowIncomingCall] = useState(!false)
+    const { channel } = useDashboard()
 
-    function handleAudioCall() {
+    const [showIncomingCall, setShowIncomingCall] = useState(false)
+
+    const handleAudioCall = () => {
         setShowIncomingCall((prevState) => !prevState)
     }
 
-    function handleVideoCall() {
+    const handleVideoCall = () => {
         setShowIncomingCall((prevState) => !prevState)
     }
 
-    function handleOk() {}
+    const handleOk = () => {}
 
-    function handleCancel() {
+    const handleCancel = () => {
         setShowIncomingCall(false)
     }
+
+    const url = channel.url
+    const shortName = capitalizeFirstLetter(
+        firstCharacterOfEachString(channel.name)
+    )
+    const name = channel.name
 
     return (
         <Fragment>
@@ -53,35 +62,12 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
                             backgroundColor: SECONDARY_COLOR,
                             marginRight: 12,
                         }}
-                        src={
-                            // channel?.members.filter(
-                            //     (member) =>
-                            //         member.userId !==
-                            //         localStorage.getItem('userId')
-                            // )[0].profileUrl
-                            nickname
-                        }
+                        src={url}
                     >
-                        {/* {capitalizeFirstLetter(
-                            firstCharacterOfEachString(
-                                channel?.members.filter(
-                                    (member) =>
-                                        member.userId !==
-                                        localStorage.getItem('userId')
-                                )[0].nickname
-                            )
-                        )} */}
-                        {nickname}
+                        {shortName}
                     </Avatar>
                     <Title style={{ margin: 0 }} level={4}>
-                        {/* {
-                            channel?.members.filter(
-                                (member) =>
-                                    member.userId !==
-                                    localStorage.getItem('userId')
-                            )[0].nickname
-                        } */}
-                        {nickname}
+                        {name}
                     </Title>
                 </Col>
                 <Col>

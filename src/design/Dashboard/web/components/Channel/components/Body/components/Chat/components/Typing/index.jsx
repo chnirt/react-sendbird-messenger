@@ -1,9 +1,13 @@
 import React from 'react'
 import { Typography } from 'antd'
 
+import { useDashboard } from '@context'
+
 const { Text } = Typography
 
 export function Typing() {
+    const { typingMembers } = useDashboard()
+
     return (
         <div
             style={{
@@ -19,8 +23,7 @@ export function Typing() {
                 type="secondary"
                 ellipsis={true}
             >
-                {/* {typingMembers} */}
-                xxxx
+                {typingMembers}
             </Text>
         </div>
     )

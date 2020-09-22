@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2016",
+        "jsx": "preserve",
+        "checkJs": true,
+        "baseUrl": "./src",
+        "paths": {
+            "@assets": ["assets"],
+            "@components": ["components"],
+            "@config": ["config"],
+            "@constants": ["constants"],
+            "@context": ["context"],
+            "@design": ["design"],
+            "@helpers": ["helpers"],
+            "@hooks": ["hooks"],
+            "@layout": ["layout"],
+            "@mock": ["mock"],
+            "@routes": ["routes"],
+            "@screens": ["screens"],
+            "@utils": ["utils"]
+        }
+    },
+    "exclude": ["node_modules", "build"]
+}

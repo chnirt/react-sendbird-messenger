@@ -8,12 +8,19 @@ import { PRIMARY_COLOR } from '@constants'
 export function ChatInput() {
     const [typingText, setTypingText] = useState('')
 
-    function handleEmojiMart(emoji) {
+    const handleEmojiMart = (emoji) => {
         setTypingText((prevState) => prevState + emoji.native)
     }
 
-    function handleSendMessage() {
-        console.log(typingText)
+    const onChange = (e) => {
+        setTypingText(e.target.value)
+    }
+
+    const handleSendMessage = (e) => {
+        if (e.keyCode === 13) {
+            console.log(typingText)
+            setTypingText('')
+        }
     }
 
     return (
@@ -27,7 +34,7 @@ export function ChatInput() {
                 <Input
                     placeholder="Type a message..."
                     value={typingText}
-                    onChange={(e) => setTypingText(e.target.value)}
+                    onChange={onChange}
                     onKeyDown={handleSendMessage}
                     // onFocus={() => channel?.startTyping()}
                     // onBlur={() => channel?.endTyping()}

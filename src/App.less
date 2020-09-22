@@ -109,3 +109,40 @@
         transform: scale(0.9);
     }
 }
+
+.slide-enter,
+.slide-exit {
+    transition: transform 1000ms ease-out;
+}
+
+.slide-enter {
+    transform: translateX(100%);
+}
+
+.slide-enter.slide-enter-active {
+    transform: translateX(0%);
+}
+
+.slide-exit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: translateX(0%);
+}
+
+.slide-exit-active {
+    transform: translateX(-100%);
+}
+
+.fade-enter,
+.fade-exit {
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 250ms ease-out;
+}
+
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
+}

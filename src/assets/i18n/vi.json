@@ -16,7 +16,10 @@
                 "components": {
                     "YM": "Tin nhắn của bạn",
                     "SPPAMTAFOG": "Gửi ảnh và tin nhắn riêng tư cho bạn bè hoặc nhóm.",
-                    "SM": "Gửi tin nhắn"
+                    "SM": "Gửi tin nhắn",
+                    "LR": "Rời phòng",
+                    "LA": "Hoạt động cuối cùng",
+                    "JN": "lập tức"
                 }
             },
             "login": {

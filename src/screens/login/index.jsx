@@ -16,7 +16,6 @@ import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-log
 import { Loading } from '@components'
 import { useAuth, useFirebase, useSendBird } from '@context'
 import { PRIMARY_COLOR, USERNAME, PASSWORD } from '@constants'
-import { Fade } from '@animations'
 
 const { Title, Text } = Typography
 
@@ -69,142 +68,133 @@ export default function Login() {
 
     return (
         <Fragment>
-            <Fade>
-                <Loading spinning={loading}>
-                    <Row>
-                        <Col
-                            xs={24}
-                            sm={{ span: 8, offset: 8 }}
-                            md={{ span: 12, offset: 6 }}
-                            lg={{ span: 8, offset: 8 }}
-                            xl={{ span: 6, offset: 9 }}
+            <Loading spinning={loading}>
+                <Row>
+                    <Col
+                        xs={24}
+                        sm={{ span: 8, offset: 8 }}
+                        md={{ span: 12, offset: 6 }}
+                        lg={{ span: 8, offset: 8 }}
+                        xl={{ span: 6, offset: 9 }}
+                    >
+                        <Row
+                            style={{
+                                height: 'calc(100vh - 100px)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                            }}
                         >
                             <Row
                                 style={{
-                                    height: 'calc(100vh - 100px)',
-                                    display: 'flex',
-                                    flexDirection: 'column',
                                     justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: '10vh',
                                 }}
                             >
-                                <Row
-                                    style={{
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        height: '10vh',
-                                    }}
+                                <Logo fill={PRIMARY_COLOR} />
+                            </Row>
+                            <Row style={{ justifyContent: 'center' }}>
+                                <Title level={2}>SendBird Messenger</Title>
+                            </Row>
+                            <Row
+                                style={{
+                                    justifyContent: 'center',
+                                    height: '5vh',
+                                }}
+                            >
+                                <Text>{t('src.screens.login.SIWSTGS')}</Text>
+                            </Row>
+                            <Form
+                                style={{ padding: '0 5vw' }}
+                                name="normal_login"
+                                className="login-form"
+                                initialValues={{
+                                    emailOrYourPhoneNumber: USERNAME,
+                                    password: PASSWORD,
+                                    remember: true,
+                                }}
+                                onFinish={onFinish}
+                                onFinishFailed={onFinishFailed}
+                            >
+                                <Form.Item
+                                    name="emailOrYourPhoneNumber"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message:
+                                                'Please input Email or Your phone number!',
+                                        },
+                                    ]}
                                 >
-                                    <Logo fill={PRIMARY_COLOR} />
-                                </Row>
-                                <Row style={{ justifyContent: 'center' }}>
-                                    <Title level={2}>SendBird Messenger</Title>
-                                </Row>
-                                <Row
-                                    style={{
-                                        justifyContent: 'center',
-                                        height: '5vh',
-                                    }}
+                                    <Input placeholder="Email or your phone number" />
+                                </Form.Item>
+                                <Form.Item
+                                    name="password"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message:
+                                                'Please input your Password!',
+                                        },
+                                    ]}
                                 >
-                                    <Text>
-                                        {t('src.screens.login.SIWSTGS')}
-                                    </Text>
-                                </Row>
-                                <Form
-                                    style={{ padding: '0 5vw' }}
-                                    name="normal_login"
-                                    className="login-form"
-                                    initialValues={{
-                                        emailOrYourPhoneNumber: USERNAME,
-                                        password: PASSWORD,
-                                        remember: true,
-                                    }}
-                                    onFinish={onFinish}
-                                    onFinishFailed={onFinishFailed}
-                                >
-                                    <Form.Item
-                                        name="emailOrYourPhoneNumber"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'Please input Email or Your phone number!',
-                                            },
-                                        ]}
-                                    >
-                                        <Input placeholder="Email or your phone number" />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="password"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'Please input your Password!',
-                                            },
-                                        ]}
-                                    >
-                                        <Input
-                                            type="password"
-                                            placeholder="Password"
-                                        />
-                                    </Form.Item>
+                                    <Input
+                                        type="password"
+                                        placeholder="Password"
+                                    />
+                                </Form.Item>
 
-                                    <Form.Item>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                            }}
-                                        >
-                                            <Button
-                                                type="link"
-                                                htmlType="submit"
-                                            >
-                                                {t(
-                                                    'src.screens.login.Continue'
-                                                )}
-                                            </Button>
-                                        </div>
-                                    </Form.Item>
-
+                                <Form.Item>
                                     <div
                                         style={{
                                             display: 'flex',
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <Form.Item
-                                            style={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                            }}
-                                            name="remember"
-                                            valuePropName="checked"
-                                            noStyle
-                                        >
-                                            <Checkbox>
-                                                {t('src.screens.login.KMSI')}
-                                            </Checkbox>
-                                        </Form.Item>
+                                        <Button type="link" htmlType="submit">
+                                            {t('src.screens.login.Continue')}
+                                        </Button>
                                     </div>
-                                </Form>
-                            </Row>
+                                </Form.Item>
 
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    height: 100,
-                                }}
-                            >
-                                <Button onClick={navigateRegister} type="link">
-                                    {t('src.screens.login.NOS')}
-                                </Button>
-                            </div>
-                        </Col>
-                    </Row>
-                </Loading>
-            </Fade>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <Form.Item
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                        }}
+                                        name="remember"
+                                        valuePropName="checked"
+                                        noStyle
+                                    >
+                                        <Checkbox>
+                                            {t('src.screens.login.KMSI')}
+                                        </Checkbox>
+                                    </Form.Item>
+                                </div>
+                            </Form>
+                        </Row>
+
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                height: 100,
+                            }}
+                        >
+                            <Button onClick={navigateRegister} type="link">
+                                {t('src.screens.login.NOS')}
+                            </Button>
+                        </div>
+                    </Col>
+                </Row>
+            </Loading>
         </Fragment>
     )
 }

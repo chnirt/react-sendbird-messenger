@@ -1,6 +1,5 @@
 {
     "hello": "Hello!",
-
     "src": {
         "components": {
             "IC": "Incoming Call"
@@ -16,7 +15,10 @@
                 "components": {
                     "YM": "Your Messages",
                     "SPPAMTAFOG": "Send private photos and messages to a friend or group.",
-                    "SM": "Send Message"
+                    "SM": "Send Message",
+                    "LR": "Leave Room",
+                    "LA": "Last active",
+                    "JN": "just now"
                 }
             },
             "login": {
