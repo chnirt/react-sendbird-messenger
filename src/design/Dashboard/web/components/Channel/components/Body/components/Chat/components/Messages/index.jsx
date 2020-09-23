@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import Draggable from 'react-draggable'
 import { Button } from 'antd'
-import { StopOutlined } from '@ant-design/icons'
 
 import { MessageSkeleton, MemoizedScrollToBottom } from '@components'
-import { REJECT, THIRD_COLOR } from '@constants'
+import { THIRD_COLOR } from '@constants'
 import { getMessages } from '@mock'
 import { useDashboard } from '@context'
+import Decline from '@assets/images/incomingcall/decline.png'
 import { MessageItem } from './components'
 
 export function Messages() {
@@ -113,14 +113,16 @@ export function Messages() {
                                     style={{
                                         border: 0,
                                         position: 'absolute',
-                                        bottom: 0,
+                                        bottom: 20,
+                                        justifyContent: 'center',
+                                        display: 'flex',
+                                        alignItems: 'center',
                                     }}
                                     icon={
-                                        <StopOutlined
-                                            style={{
-                                                fontSize: 16,
-                                                color: REJECT,
-                                            }}
+                                        <img
+                                            style={{ height: 100 }}
+                                            src={Decline}
+                                            alt="decline"
                                         />
                                     }
                                     type="ghost"

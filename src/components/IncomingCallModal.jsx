@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button, Modal, Avatar, Typography } from 'antd'
-import { WhatsAppOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 
-import { ACCEPT, DEFAULT_IMG, REJECT } from '@constants'
+import { DEFAULT_IMG } from '@constants'
+import Accept from '@assets/images/incomingcall/accept.png'
+import Decline from '@assets/images/incomingcall/decline.png'
 
 const { Title, Text } = Typography
 
@@ -34,13 +35,24 @@ export function IncomingCallModal({
             centered
             footer={
                 <div
-                    style={{ display: 'flex', justifyContent: 'space-around' }}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        padding: '12px 0',
+                    }}
                 >
                     <Button
-                        style={{ border: 0 }}
+                        style={{
+                            border: 0,
+                            justifyContent: 'center',
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
                         icon={
-                            <WhatsAppOutlined
-                                style={{ fontSize: 30, color: ACCEPT }}
+                            <img
+                                style={{ height: 100 }}
+                                src={Accept}
+                                alt="accept"
                             />
                         }
                         type="ghost"
@@ -48,10 +60,17 @@ export function IncomingCallModal({
                         onClick={onOk}
                     />
                     <Button
-                        style={{ border: 0 }}
+                        style={{
+                            border: 0,
+                            justifyContent: 'center',
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
                         icon={
-                            <CloseCircleOutlined
-                                style={{ fontSize: 30, color: REJECT }}
+                            <img
+                                style={{ height: 100 }}
+                                src={Decline}
+                                alt="decline"
                             />
                         }
                         type="ghost"

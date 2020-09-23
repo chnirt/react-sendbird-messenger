@@ -27,7 +27,7 @@ export const OFFLINE = '#ff4d4f'
 export const ACCEPT = '#52c41a'
 export const REJECT = '#f5222d'
 export const DEFAULT_IMG =
-    'https://www.pngitem.com/pimgs/m/292-2924054_akirofun-anime-neko-nekogirl-manga-meow-girl-anime.png'
+    'https://3.bp.blogspot.com/-2ngXyiTg4Q8/WRgQ6QgtoAI/AAAAAAAAnF4/2wsnlyW_mRYkfgpxWcUIgqO8I5kFg4d8gCLcB/s640/15873607_145164212645815_4665690553309102687_n.jpg'
 
 // console.log
 export const LOG = '#52c41a'
