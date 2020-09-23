@@ -14,6 +14,7 @@ const { Title, Text } = Typography
 export function MemberItem({ member }) {
     const { t } = useTranslation()
 
+    const id = member.id
     const url = member.avatar
     const shortName = capitalizeFirstLetter(
         firstCharacterOfEachString(member.name)
@@ -27,7 +28,7 @@ export function MemberItem({ member }) {
     }`
 
     return (
-        <div key={member.id} style={{ display: 'flex', paddingBottom: 12 }}>
+        <div key={id} style={{ display: 'flex', paddingBottom: 12 }}>
             <Badge dot color={isOnline ? ONLINE : OFFLINE}>
                 <Avatar src={url} size="default" shape="square">
                     {shortName}

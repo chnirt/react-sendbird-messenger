@@ -3,7 +3,7 @@ import { Button, Modal, Avatar, Typography } from 'antd'
 import { WhatsAppOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import { useTranslation } from 'react-i18next'
 
-import { ACCEPT, REJECT } from '@constants'
+import { ACCEPT, DEFAULT_IMG, REJECT } from '@constants'
 
 const { Title, Text } = Typography
 
@@ -31,15 +31,12 @@ export function IncomingCallModal({
             mask={false}
             maskClosable={false}
             closable={false}
-            onOk={onOk}
-            onCancel={onCancel}
             centered
             footer={
                 <div
                     style={{ display: 'flex', justifyContent: 'space-around' }}
                 >
                     <Button
-                        key="1"
                         style={{ border: 0 }}
                         icon={
                             <WhatsAppOutlined
@@ -48,10 +45,9 @@ export function IncomingCallModal({
                         }
                         type="ghost"
                         size="large"
-                        onClick={onCancel}
+                        onClick={onOk}
                     />
                     <Button
-                        key="2"
                         style={{ border: 0 }}
                         icon={
                             <CloseCircleOutlined
@@ -74,7 +70,7 @@ export function IncomingCallModal({
                 className="pulse"
                 shape="circle"
                 size={128}
-                src="https://static2.yan.vn/YanNews/2167221/201909/nhan-sac-hoi-hotgirl-viet-noi-tieng-mxh-trung-quoc-22da3c9c.jpg"
+                src={DEFAULT_IMG}
             />
             <Title style={{ margin: '10px 0 0' }} level={3}>
                 Maria

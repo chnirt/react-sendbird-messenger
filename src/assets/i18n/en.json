@@ -18,7 +18,8 @@
                     "SM": "Send Message",
                     "LR": "Leave Room",
                     "LA": "Last active",
-                    "JN": "just now"
+                    "JN": "just now",
+                    "M": "Members"
                 }
             },
             "login": {

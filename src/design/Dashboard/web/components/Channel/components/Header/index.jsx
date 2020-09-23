@@ -14,7 +14,7 @@ import { capitalizeFirstLetter, firstCharacterOfEachString } from '@utils'
 const { Title } = Typography
 
 export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
-    const { channel } = useDashboard()
+    const { channel, setShowVideoCall } = useDashboard()
 
     const [showIncomingCall, setShowIncomingCall] = useState(false)
 
@@ -26,7 +26,10 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
         setShowIncomingCall((prevState) => !prevState)
     }
 
-    const handleOk = () => {}
+    const handleOk = () => {
+        setShowVideoCall(true)
+        setShowIncomingCall(false)
+    }
 
     const handleCancel = () => {
         setShowIncomingCall(false)

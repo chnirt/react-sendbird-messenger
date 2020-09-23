@@ -13,7 +13,7 @@ const { Panel } = Collapse
 
 export function Detail() {
     const { t } = useTranslation()
-    const { channel } = useDashboard()
+    const { channel, setChannel } = useDashboard()
 
     const [members, setMembers] = useState([])
 
@@ -25,7 +25,9 @@ export function Detail() {
         fetchMembers()
     }, [])
 
-    const handleLeaveRoom = () => {}
+    const handleLeaveRoom = () => {
+        setChannel(null)
+    }
 
     const url = channel.url
     const shortName = capitalizeFirstLetter(
@@ -89,7 +91,7 @@ export function Detail() {
                     expandIconPosition="right"
                 >
                     <Panel
-                        header="Members"
+                        header={t('src.screens.dashboard.components.M')}
                         key={0}
                         // showArrow={false}
                     >

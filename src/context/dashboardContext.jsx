@@ -26,6 +26,11 @@ function DashboardValue() {
 
     const [typingMembers, setTypingMembers] = useState('Typing...')
 
+    const [messagesLoading, setMessagesLoading] = useState(false)
+    const [messages, setMessages] = useState([])
+
+    const [showVideoCall, setShowVideoCall] = useState(false)
+
     useLayoutEffect(() => {}, [])
 
     return {
@@ -39,5 +44,11 @@ function DashboardValue() {
         setChannel,
         typingMembers,
         setTypingMembers,
+        messagesLoading,
+        setMessagesLoading,
+        messages,
+        setMessages,
+        showVideoCall,
+        setShowVideoCall,
     }
 }

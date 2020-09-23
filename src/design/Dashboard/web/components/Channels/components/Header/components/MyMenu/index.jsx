@@ -3,6 +3,7 @@ import { Divider, Drawer, Menu, Select, Switch } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 import { useDark, useI18n } from '@context'
+import { useNavigate } from 'react-router-dom'
 
 const { Option } = Select
 
@@ -14,9 +15,14 @@ export function MyMenu({
     const { isDark, toggleDark } = useDark()
     const { language, changeLanguage } = useI18n()
     const { t } = useTranslation()
+    let navigate = useNavigate()
 
     const handleLanguageChange = (value) => {
         changeLanguage(value)
+    }
+
+    const navigateLogin = () => {
+        navigate('/')
     }
 
     return (
@@ -85,7 +91,7 @@ export function MyMenu({
                         style={{
                             backgroundColor: 'transparent',
                         }}
-                        onClick={() => {}}
+                        onClick={navigateLogin}
                     >
                         {t('src.screens.dashboard.LO')}
                     </Menu.Item>

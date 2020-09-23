@@ -1,29 +1,62 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import Draggable from 'react-draggable'
+import { Button } from 'antd'
+import { StopOutlined } from '@ant-design/icons'
 
 import { MessageSkeleton, MemoizedScrollToBottom } from '@components'
-import { THIRD_COLOR } from '@constants'
+import { REJECT, THIRD_COLOR } from '@constants'
+import { getMessages } from '@mock'
+import { useDashboard } from '@context'
+import { MessageItem } from './components'
 
 export function Messages() {
-    const loadingListMessages = false
-    function handleLoadMore() {}
+    const {
+        messagesLoading,
+        setMessagesLoading,
+        messages,
+        setMessages,
+        showVideoCall,
+        setShowVideoCall,
+    } = useDashboard()
 
     const [activeDrags, setActiveDrags] = useState(0)
 
-    function onStart() {
+    useEffect(() => {
+        const fetchMessages = async () => {
+            setMessagesLoading(true)
+            try {
+                const data = await getMessages()
+                // console.log(data)
+                setMessages(data)
+                setMessagesLoading(false)
+            } catch (error) {
+                setMessagesLoading(false)
+            }
+        }
+
+        fetchMessages()
+    }, [setMessages, setMessagesLoading])
+
+    const onStart = () => {
         setActiveDrags(+activeDrags)
     }
 
-    function onStop() {
+    const onStop = () => {
         setActiveDrags(-activeDrags)
     }
 
     const dragHandlers = { onStart, onStop }
 
+    const handleEndCall = () => {
+        setShowVideoCall(false)
+    }
+
+    const handleLoadMore = () => {}
+
     return (
         <Fragment>
             <MessageSkeleton
-                loading={loadingListMessages}
+                loading={messagesLoading}
                 rows={13}
                 size="default"
                 avatar
@@ -37,25 +70,69 @@ export function Messages() {
                     }}
                     handleLoadMore={handleLoadMore}
                 >
-                    <Draggable bounds="parent" {...dragHandlers}>
-                        <video
-                            style={{
-                                background: '#000',
-                                border: '1px solid #999',
-                                borderRadius: 3,
-                                width: 1280 * 0.2,
-                                height: 720 * 0.2,
-                                margin: 10,
-                                position: 'absolute',
-                                top: 0,
-                                right: 0,
-                            }}
-                            id="local_video_element_id"
-                            autoPlay
-                        />
-                    </Draggable>
-                    {/* {renderListMessages(messages)} */}
-                    xxxx
+                    {showVideoCall && (
+                        <Draggable bounds="parent" {...dragHandlers}>
+                            <div
+                                style={{
+                                    background: '#000',
+                                    borderRadius: 12,
+                                    width: 1280 * 0.3,
+                                    height: 720 * 0.6,
+                                    margin: 10,
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    zIndex: 1,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <video
+                                    style={{
+                                        width: 1280 * 0.3,
+                                        height: 720 * 0.3,
+                                        background: '#999',
+                                        borderRadius: '12px 12px 0 0',
+                                    }}
+                                    id="local_video_element_id"
+                                    autoPlay
+                                />
+                                <video
+                                    style={{
+                                        width: 1280 * 0.3,
+                                        height: 720 * 0.3,
+                                        background: '#ddd',
+                                        borderRadius: '0 0 12px 12px',
+                                    }}
+                                    id="remote_video_element_id"
+                                    autoPlay
+                                />
+                                <Button
+                                    style={{
+                                        border: 0,
+                                        position: 'absolute',
+                                        bottom: 0,
+                                    }}
+                                    icon={
+                                        <StopOutlined
+                                            style={{
+                                                fontSize: 16,
+                                                color: REJECT,
+                                            }}
+                                        />
+                                    }
+                                    type="ghost"
+                                    size="large"
+                                    onClick={handleEndCall}
+                                />
+                            </div>
+                        </Draggable>
+                    )}
+                    {messages.map((message, i) => (
+                        <MessageItem key={i} message={message} />
+                    ))}
                 </MemoizedScrollToBottom>
             </MessageSkeleton>
         </Fragment>

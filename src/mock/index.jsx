@@ -29,3 +29,11 @@ export const getChannel = async (id) => {
     let data = await response.json()
     return data
 }
+
+export const getMessages = async () => {
+    let response = await fetch(
+        'https://5f0ea5f8faef3500160b8663.mockapi.io/messages'
+    )
+    let data = await response.json()
+    return data
+}

@@ -8,11 +8,11 @@ export function MessageBubble({
     h,
     backgroundColor = '#d9d9d9',
     color = '#000',
-    type = '',
+    isFile = false,
     url = '',
     content = '',
 }) {
-    if (type === 'file') {
+    if (isFile) {
         return (
             <Image
                 id="file-image"

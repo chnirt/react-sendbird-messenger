@@ -540,6 +540,7 @@ export default function Dashboard() {
     const renderMessage = (message) => {
         // message?.messageType === 'file' && console.log(message)
         message.isAdmin = message?.messageType === 'admin'
+        message.isFile = message?.messageType === 'file'
         message.isAuthor =
             message?._sender?.userId === localStorage.getItem('userId')
         message.status = message?.isAuthor && checkStatus()
@@ -652,6 +653,7 @@ export default function Dashboard() {
                         }
                         color={message.isAuthor ? '#fff' : '#000'}
                         type={message.messageType}
+                        isFile={message.isFile}
                         url={message.url}
                         content={message.message}
                     />
