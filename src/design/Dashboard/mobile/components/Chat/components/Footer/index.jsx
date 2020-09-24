@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from 'react'
-import { Button, Col, Input, Upload, message } from 'antd'
+import React, { useState } from 'react'
+import { Col, Input, Row, message, Upload, Button } from 'antd'
 import { PictureOutlined, LikeOutlined } from '@ant-design/icons'
 
 import { PickerButton } from '@components'
 import { PRIMARY_COLOR } from '@constants'
 
-export function ChatInput() {
+export function Footer() {
     const [typingText, setTypingText] = useState('')
 
     const handleEmojiMart = (emoji) => {
@@ -38,7 +38,14 @@ export function ChatInput() {
     }
 
     return (
-        <Fragment>
+        <Row
+            style={{
+                height: 60,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+            }}
+        >
             <Col
                 style={{
                     padding: 12,
@@ -72,16 +79,15 @@ export function ChatInput() {
                         size="large"
                     />
                 </Upload>
-                <div>
-                    <PickerButton
-                        style={{
-                            position: 'absolute',
-                            bottom: 42,
-                            right: 42,
-                        }}
-                        handleEmojiMart={handleEmojiMart}
-                    />
-                </div>
+
+                <PickerButton
+                    style={{
+                        position: 'absolute',
+                        bottom: 42,
+                        right: 42,
+                    }}
+                    handleEmojiMart={handleEmojiMart}
+                />
 
                 <Button
                     style={{ border: 0 }}
@@ -97,6 +103,6 @@ export function ChatInput() {
                     onClick={handleLike}
                 />
             </Col>
-        </Fragment>
+        </Row>
     )
 }

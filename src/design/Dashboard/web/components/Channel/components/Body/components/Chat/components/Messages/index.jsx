@@ -74,7 +74,6 @@ export function Messages() {
                         <Draggable bounds="parent" {...dragHandlers}>
                             <div
                                 style={{
-                                    background: '#000',
                                     borderRadius: 12,
                                     width: 1280 * 0.3,
                                     height: 720 * 0.6,
