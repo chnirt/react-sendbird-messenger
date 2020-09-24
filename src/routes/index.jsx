@@ -26,29 +26,6 @@ export const designRoutes = [
     },
 ]
 
-export const mockRoutes = [
-    {
-        path: '/',
-        element: <Loadable route="login" folder="mock" />,
-    },
-    {
-        path: '/register',
-        element: <Loadable route="register" folder="mock" />,
-    },
-    {
-        path: 'dashboard',
-        element: (
-            <Layout>
-                <Loadable route="dashboard" folder="mock" />
-            </Layout>
-        ),
-    },
-    {
-        path: '*',
-        element: <Loadable route="notfound" folder="mock" />,
-    },
-]
-
 export const appRoutes = [
     // A route object has the same properties as a <Route>
     // element. The `children` is just an array of child routes.

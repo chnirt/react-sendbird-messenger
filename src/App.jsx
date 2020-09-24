@@ -6,7 +6,7 @@ import './App.less'
 import 'emoji-mart/css/emoji-mart.css'
 
 import { PRIMARY_COLOR } from '@constants'
-import { designRoutes, mockRoutes, appRoutes } from '@routes'
+import { designRoutes, appRoutes } from '@routes'
 
 TopBarProgress.config({
     barColors: {
@@ -29,11 +29,7 @@ function App() {
     // are rendered in different environments. To render an <App>,
     // you'll need to wrap it in your own <BrowserRouter> element.
     let element = useRoutes(
-        process.env.REACT_APP_TARGET_ENV === 'design'
-            ? designRoutes
-            : process.env.REACT_APP_TARGET_ENV === 'mock'
-            ? mockRoutes
-            : appRoutes
+        process.env.REACT_APP_TARGET_ENV === 'design' ? designRoutes : appRoutes
     )
 
     return (
