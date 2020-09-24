@@ -128,3 +128,5 @@
 -   UNIT TESTS-ENOMEM: not enough memory, read: https://discuss.circleci.com/t/unit-tests-enomem-not-enough-memory-read/35695
 
 -   Solve Module Import Aliasing for Webpack, Jest, and VSCode > <mark>remove line comments in jsconfig.json</mark>: https://medium.com/@justintulk/solve-module-import-aliasing-for-webpack-jest-and-vscode-74007ce4adc9
+
+-   42,006 free vector icons at your fingertips : https://www.iconbolt.com/

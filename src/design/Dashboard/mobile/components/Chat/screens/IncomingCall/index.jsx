@@ -1,11 +1,13 @@
 import React from 'react'
-import { Button, Drawer, Typography } from 'antd'
+import { Button, Drawer, Typography, Avatar } from 'antd'
 import { useTranslation } from 'react-i18next'
 
-import Accept from '@assets/images/incomingcall/accept.png'
-import Decline from '@assets/images/incomingcall/decline.png'
-import Avatar from 'antd/lib/avatar/avatar'
-import { DEFAULT_IMG } from '@constants'
+import { ReactComponent as Phone } from '@assets/svg/call/call-phone-white.svg'
+import { ReactComponent as Decline } from '@assets/svg/call/call-decline-white.svg'
+
+// import Accept from '@assets/images/incomingcall/accept.png'
+// import Decline from '@assets/images/incomingcall/decline.png'
+import { DEFAULT_IMG, ACCEPT, REJECT } from '@constants'
 
 const { Title, Text } = Typography
 
@@ -48,17 +50,19 @@ export function IncomingCall({
                             justifyContent: 'center',
                             display: 'flex',
                             alignItems: 'center',
+                            backgroundColor: REJECT,
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50 / 2,
                         }}
                         icon={
-                            <img
-                                style={{ height: 100 }}
-                                src={Accept}
-                                alt="accept"
+                            <Decline
+                                style={{ position: 'absolute', height: 25 }}
                             />
                         }
                         type="ghost"
                         size="large"
-                        onClick={onOk}
+                        onClick={handleCloseIncomingCall}
                     />
                     <Button
                         style={{
@@ -66,17 +70,18 @@ export function IncomingCall({
                             justifyContent: 'center',
                             display: 'flex',
                             alignItems: 'center',
+                            backgroundColor: ACCEPT,
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50 / 2,
                         }}
                         icon={
-                            <img
-                                style={{ height: 100 }}
-                                src={Decline}
-                                alt="decline"
+                            <Phone
+                                style={{ position: 'absolute', height: 25 }}
                             />
                         }
                         type="ghost"
-                        size="large"
-                        onClick={handleCloseIncomingCall}
+                        onClick={onOk}
                     />
                 </div>
             }
