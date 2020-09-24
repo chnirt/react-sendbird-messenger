@@ -28,6 +28,8 @@ export const ACCEPT = '#52c41a'
 export const REJECT = '#f5222d'
 export const DEFAULT_IMG =
     'https://3.bp.blogspot.com/-2ngXyiTg4Q8/WRgQ6QgtoAI/AAAAAAAAnF4/2wsnlyW_mRYkfgpxWcUIgqO8I5kFg4d8gCLcB/s640/15873607_145164212645815_4665690553309102687_n.jpg'
+export const LOCAL_VIDEO = '#f0f0f0'
+export const REMOTE_VIDEO = '#595959'
 
 // console.log
 export const LOG = '#52c41a'

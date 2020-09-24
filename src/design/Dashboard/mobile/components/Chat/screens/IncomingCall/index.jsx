@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { ReactComponent as Phone } from '@assets/svg/call/call-phone-white.svg'
 import { ReactComponent as Decline } from '@assets/svg/call/call-decline-white.svg'
 
-// import Accept from '@assets/images/incomingcall/accept.png'
-// import Decline from '@assets/images/incomingcall/decline.png'
 import { DEFAULT_IMG, ACCEPT, REJECT } from '@constants'
 
 const { Title, Text } = Typography
@@ -61,7 +59,6 @@ export function IncomingCall({
                             />
                         }
                         type="ghost"
-                        size="large"
                         onClick={handleCloseIncomingCall}
                     />
                     <Button

@@ -2,9 +2,9 @@ import React from 'react'
 import { Button, Modal, Avatar, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 
-import { DEFAULT_IMG } from '@constants'
-import Accept from '@assets/images/incomingcall/accept.png'
-import Decline from '@assets/images/incomingcall/decline.png'
+import { ACCEPT, DEFAULT_IMG, REJECT } from '@constants'
+import { ReactComponent as Phone } from '@assets/svg/call/call-phone-white.svg'
+import { ReactComponent as Decline } from '@assets/svg/call/call-decline-white.svg'
 
 const { Title, Text } = Typography
 
@@ -47,17 +47,19 @@ export function IncomingCallModal({
                             justifyContent: 'center',
                             display: 'flex',
                             alignItems: 'center',
+                            backgroundColor: REJECT,
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50 / 2,
                         }}
                         icon={
-                            <img
-                                style={{ height: 100 }}
-                                src={Accept}
-                                alt="accept"
+                            <Decline
+                                style={{ position: 'absolute', height: 25 }}
                             />
                         }
                         type="ghost"
                         size="large"
-                        onClick={onOk}
+                        onClick={onCancel}
                     />
                     <Button
                         style={{
@@ -65,17 +67,18 @@ export function IncomingCallModal({
                             justifyContent: 'center',
                             display: 'flex',
                             alignItems: 'center',
+                            backgroundColor: ACCEPT,
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50 / 2,
                         }}
                         icon={
-                            <img
-                                style={{ height: 100 }}
-                                src={Decline}
-                                alt="decline"
+                            <Phone
+                                style={{ position: 'absolute', height: 25 }}
                             />
                         }
                         type="ghost"
-                        size="large"
-                        onClick={onCancel}
+                        onClick={onOk}
                     />
                 </div>
             }

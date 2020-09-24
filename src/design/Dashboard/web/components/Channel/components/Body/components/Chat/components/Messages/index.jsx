@@ -3,10 +3,14 @@ import Draggable from 'react-draggable'
 import { Button } from 'antd'
 
 import { MessageSkeleton, MemoizedScrollToBottom } from '@components'
-import { THIRD_COLOR } from '@constants'
+import { LOCAL_VIDEO, REJECT, REMOTE_VIDEO, THIRD_COLOR } from '@constants'
 import { getMessages } from '@mock'
 import { useDashboard } from '@context'
-import Decline from '@assets/images/incomingcall/decline.png'
+import { ReactComponent as Decline } from '@assets/svg/call/call-decline-white.svg'
+import { ReactComponent as Mic } from '@assets/svg/mic/mic-white.svg'
+import { ReactComponent as NoMic } from '@assets/svg/mic/mic-no-white.svg'
+import { ReactComponent as Video } from '@assets/svg/video/video-white.svg'
+import { ReactComponent as NoVideo } from '@assets/svg/video/video-no-white.svg'
 import { MessageItem } from './components'
 
 export function Messages() {
@@ -20,6 +24,8 @@ export function Messages() {
     } = useDashboard()
 
     const [activeDrags, setActiveDrags] = useState(0)
+    const [audio, setAudio] = useState(true)
+    const [video, setVideo] = useState(true)
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -51,6 +57,10 @@ export function Messages() {
         setShowVideoCall(false)
     }
 
+    const handleToggleAudio = () => setAudio((prevState) => !prevState)
+
+    const handleToggleVideo = () => setVideo((prevState) => !prevState)
+
     const handleLoadMore = () => {}
 
     return (
@@ -75,8 +85,8 @@ export function Messages() {
                             <div
                                 style={{
                                     borderRadius: 12,
-                                    width: 1280 * 0.3,
-                                    height: 720 * 0.6,
+                                    width: 720 * 0.3,
+                                    height: 1280 * 0.3,
                                     margin: 10,
                                     position: 'absolute',
                                     top: 0,
@@ -90,44 +100,125 @@ export function Messages() {
                             >
                                 <video
                                     style={{
-                                        width: 1280 * 0.3,
-                                        height: 720 * 0.3,
-                                        background: '#999',
-                                        borderRadius: '12px 12px 0 0',
+                                        width: 720 * 0.1,
+                                        height: 1280 * 0.1,
+                                        background: LOCAL_VIDEO,
+                                        borderRadius: 12,
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 0,
+                                        margin: 12,
                                     }}
                                     id="local_video_element_id"
                                     autoPlay
                                 />
                                 <video
                                     style={{
-                                        width: 1280 * 0.3,
-                                        height: 720 * 0.3,
-                                        background: '#ddd',
-                                        borderRadius: '0 0 12px 12px',
+                                        width: 720 * 0.3,
+                                        height: 1280 * 0.3,
+                                        background: REMOTE_VIDEO,
+                                        borderRadius: 12,
                                     }}
                                     id="remote_video_element_id"
                                     autoPlay
                                 />
-                                <Button
+                                <div
                                     style={{
-                                        border: 0,
                                         position: 'absolute',
-                                        bottom: 20,
-                                        justifyContent: 'center',
+                                        bottom: 10,
                                         display: 'flex',
-                                        alignItems: 'center',
+                                        justifyContent: 'space-around',
+                                        width: '100%',
                                     }}
-                                    icon={
-                                        <img
-                                            style={{ height: 100 }}
-                                            src={Decline}
-                                            alt="decline"
-                                        />
-                                    }
-                                    type="ghost"
-                                    size="large"
-                                    onClick={handleEndCall}
-                                />
+                                >
+                                    <Button
+                                        style={{
+                                            border: 0,
+                                            justifyContent: 'center',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            backgroundColor: THIRD_COLOR,
+                                            width: 50,
+                                            height: 50,
+                                            borderRadius: 50 / 2,
+                                        }}
+                                        icon={
+                                            audio ? (
+                                                <Mic
+                                                    style={{
+                                                        position: 'absolute',
+                                                        height: 25,
+                                                    }}
+                                                />
+                                            ) : (
+                                                <NoMic
+                                                    style={{
+                                                        position: 'absolute',
+                                                        height: 25,
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                        type="ghost"
+                                        size="large"
+                                        onClick={handleToggleAudio}
+                                    />
+                                    <Button
+                                        style={{
+                                            border: 0,
+                                            justifyContent: 'center',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            backgroundColor: REJECT,
+                                            width: 50,
+                                            height: 50,
+                                            borderRadius: 50 / 2,
+                                        }}
+                                        icon={
+                                            <Decline
+                                                style={{
+                                                    position: 'absolute',
+                                                    height: 25,
+                                                }}
+                                            />
+                                        }
+                                        type="ghost"
+                                        size="large"
+                                        onClick={handleEndCall}
+                                    />
+                                    <Button
+                                        style={{
+                                            border: 0,
+                                            justifyContent: 'center',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            backgroundColor: THIRD_COLOR,
+                                            width: 50,
+                                            height: 50,
+                                            borderRadius: 50 / 2,
+                                        }}
+                                        icon={
+                                            video ? (
+                                                <Video
+                                                    style={{
+                                                        position: 'absolute',
+                                                        height: 25,
+                                                    }}
+                                                />
+                                            ) : (
+                                                <NoVideo
+                                                    style={{
+                                                        position: 'absolute',
+                                                        height: 25,
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                        type="ghost"
+                                        size="large"
+                                        onClick={handleToggleVideo}
+                                    />
+                                </div>
                             </div>
                         </Draggable>
                     )}
