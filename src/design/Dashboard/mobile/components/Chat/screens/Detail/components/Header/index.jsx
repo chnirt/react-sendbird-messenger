@@ -4,9 +4,7 @@ import { LeftOutlined } from '@ant-design/icons'
 
 import { PRIMARY_COLOR } from '@constants'
 
-export function Header({ showDetail = false, setShowDetail = () => {} }) {
-    const handleShowDetail = () => setShowDetail(false)
-
+export function Header({ onCancel = () => {} }) {
     return (
         <Row
             style={{
@@ -28,7 +26,7 @@ export function Header({ showDetail = false, setShowDetail = () => {} }) {
                     type="ghost"
                     icon={<LeftOutlined style={{ color: PRIMARY_COLOR }} />}
                     size="large"
-                    onClick={handleShowDetail}
+                    onClick={onCancel}
                 />
             </Col>
         </Row>

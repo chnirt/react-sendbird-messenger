@@ -11,17 +11,12 @@ import { PRIMARY_COLOR } from '@constants'
 import { useDashboard } from '@context'
 
 export function Header({
-    showDetail = false,
-    setShowDetail = () => {},
-    setShowIncomingCall = () => {},
+    visible = false,
+    onCancel = () => {},
+    showDetail = () => {},
+    showIncomingCall = () => {},
 }) {
-    const { channel, setChannel } = useDashboard()
-
-    const handleCloseChannel = () => setChannel(null)
-
-    const handleShowDetail = () => setShowDetail(true)
-
-    const handleShowIncomingCall = () => setShowIncomingCall(true)
+    const { channel } = useDashboard()
 
     const name = channel?.name
 
@@ -47,7 +42,7 @@ export function Header({
                     type="ghost"
                     icon={<LeftOutlined style={{ color: PRIMARY_COLOR }} />}
                     size="large"
-                    onClick={handleCloseChannel}
+                    onClick={onCancel}
                 />
             </Col>
             <Col
@@ -71,7 +66,7 @@ export function Header({
                     type="ghost"
                     icon={<PhoneOutlined style={{ color: PRIMARY_COLOR }} />}
                     size="large"
-                    onClick={handleShowIncomingCall}
+                    onClick={showIncomingCall}
                 />
                 <Button
                     style={{ border: 0 }}
@@ -80,7 +75,7 @@ export function Header({
                         <VideoCameraOutlined style={{ color: PRIMARY_COLOR }} />
                     }
                     size="large"
-                    onClick={handleShowIncomingCall}
+                    onClick={showIncomingCall}
                 />
                 <Button
                     style={{ border: 0 }}
@@ -88,12 +83,12 @@ export function Header({
                     icon={
                         <InfoCircleOutlined
                             style={{
-                                color: showDetail && PRIMARY_COLOR,
+                                color: visible && PRIMARY_COLOR,
                             }}
                         />
                     }
                     size="large"
-                    onClick={handleShowDetail}
+                    onClick={showDetail}
                 />
             </Col>
         </Row>

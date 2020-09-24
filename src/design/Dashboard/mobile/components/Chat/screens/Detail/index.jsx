@@ -19,7 +19,7 @@ import { Header, MemberItem } from './components'
 const { Title } = Typography
 const { Panel } = Collapse
 
-export function Detail({ showDetail = false, setShowDetail = () => {} }) {
+export function Detail({ visible = false, onCancel = () => {} }) {
     const { t } = useTranslation()
     const { channel, setChannel } = useDashboard()
 
@@ -33,11 +33,9 @@ export function Detail({ showDetail = false, setShowDetail = () => {} }) {
         fetchMembers()
     }, [])
 
-    const handleCloseDetail = () => setShowDetail(false)
-
     const handleLeaveRoom = () => {
         setChannel(null)
-        setShowDetail(false)
+        onCancel()
     }
 
     const url = channel?.url
@@ -52,13 +50,10 @@ export function Detail({ showDetail = false, setShowDetail = () => {} }) {
                 height: 60,
                 padding: 0,
             }}
-            title={
-                <Header showDetail={showDetail} setShowDetail={setShowDetail} />
-            }
+            title={<Header onCancel={onCancel} />}
             width="100%"
             closable={false}
-            onClose={handleCloseDetail}
-            visible={showDetail}
+            visible={visible}
             bodyStyle={{ padding: 0 }}
         >
             <Row

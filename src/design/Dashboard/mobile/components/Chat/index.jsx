@@ -5,13 +5,14 @@ import { MemoizedScrollToBottom, MessageSkeleton } from '@components'
 import { useDashboard } from '@context'
 import { getMessages } from '@mock'
 import { Header, Footer, MessageItem } from './components'
-import { Detail, IncomingCall } from './screens'
+import { Calling, Detail, IncomingCall } from './screens'
 
 const { Text } = Typography
 
 export function Chat() {
     const {
         channel,
+        setChannel,
         typingMembers,
         messagesLoading,
         setMessagesLoading,
@@ -20,6 +21,7 @@ export function Chat() {
     } = useDashboard()
     const [showDetail, setShowDetail] = useState(false)
     const [showIncomingCall, setShowIncomingCall] = useState(false)
+    const [showCalling, setShowCalling] = useState(false)
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -37,6 +39,25 @@ export function Chat() {
         fetchMessages()
     }, [setMessages, setMessagesLoading])
 
+    const handleCloseChannel = () => setChannel(null)
+
+    const handleShowIncomingCall = () => setShowIncomingCall(true)
+
+    const handleShowDetail = () => setShowDetail(true)
+
+    const handleCloseDetail = () => setShowDetail(false)
+
+    const handleDeclineIncomingCall = () => setShowIncomingCall(false)
+
+    const handleCallIncomingCall = () => {
+        setShowIncomingCall(false)
+        setShowCalling(true)
+    }
+
+    const handleEndCalling = () => {
+        setShowCalling(false)
+    }
+
     const handleLoadMore = () => {}
 
     return (
@@ -47,9 +68,10 @@ export function Chat() {
             }}
             title={
                 <Header
-                    showDetail={showDetail}
-                    setShowDetail={setShowDetail}
-                    setShowIncomingCall={setShowIncomingCall}
+                    visible={showDetail}
+                    onCancel={handleCloseChannel}
+                    showDetail={handleShowDetail}
+                    showIncomingCall={handleShowIncomingCall}
                 />
             }
             footerStyle={{ padding: 0 }}
@@ -102,11 +124,13 @@ export function Chat() {
                 </div>
             </div>
 
-            <Detail showDetail={showDetail} setShowDetail={setShowDetail} />
+            <Detail visible={showDetail} onCancel={handleCloseDetail} />
             <IncomingCall
-                showIncomingCall={showIncomingCall}
-                setShowIncomingCall={setShowIncomingCall}
+                visible={showIncomingCall}
+                onCancel={handleDeclineIncomingCall}
+                onOk={handleCallIncomingCall}
             />
+            <Calling visible={showCalling} onCancel={handleEndCalling} />
         </Drawer>
     )
 }

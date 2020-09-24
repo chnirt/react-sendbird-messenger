@@ -10,13 +10,11 @@ import { DEFAULT_IMG, ACCEPT, REJECT } from '@constants'
 const { Title, Text } = Typography
 
 export function IncomingCall({
-    showIncomingCall = false,
-    setShowIncomingCall = () => {},
+    visible = false,
+    onCancel = () => {},
     onOk = () => {},
 }) {
     const { t } = useTranslation()
-
-    const handleCloseIncomingCall = () => setShowIncomingCall(false)
 
     return (
         <Drawer
@@ -32,7 +30,7 @@ export function IncomingCall({
             }
             placement="bottom"
             closable={false}
-            visible={showIncomingCall}
+            visible={visible}
             height="100%"
             footer={
                 <div
@@ -59,7 +57,7 @@ export function IncomingCall({
                             />
                         }
                         type="ghost"
-                        onClick={handleCloseIncomingCall}
+                        onClick={onCancel}
                     />
                     <Button
                         style={{
