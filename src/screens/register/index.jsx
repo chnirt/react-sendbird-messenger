@@ -1,17 +1,19 @@
 import React, { Fragment, useState } from 'react'
 import { Row, Col, Typography, Form, Input, Button, notification } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
-import { ReactComponent as Logo } from '../../assets/ic-main-sendbird-logo-white.svg'
-import { Loading } from '../../components'
-import { PRIMARY_COLOR } from '../../constants'
-import { useFirebase } from '../../context'
+import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-logo-white.svg'
+import { Loading } from '@components'
+import { PRIMARY_COLOR } from '@constants'
+import { useFirebase } from '@context'
 
 const { Title, Text } = Typography
 
 export default function Register() {
     const navigate = useNavigate()
     const { registerFB } = useFirebase()
+    const { t } = useTranslation()
 
     const [loading, setLoading] = useState(false)
 
@@ -96,8 +98,7 @@ export default function Register() {
                                 }}
                             >
                                 <Text>
-                                    What email or number can people use to reach
-                                    you?
+                                    {t('src.screens.register.WEONCPUTRY')}
                                 </Text>
                             </Row>
                             <Form
@@ -160,7 +161,7 @@ export default function Register() {
                                         }}
                                     >
                                         <Button type="link" htmlType="submit">
-                                            Create account
+                                            {t('src.screens.register.CA')}
                                         </Button>
                                     </div>
                                 </Form.Item>
@@ -175,16 +176,14 @@ export default function Register() {
                                             textAlign: 'center',
                                         }}
                                     >
-                                        By continuing, you are indicating that
-                                        you agree to the
+                                        {t('src.screens.register.BCYAITYATT')}
                                         <a href="https://sendbird.com/support-policy">
-                                            {` Privacy Policy `}
+                                            {t('src.screens.register.PP')}
                                         </a>
-                                        and
+                                        {t('src.screens.register.And')}
                                         <a href="https://sendbird.com/support-policy">
-                                            {` Terms `}
+                                            {t('src.screens.register.Terms')}
                                         </a>
-                                        .
                                     </div>
                                 </Form.Item>
                             </Form>
@@ -198,7 +197,7 @@ export default function Register() {
                             }}
                         >
                             <Button onClick={navigateLogin} type="link">
-                                Login with SendBird
+                                {t('src.screens.register.LWS')}
                             </Button>
                         </div>
                     </Col>

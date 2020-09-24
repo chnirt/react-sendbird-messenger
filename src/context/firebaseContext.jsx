@@ -19,7 +19,7 @@ import {
     FB_MESSAGING_SENDER_ID,
     FB_APP_IP,
     FB_MEASUREMENT_ID,
-} from '../constants'
+} from '@constants'
 
 const firebaseConfig = {
     apiKey: FB_API_KEY,

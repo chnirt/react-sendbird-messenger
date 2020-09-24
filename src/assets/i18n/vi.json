@@ -1,0 +1,47 @@
+{
+    "hello": "Xin chào!",
+
+    "src": {
+        "components": {
+            "IC": "Cuộc gọi đến"
+        },
+        "screens": {
+            "dashboard": {
+                "Settings": "Cài đặt",
+                "Profile": "Hồ sơ",
+                "Language": "Ngôn ngữ",
+                "DM": "Chế độ tối",
+                "LO": "Đăng xuất",
+
+                "components": {
+                    "YM": "Tin nhắn của bạn",
+                    "SPPAMTAFOG": "Gửi ảnh và tin nhắn riêng tư cho bạn bè hoặc nhóm.",
+                    "SM": "Gửi tin nhắn",
+                    "LR": "Rời phòng",
+                    "LA": "Hoạt động cuối cùng",
+                    "JN": "lập tức",
+                    "M": "Thành viên"
+                }
+            },
+            "login": {
+                "SIWSTGS": "Đăng nhập với SendBird để bắt đầu.",
+                "Continue": "Tiếp tục",
+                "KMSI": "Giữ tôi đăng nhập",
+                "NOS": "Không có trên SendBird?"
+            },
+            "notfound": {
+                "STPYVDNE": "Xin lỗi, trang bạn đã truy cập không tồn tại.",
+                "BH": "Về trang chủ"
+            },
+            "register": {
+                "WEONCPUTRY": "Mọi người có thể sử dụng email hoặc số nào để liên hệ với bạn?",
+                "CA": "Tạo tài khoản",
+                "BCYAITYATT": "Bằng cách tiếp tục, bạn cho thấy rằng bạn đồng ý với",
+                "PP": " Chính sách bảo mật ",
+                "And": "và",
+                "Terms": " Điều kiện.",
+                "LWS": "Đăng nhập với SendBird"
+            }
+        }
+    }
+}

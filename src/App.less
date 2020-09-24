@@ -1,50 +1,148 @@
 @import '~antd/dist/antd.less';
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
 
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 #emoji-mart .ant-tooltip-inner {
-  box-shadow: 0 0 black;
+    box-shadow: 0 0 black;
 }
 
-
 #file-image .ant-image-img {
-  border-radius: 12px;
+    border-radius: 12px;
+}
+
+#my-language .ant-select-selector {
+    padding: 0;
+}
+
+:root.dark-mode {
+    filter: invert(1) hue-rotate(180deg);
+
+    img {
+        filter: invert(1) hue-rotate(180deg);
+    }
+
+    .emoji {
+        filter: invert(1) hue-rotate(180deg);
+    }
+
+    .invert {
+        filter: invert(1) hue-rotate(180deg);
+    }
+}
+
+:root {
+    transition: color 300ms, background-color 300ms;
+}
+
+.pulse {
+    animation: pulse 3s infinite;
+    margin: 0 auto;
+    display: table;
+    margin-top: 50px;
+    animation-direction: alternate;
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        -webkit-transform: scale(1);
+    }
+
+    50% {
+        -webkit-transform: scale(1.1);
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.9);
+    }
+}
+
+.slide-enter,
+.slide-exit {
+    transition: transform 1000ms ease-out;
+}
+
+.slide-enter {
+    transform: translateX(100%);
+}
+
+.slide-enter.slide-enter-active {
+    transform: translateX(0%);
+}
+
+.slide-exit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: translateX(0%);
+}
+
+.slide-exit-active {
+    transform: translateX(-100%);
+}
+
+.fade-enter,
+.fade-exit {
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 250ms ease-out;
+}
+
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 250ms ease-in;
 }

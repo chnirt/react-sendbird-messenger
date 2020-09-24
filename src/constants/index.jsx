@@ -1,7 +1,9 @@
 export const NOT_SECRET_CODE = process.env.REACT_APP_NOT_SECRET_CODE
 
+// Sendbird
 export const SB_APP_ID = process.env.REACT_APP_SB_APP_ID
 
+// Firebase
 export const FB_API_KEY = process.env.REACT_APP_FB_API_KEY
 export const FB_AUTH_DOMAIN = process.env.REACT_APP_FB_AUTH_DOMAIN
 export const FB_DB_URL = process.env.REACT_APP_FB_DB_URL
@@ -12,13 +14,31 @@ export const FB_MESSAGING_SENDER_ID =
 export const FB_APP_IP = process.env.REACT_APP_FB_APP_IP
 export const FB_MEASUREMENT_ID = process.env.REACT_APP_FB_MEASUREMENT_ID
 
+// Sentry
 export const REACT_APP_ST_DSN = process.env.REACT_APP_ST_DSN
 
+// UI
 export const PRIMARY_COLOR = '#762FDD'
 export const SECONDARY_COLOR = '#efdbff'
 export const THIRD_COLOR = '#d9d9d9'
 export const FOURTH_COLOR = '#f0f0f0'
 export const ONLINE = '#73d13d'
 export const OFFLINE = '#ff4d4f'
+export const ACCEPT = '#52c41a'
+export const REJECT = '#f5222d'
+export const DEFAULT_IMG =
+    'https://3.bp.blogspot.com/-2ngXyiTg4Q8/WRgQ6QgtoAI/AAAAAAAAnF4/2wsnlyW_mRYkfgpxWcUIgqO8I5kFg4d8gCLcB/s640/15873607_145164212645815_4665690553309102687_n.jpg'
 
+// console.log
+export const LOG = '#52c41a'
+export const INFO = '#1890ff'
+export const WARN = '#fadb14'
+export const ERROR = '#f5222d'
+
+// Route
 export const BASENAME = 'chnirt'
+
+// login
+export const USERNAME =
+    process.env.NODE_ENV !== 'production' ? 'chnirt@gmail.com' : ''
+export const PASSWORD = process.env.NODE_ENV !== 'production' ? '123456' : ''

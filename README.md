@@ -1,78 +1,18 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## SendBird messenger
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+<img src="src/assets/images/banners/7.png" alt="sendbird-messenger">
 
 ---
 
 ### Life cycle processes.
 
-[![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger)
+<!-- [![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger) -->
+
 ![CI/CD](https://github.com/chnirt/react-sendbird-messenger/workflows/GithubCI/badge.svg)
+[![GitHub issues](https://img.shields.io/github/issues/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger/issues)
+[![GitHub forks](https://img.shields.io/github/forks/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger/network)
+[![GitHub stars](https://img.shields.io/github/stars/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger/stargazers)
+[![GitHub license](https://img.shields.io/github/license/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger)
 
 ### Tasks: 1 Sep, 2020 ~ Now
 
@@ -81,7 +21,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 -   [x] Custom components
 -   [x] useAuth
 -   [x] useFirebase
--   [ ] useSendBird
+-   [x] useSendBird
 -   [x] Multiple Environment
 -   [x] Constants
 -   [x] Convert js --> jsx
@@ -90,9 +30,22 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 -   [x] Pre-commit with husky
 -   [x] CircleCI, GithubCI
 -   [x] Analyze source
--   [ ] I18n
--   [ ] Dark mode
+-   [x] I18n
+-   [x] Dark mode - css one line
 -   [x] Sentry - error tracking
+
+-   [ ] Filter firebase
+-   [x] Design settings
+-   [ ] DTO
+-   [ ] Mock data
+-   [ ] Full testing
+-   [ ] Lazy image
+-   [x] Scroll to bottom
+-   [ ] Load more
+-   [x] Responsive mobile
+-   [ ] Design calling
+-   [ ] Calling
+-   [x] Custom console.log for dev, prod
 
 ### Learn more
 
@@ -102,7 +55,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 -   CircleCI Sample config.yml Files: https://circleci.com/docs/2.0/sample-config/#section=configuration
 
-CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
+-   CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 
 -   Circle Slack: https://circleci.com/blog/automating-the-deploy-of-an-adonis-api-to-heroku/
 
@@ -147,3 +100,33 @@ CircleCI Adding Status Badges: https://circleci.com/docs/2.0/status-badges/
 
 -   How to Create a Custom useDeviceDetect() React Hook:
     https://reedbarger.com/how-to-create-a-custom-usedevicedetect-react-hook/
+
+-   How to set alias path via webpack in CRA (create-react-app) and craco?: https://stackoverflow.com/questions/56387849/how-to-set-alias-path-via-webpack-in-cra-create-react-app-and-craco
+
+-   Configuring absolute paths in React for Web without ejecting [en-US] : https://dev.to/bybruno/configuring-absolute-paths-in-react-for-web-without-ejecting-en-us-52h6
+
+-   How to fix build failures with `create-react-app` in production: https://community.netlify.com/t/how-to-fix-build-failures-with-create-react-app-in-production/17752
+
+-   Icon :https://www.flaticon.com/
+
+-   Creating and storing encrypted secrets : https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+
+-   Setting an Environment Variable in a Project: https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
+
+-   Shields.io: https://github.com/badges/shields
+
+-   How can I reference package version in npm script?: https://stackoverflow.com/questions/48609931/how-can-i-reference-package-version-in-npm-script
+
+-   Override console.log(); for production [duplicate]: https://stackoverflow.com/questions/7042611/override-console-log-for-production
+
+-   Hide 🙈 all console logs in production with just 3 lines of code: https://dev.to/sharmakushal/hide-all-console-logs-in-production-with-just-3-lines-of-code-pp4
+
+-   Extend console's methods without losing line information: https://dev.to/maxbvrn/extend-console-s-methods-without-losing-line-information-2d68
+
+-   Builds fail in CI: https://www.gitmemory.com/issue/timarney/react-app-rewired/391/489176960
+
+-   UNIT TESTS-ENOMEM: not enough memory, read: https://discuss.circleci.com/t/unit-tests-enomem-not-enough-memory-read/35695
+
+-   Solve Module Import Aliasing for Webpack, Jest, and VSCode > <mark>remove line comments in jsconfig.json</mark>: https://medium.com/@justintulk/solve-module-import-aliasing-for-webpack-jest-and-vscode-74007ce4adc9
+
+-   42,006 free vector icons at your fingertips : https://www.iconbolt.com/

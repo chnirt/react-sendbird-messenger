@@ -4,12 +4,15 @@ import React, {
     useRef,
     useLayoutEffect,
     useCallback,
+    useState,
 } from 'react'
 import SendBird from 'sendbird'
-import { uuidv4 } from '../utils'
+import SendBirdCall from 'sendbird-calls'
+
+import { uuidv4 } from '@utils'
+import { SB_APP_ID } from '@constants'
 
 const UNIQUE_HANDLER_ID = uuidv4()
-const REACT_APP_SB_APP_ID = '7AE1264D-2D61-4D37-A25C-AEDF55FD631D'
 
 const SendBirdContext = createContext()
 
@@ -24,12 +27,12 @@ export function SendBirdProvider({ children }) {
 export const useSendBird = () => useContext(SendBirdContext)
 
 function SendBirdValue() {
+    const [userId, setUserId] = useState(null)
+
     const sbRef = useRef(null)
     const channelHandler = useRef(null)
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
-    const userId = localStorage.getItem('userId')
-    const nickName = localStorage.getItem('displayName')
 
     const connectWrapper = useCallback((USER_ID = null, NICK_NAME = null) => {
         return new Promise((resolve, reject) => {
@@ -43,13 +46,52 @@ function SendBirdValue() {
         })
     }, [])
 
+    const connectCallWrapper = useCallback(
+        (USER_ID = null, ACCESS_TOKEN = null) => {
+            return new Promise((resolve, reject) => {
+                // Authentication
+                const authOption = {
+                    userId: USER_ID,
+                    // accessToken: ACCESS_TOKEN,
+                }
+
+                SendBirdCall.authenticate(authOption, (res, error) => {
+                    if (error) {
+                        // Authentication failed
+                        // console.log('Authentication failed', error)
+                        reject(error)
+                    } else {
+                        // Authentication succeeded
+
+                        // Establishing websocket connection
+                        SendBirdCall.connectWebSocket()
+                            .then((res) => {
+                                /* Succeeded to connect */
+                                // console.log('Succeeded to connect', res)
+                            })
+                            .catch((error) => {
+                                /* Failed to connect */
+                                // console.log('Failed to connect', error)
+                            })
+                        // console.log('Authentication succeeded', res)
+                        resolve(res)
+                    }
+                })
+            })
+        },
+        []
+    )
+
     useLayoutEffect(() => {
+        const localStorageUserId = localStorage.getItem('userId')
+        const nickName = localStorage.getItem('displayName')
+
         sbRef.current = new SendBird({
-            appId: process.env.REACT_APP_SB_APP_ID || REACT_APP_SB_APP_ID,
+            appId: SB_APP_ID,
         })
 
-        if (userId) {
-            connectWrapper(userId, nickName)
+        if (!userId && localStorageUserId) {
+            connectWrapper(localStorageUserId, nickName)
         }
 
         channelHandler.current = new sbRef.current.ChannelHandler()
@@ -69,12 +111,64 @@ function SendBirdValue() {
             connectionHandler.current
         )
 
+        if (window.RTCPeerConnection) {
+            // console.log('supported')
+            SendBirdCall.init(SB_APP_ID)
+
+            if (!userId && localStorageUserId) {
+                connectCallWrapper(localStorageUserId)
+            }
+
+            // The UNIQUE_HANDLER_ID below is a unique user-defined ID for a specific event handler.
+            SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
+                onRinging: (call) => {
+                    console.log(call)
+                    call.onEstablished = (call) => {
+                        // ...
+                    }
+
+                    call.onConnected = (call) => {
+                        // ...
+                    }
+
+                    call.onEnded = (call) => {
+                        // ...
+                    }
+
+                    call.onRemoteAudioSettingsChanged = (call) => {
+                        // ...
+                    }
+
+                    call.onRemoteVideoSettingsChanged = (call) => {
+                        // ...
+                    }
+
+                    const acceptParams = {
+                        callOption: {
+                            localMediaView: document.getElementById(
+                                'local_video_element_id'
+                            ),
+                            remoteMediaView: document.getElementById(
+                                'remote_video_element_id'
+                            ),
+                            audioEnabled: true,
+                            videoEnabled: true,
+                        },
+                    }
+
+                    call.accept(acceptParams)
+                },
+            })
+        } else {
+            // console.log('not supported')
+        }
+
         return () => {
             sbRef.current.removeChannelHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
         }
-    }, [connectWrapper, nickName, userId])
+    }, [connectWrapper, connectCallWrapper, userId])
 
     function connect(USER_ID = null, NICK_NAME = null) {
         return new Promise((resolve, reject) => {
@@ -82,7 +176,8 @@ function SendBirdValue() {
                 if (error) reject(error)
 
                 // console.log('connect', user)
-                await updateCurrentUserInfo(NICK_NAME)
+                setUserId(USER_ID)
+                NICK_NAME && (await updateCurrentUserInfo(NICK_NAME))
                 resolve(user)
             })
         })
@@ -513,10 +608,8 @@ function SendBirdValue() {
     function joinChannel(groupChannel = null) {
         return new Promise((resolve, reject) => {
             if (groupChannel.isPublic) {
-                groupChannel.join(function (response, error) {
-                    if (error) {
-                        reject(error)
-                    }
+                groupChannel.join((response, error) => {
+                    if (error) reject(error)
 
                     resolve(response)
                 })
@@ -526,10 +619,8 @@ function SendBirdValue() {
 
     function leave(groupChannel = null) {
         return new Promise((resolve, reject) => {
-            groupChannel.leave(function (response, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.leave((response, error) => {
+                if (error) reject(error)
 
                 resolve(response)
             })
@@ -538,10 +629,8 @@ function SendBirdValue() {
 
     function deleteChannel(groupChannel = null) {
         return new Promise((resolve, reject) => {
-            groupChannel.delete(function (response, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.delete((response, error) => {
+                if (error) reject(error)
 
                 resolve(response)
             })
@@ -580,10 +669,8 @@ function SendBirdValue() {
 
                 if (channelListQuery.hasNext) {
                     channelListQuery.next((channelList, error) => {
-                        if (error) {
-                            reject(error)
-                        }
-
+                        if (error) reject(error)
+                        // console.log('channelList -->', channelList)
                         resolve(channelList)
                     })
                 }
@@ -596,9 +683,7 @@ function SendBirdValue() {
             sbRef.current.GroupChannel.getChannel(
                 CHANNEL_URL,
                 (groupChannel, error) => {
-                    if (error) {
-                        reject(error)
-                    }
+                    if (error) reject(error)
 
                     resolve(groupChannel)
                     // TODO: Implement what is needed with the contents of the response in the groupChannel parameter.
@@ -627,9 +712,7 @@ function SendBirdValue() {
             // params.pushNotificationDeliveryOption = "default"; // Either 'default' or 'suppress'
 
             groupChannel.sendUserMessage(params, (message, error) => {
-                if (error) {
-                    reject(error)
-                }
+                if (error) reject(error)
 
                 resolve(message)
             })
@@ -664,10 +747,8 @@ function SendBirdValue() {
             // params.translationTargetLanguages = ['fe', 'de'] // French and German
             // params.pushNotificationDeliveryOption = 'default' // Either 'default' or 'suppress'
 
-            groupChannel.sendFileMessage(params, function (fileMessage, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.sendFileMessage(params, (fileMessage, error) => {
+                if (error) reject(error)
 
                 // var thumbnailFirst = fileMessage.thumbnails[0]
                 // var thumbnailSecond = fileMessage.thumbnails[1]
@@ -714,10 +795,9 @@ function SendBirdValue() {
 
     function refresh(groupChannel = null) {
         return new Promise((resolve, reject) => {
-            groupChannel.refresh(function (response, error) {
-                if (error) {
-                    reject(error)
-                }
+            groupChannel.refresh((response, error) => {
+                if (error) reject(error)
+
                 resolve(response)
             })
         })
@@ -747,9 +827,7 @@ function SendBirdValue() {
                 INCLUDE_META_ARRAY,
                 INCLUDE_REACTION,
                 (messages, error) => {
-                    if (error) {
-                        reject(error)
-                    }
+                    if (error) reject(error)
 
                     // A list of messages sent before the specified timestamp is successfully retrieved.
                     resolve(messages)
@@ -760,6 +838,36 @@ function SendBirdValue() {
 
     function markAsDelivered(CHANNEL_URL = null) {
         sbRef.current.markAsDelivered(CHANNEL_URL)
+    }
+
+    /**
+     * Call
+     */
+    function dial(CALLEE_ID = null) {
+        return new Promise((resolve, reject) => {
+            // const dialParams = {
+            //     userId: CALLEE_ID,
+            //     isVideoCall: true,
+            //     callOption: {
+            //         localMediaView: document.getElementById(
+            //             'local_video_element_id'
+            //         ),
+            //         remoteMediaView: document.getElementById(
+            //             'remote_video_element_id'
+            //         ),
+            //         audioEnabled: true,
+            //         videoEnabled: true,
+            //     },
+            // }
+            // SendBirdCall.dial(dialParams, (call, error) => {
+            //     if (error) {
+            //         // Dialing failed
+            //         reject(error)
+            //     }
+            //     // Dialing succeeded
+            //     resolve(call)
+            // })
+        })
     }
 
     return {
@@ -808,6 +916,7 @@ function SendBirdValue() {
         onReconnectSucceeded,
         onReconnectFailed,
 
+        //  chat
         updateCurrentUserInfo,
         updateCurrentUserInfoWithProfileImage,
         userListQuery,
@@ -827,5 +936,8 @@ function SendBirdValue() {
         refresh,
         getPreviousMessagesByTimestamp,
         markAsDelivered,
+
+        // call
+        dial,
     }
 }

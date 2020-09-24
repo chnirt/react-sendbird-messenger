@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 
-import { useAuth } from '../context'
+import { useAuth } from '@context'
 
 export function PublicRoute({ children }) {
     let { isAuth } = useAuth()

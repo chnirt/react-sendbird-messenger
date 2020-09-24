@@ -26,7 +26,7 @@ export function MyAutoComplete({
                 notFoundContent={<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
                 allowClear={true}
                 backfill={true}
-                autoFocus={true}
+                // autoFocus={true}
             >
                 <Input
                     value={value}
