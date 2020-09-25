@@ -26,6 +26,7 @@ export default function Dashboard() {
     }, [disconnect, logoutFB, logout])
 
     useLayoutEffect(() => {
+        setLoadingLogout(true)
         authRef.current.onAuthStateChanged(async (user) => {
             if (user !== null) {
                 // User is signed in.
@@ -39,6 +40,7 @@ export default function Dashboard() {
                 // const snapshot = await getUsers({ email: value })
                 // console.log(snapshot.docs)
                 // setOptions(snapshot.docs.map((doc) => ({ ...doc, value: doc.id })))
+                setLoadingLogout(false)
             } else {
                 // No user is signed in.
                 handleLogout()
@@ -50,7 +52,9 @@ export default function Dashboard() {
         <Fragment>
             <DashboardProvider>
                 <Loading spinning={loadingLogout}>
-                    {isMobile ? (
+                    {isMobile === null ? (
+                        <Fragment />
+                    ) : isMobile ? (
                         <Mobile handleLogout={handleLogout} />
                     ) : (
                         <Web handleLogout={handleLogout} />

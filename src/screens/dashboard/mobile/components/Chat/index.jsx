@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { Drawer, Typography } from 'antd'
 
 import { MemoizedScrollToBottom, MessageSkeleton } from '@components'
-import { useDashboard } from '@context'
-import { getMessages } from '@mock'
+import { useDashboard, useSendBird } from '@context'
+// import { getMessages } from '@mock'
 import { Header, Footer, MessageItem } from './components'
+import { messageDto } from '@dto'
 import { Calling, Detail, IncomingCall } from './screens'
+import { formatTypingUsers } from '@utils'
 
 const { Text } = Typography
 
@@ -18,7 +20,16 @@ export function Chat() {
         setMessagesLoading,
         messages,
         setMessages,
+        prevMessageListQuery,
+        setPrevMessageListQuery,
+        setTypingMembers,
     } = useDashboard()
+    const {
+        createPreviousMessageListQuery,
+        onMessageReceived,
+        onTypingStatusUpdated,
+    } = useSendBird()
+
     const [showDetail, setShowDetail] = useState(false)
     const [showIncomingCall, setShowIncomingCall] = useState(false)
     const [showCalling, setShowCalling] = useState(false)
@@ -27,17 +38,79 @@ export function Chat() {
         const fetchMessages = async () => {
             setMessagesLoading(true)
             try {
-                const data = await getMessages()
-                // console.log(data)
-                setMessages(data)
-                setMessagesLoading(false)
+                // const data = await getMessages()
+
+                const prevMessageListQueryData = await createPreviousMessageListQuery(
+                    channel,
+                    20
+                )
+                // console.log(prevMessageListQueryData)
+
+                setPrevMessageListQuery(prevMessageListQueryData)
+
+                prevMessageListQueryData.load((messages, error) => {
+                    if (error) {
+                        return console.log(error)
+                    }
+
+                    const messagesDto = messages.map((element) =>
+                        messageDto(channel, element)
+                    )
+
+                    if (channel.channelType === 'group') {
+                        channel.markAsRead()
+                    }
+
+                    // console.log(messagesDto)
+
+                    setMessages(messagesDto)
+                    setMessagesLoading(false)
+                })
             } catch (error) {
                 setMessagesLoading(false)
             }
         }
 
         fetchMessages()
-    }, [setMessages, setMessagesLoading])
+    }, [
+        setMessages,
+        setMessagesLoading,
+        channel,
+        createPreviousMessageListQuery,
+        setPrevMessageListQuery,
+    ])
+
+    useLayoutEffect(() => {
+        listenOnMessageReceived()
+        listenOnTypingStatusUpdated()
+    })
+
+    const listenOnMessageReceived = async () => {
+        const { message } = await onMessageReceived()
+        if (channel.url === message.channelUrl) {
+            const formatMessage = messageDto(channel, message)
+            setMessages((prevState) => [...prevState, formatMessage])
+            if (channel.channelType === 'group') {
+                channel.markAsRead()
+            }
+        }
+    }
+
+    async function listenOnTypingStatusUpdated() {
+        const { groupChannel } = await onTypingStatusUpdated()
+
+        // console.log(channel.url, groupChannel.url)
+        if (channel.url === groupChannel.url) {
+            var members = groupChannel.getTypingMembers()
+
+            // console.log(members)
+
+            members = members.map((member) => member.nickname)
+            const typingUsers = formatTypingUsers(members)
+
+            setTypingMembers(typingUsers)
+        }
+    }
 
     const handleCloseChannel = () => setChannel(null)
 
@@ -45,7 +118,9 @@ export function Chat() {
 
     const handleShowDetail = () => setShowDetail(true)
 
-    const handleCloseDetail = () => setShowDetail(false)
+    const handleCloseDetail = () => {
+        setShowDetail(false)
+    }
 
     const handleDeclineIncomingCall = () => setShowIncomingCall(false)
 
@@ -58,7 +133,21 @@ export function Chat() {
         setShowCalling(false)
     }
 
-    const handleLoadMore = () => {}
+    const handleLoadMore = async () => {
+        if (prevMessageListQuery) {
+            prevMessageListQuery.load(function (messages, error) {
+                if (error) {
+                    return console.log(error)
+                }
+
+                const messagesDto = messages.map((element) =>
+                    messageDto(channel, element)
+                )
+
+                setMessages((prevState) => [...messagesDto, ...prevState])
+            })
+        }
+    }
 
     return (
         <Drawer

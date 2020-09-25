@@ -131,7 +131,6 @@ function SendBirdValue() {
             sbRef.current.removeChannelHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
-            SendBirdCall.removeListener(UNIQUE_HANDLER_ID)
         }
     }, [connectWrapper, connectCallWrapper, userId])
 

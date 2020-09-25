@@ -4,8 +4,13 @@ import { PictureOutlined, LikeOutlined } from '@ant-design/icons'
 
 import { PickerButton } from '@components'
 import { PRIMARY_COLOR } from '@constants'
+import { useDashboard, useSendBird } from '@context'
+import { messageDto } from '@dto'
 
 export function Footer() {
+    const { channel, setMessages } = useDashboard()
+    const { sendUserMessage, sendFileMessage } = useSendBird()
+
     const [typingText, setTypingText] = useState('')
 
     const handleEmojiMart = (emoji) => {
@@ -16,9 +21,13 @@ export function Footer() {
         setTypingText(e.target.value)
     }
 
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
         if (e.keyCode === 13) {
-            console.log(typingText)
+            // console.log(typingText)
+            const newUserMessage = await sendUserMessage(channel, typingText)
+            // console.log(newUserMessage)
+            const formatNewUserMessage = messageDto(channel, newUserMessage)
+            setMessages((prevState) => [...prevState, formatNewUserMessage])
             setTypingText('')
         }
     }
@@ -26,8 +35,16 @@ export function Footer() {
     const handleUploadFile = async (file) => {
         try {
             console.log(file)
-
-            message.success('File updated successfully.')
+            const fileMessage = await sendFileMessage(
+                channel,
+                file,
+                file.name,
+                file.size,
+                file.type
+            )
+            const formatNewUserMessage = messageDto(channel, fileMessage)
+            setMessages((prevState) => [...prevState, formatNewUserMessage])
+            fileMessage && message.success('File updated successfully.')
         } catch (error) {
             message.error(error)
         }
@@ -57,8 +74,8 @@ export function Footer() {
                     value={typingText}
                     onChange={onChange}
                     onKeyDown={handleSendMessage}
-                    // onFocus={() => channel?.startTyping()}
-                    // onBlur={() => channel?.endTyping()}
+                    onFocus={() => channel.startTyping()}
+                    onBlur={() => channel.endTyping()}
                 />
             </Col>
             <Col

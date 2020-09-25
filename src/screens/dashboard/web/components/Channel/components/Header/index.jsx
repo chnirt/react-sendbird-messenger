@@ -108,6 +108,10 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
     })
 
     const handleAudioCall = async () => {
+        console.log('AudioCall')
+    }
+
+    const handleVideoCall = () => {
         setShowVideoCall(true)
         setShowIncomingCall(false)
 
@@ -123,10 +127,6 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
             setMediaAccess(mediaAccess)
             setDirectCall(call)
         }, 500)
-    }
-
-    const handleVideoCall = () => {
-        setShowIncomingCall((prevState) => !prevState)
     }
 
     const handleOk = () => {

@@ -12,7 +12,7 @@ export default function Mobile({ handleLogout = () => {} }) {
                     border: `1px solid ${THIRD_COLOR}`,
                 }}
             >
-                <Col>
+                <Col span={24}>
                     <Channels handleLogout={handleLogout} />
                 </Col>
 

@@ -7,12 +7,19 @@ import {
     firstCharacterOfEachString,
     formatLastTime,
 } from '@utils'
-import { useDashboard } from '@context'
+import { useDashboard, useSendBird } from '@context'
 
 const { Text } = Typography
 
 export function ChannelItem({ channel }) {
     const { setChannel } = useDashboard()
+    const { getChannel, joinChannel } = useSendBird()
+
+    const handleClickChannel = async () => {
+        const channelData = await getChannel(channel.id)
+        setChannel(channelData)
+        joinChannel(channelData)
+    }
 
     const isUnread = channel.isUnread
     const url = channel.url
@@ -36,9 +43,7 @@ export function ChannelItem({ channel }) {
                 cursor: 'pointer',
             }}
             key={url}
-            onClick={() => {
-                setChannel(channel)
-            }}
+            onClick={handleClickChannel}
         >
             <Col xs={3} sm={3} md={3} lg={4} xl={3}>
                 <Avatar style={{ marginRight: 12 }} src={url} size="large">
