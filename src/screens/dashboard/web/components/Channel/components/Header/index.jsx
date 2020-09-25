@@ -107,8 +107,8 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
         listenOnVideoInputDeviceChanged()
     })
 
-    const handleAudioCall = async () => {
-        console.log('AudioCall')
+    const handleAudioCall = () => {
+        console.log('handleAudioCall')
     }
 
     const handleVideoCall = () => {

@@ -9,16 +9,20 @@ import {
 
 import { PRIMARY_COLOR } from '@constants'
 import { useDashboard } from '@context'
+import { channelDto } from '@dto'
 
 export function Header({
     visible = false,
     onCancel = () => {},
     showDetail = () => {},
-    showIncomingCall = () => {},
+    handleAudioCall = () => {},
+    handleVideoCall = () => {},
 }) {
     const { channel } = useDashboard()
 
-    const name = channel?.name
+    const formatChannel = channelDto(channel)
+
+    const name = formatChannel.name
 
     return (
         <Row
@@ -66,7 +70,7 @@ export function Header({
                     type="ghost"
                     icon={<PhoneOutlined style={{ color: PRIMARY_COLOR }} />}
                     size="large"
-                    onClick={showIncomingCall}
+                    onClick={handleAudioCall}
                 />
                 <Button
                     style={{ border: 0 }}
@@ -75,7 +79,7 @@ export function Header({
                         <VideoCameraOutlined style={{ color: PRIMARY_COLOR }} />
                     }
                     size="large"
-                    onClick={showIncomingCall}
+                    onClick={handleVideoCall}
                 />
                 <Button
                     style={{ border: 0 }}

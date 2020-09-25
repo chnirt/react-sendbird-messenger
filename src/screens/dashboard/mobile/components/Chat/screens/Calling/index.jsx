@@ -8,14 +8,37 @@ import { ReactComponent as Video } from '@assets/svg/video/video-white.svg'
 import { ReactComponent as NoVideo } from '@assets/svg/video/video-no-white.svg'
 
 import { REJECT, LOCAL_VIDEO, REMOTE_VIDEO, THIRD_COLOR } from '@constants'
+import { useDashboard, useSendBird } from '@context'
 
 export function Calling({ visible = false, onCancel = () => {} }) {
+    const {
+        setShowVideoCall,
+        directCall,
+        setDirectCall,
+        mediaAccess,
+    } = useDashboard()
+    const { dispose } = useSendBird()
+
     const [audio, setAudio] = useState(true)
     const [video, setVideo] = useState(true)
 
-    const handleToggleAudio = () => setAudio((prevState) => !prevState)
+    const handleToggleAudio = () => {
+        audio ? directCall.muteMicrophone() : directCall.unmuteMicrophone()
+        setAudio((prevState) => !prevState)
+    }
 
-    const handleToggleVideo = () => setVideo((prevState) => !prevState)
+    const handleToggleVideo = () => {
+        video ? directCall.stopVideo() : directCall.startVideo()
+        setVideo((prevState) => !prevState)
+    }
+
+    const handleEndCall = () => {
+        directCall.end()
+        dispose(mediaAccess)
+        setDirectCall(null)
+        setShowVideoCall(false)
+        onCancel()
+    }
 
     return (
         <Drawer
@@ -111,7 +134,7 @@ export function Calling({ visible = false, onCancel = () => {} }) {
                         <Decline style={{ position: 'absolute', height: 25 }} />
                     }
                     type="ghost"
-                    onClick={onCancel}
+                    onClick={handleEndCall}
                 />
                 <Button
                     style={{

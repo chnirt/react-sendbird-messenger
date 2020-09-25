@@ -9,10 +9,8 @@ import { Calling, Detail, IncomingCall } from './screens'
 
 const { Text } = Typography
 
-export function Chat() {
+export function Chat({ visible = false, handleCloseChannel = () => {} }) {
     const {
-        channel,
-        setChannel,
         typingMembers,
         messagesLoading,
         setMessagesLoading,
@@ -39,7 +37,7 @@ export function Chat() {
         fetchMessages()
     }, [setMessages, setMessagesLoading])
 
-    const handleCloseChannel = () => setChannel(null)
+    // const handleCloseChannel = () => setChannel(null)
 
     const handleShowIncomingCall = () => setShowIncomingCall(true)
 
@@ -79,7 +77,7 @@ export function Chat() {
             bodyStyle={{ padding: 0 }}
             placement="right"
             closable={false}
-            visible={!!channel}
+            visible={visible}
             width="100%"
             push={false}
         >

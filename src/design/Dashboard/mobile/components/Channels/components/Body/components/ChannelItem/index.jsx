@@ -11,11 +11,12 @@ import { useDashboard } from '@context'
 
 const { Text } = Typography
 
-export function ChannelItem({ channel }) {
+export function ChannelItem({ channel, handleShowChannel = () => {} }) {
     const { setChannel } = useDashboard()
 
     const handleClickChannel = () => {
         setChannel(channel)
+        handleShowChannel()
     }
 
     const isUnread = channel.isUnread

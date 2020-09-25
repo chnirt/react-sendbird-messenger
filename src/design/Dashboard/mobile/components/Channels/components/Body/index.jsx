@@ -8,7 +8,7 @@ import { useDashboard } from '@context'
 import { filterUsers } from '@utils'
 import { ChannelItem } from './components'
 
-export function Body() {
+export function Body({ handleShowChannel = () => {} }) {
     const {
         channelsLoading,
         setChannelsLoading,
@@ -80,7 +80,13 @@ export function Body() {
                     avatar
                 >
                     {channels.map((channel, i) => {
-                        return <ChannelItem key={i} channel={channel} />
+                        return (
+                            <ChannelItem
+                                key={i}
+                                channel={channel}
+                                handleShowChannel={handleShowChannel}
+                            />
+                        )
                     })}
                 </MySkeleton>
             </div>

@@ -30,7 +30,7 @@ export function Detail({ visible = false, onCancel = () => {} }) {
     useEffect(() => {
         const fetchMembers = async () => {
             // const memberList = await getMembers()
-            const memberList = channel.members
+            const memberList = channel?.members || []
             const membersDto = memberList.map((element) => memberDto(element))
 
             setMembers(membersDto)

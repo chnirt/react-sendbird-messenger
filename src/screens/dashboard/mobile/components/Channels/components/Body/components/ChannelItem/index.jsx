@@ -11,7 +11,7 @@ import { useDashboard, useSendBird } from '@context'
 
 const { Text } = Typography
 
-export function ChannelItem({ channel }) {
+export function ChannelItem({ channel, handleShowChannel = () => {} }) {
     const { setChannel } = useDashboard()
     const { getChannel, joinChannel } = useSendBird()
 
@@ -19,6 +19,7 @@ export function ChannelItem({ channel }) {
         const channelData = await getChannel(channel.id)
         setChannel(channelData)
         joinChannel(channelData)
+        handleShowChannel()
     }
 
     const isUnread = channel.isUnread

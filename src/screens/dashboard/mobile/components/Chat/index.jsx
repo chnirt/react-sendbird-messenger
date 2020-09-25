@@ -11,10 +11,9 @@ import { formatTypingUsers } from '@utils'
 
 const { Text } = Typography
 
-export function Chat() {
+export function Chat({ visible = false, handleCloseChannel = () => {} }) {
     const {
         channel,
-        setChannel,
         typingMembers,
         messagesLoading,
         setMessagesLoading,
@@ -23,11 +22,23 @@ export function Chat() {
         prevMessageListQuery,
         setPrevMessageListQuery,
         setTypingMembers,
+        setDirectCall,
+        setMediaAccess,
+        setShowVideoCall,
+        directCall,
     } = useDashboard()
     const {
         createPreviousMessageListQuery,
         onMessageReceived,
         onTypingStatusUpdated,
+        requireMediaAccess,
+        dial,
+        accept,
+        onRinging,
+        onAudioInputDeviceChanged,
+        onAudioOutputDeviceChanged,
+        onVideoInputDeviceChanged,
+        dispose,
     } = useSendBird()
 
     const [showDetail, setShowDetail] = useState(false)
@@ -83,6 +94,11 @@ export function Chat() {
     useLayoutEffect(() => {
         listenOnMessageReceived()
         listenOnTypingStatusUpdated()
+
+        listenOnRinging()
+        listenOnAudioInputDeviceChanged()
+        listenOnAudioOutputDeviceChanged()
+        listenOnVideoInputDeviceChanged()
     })
 
     const listenOnMessageReceived = async () => {
@@ -112,21 +128,109 @@ export function Chat() {
         }
     }
 
-    const handleCloseChannel = () => setChannel(null)
+    const listenOnRinging = async () => {
+        const { call } = await onRinging()
+        console.log(call.caller.nickname, call.caller.userId)
 
-    const handleShowIncomingCall = () => setShowIncomingCall(true)
+        const mediaAccess = await requireMediaAccess()
+        setMediaAccess(mediaAccess)
+
+        setDirectCall(call)
+        setShowIncomingCall(true)
+
+        call.onEstablished = (call) => {
+            // ...
+            console.log('onEstablished', call)
+        }
+
+        call.onConnected = (call) => {
+            // ...
+            console.log('onConnected', call)
+        }
+
+        call.onEnded = (call) => {
+            // ...
+            console.log('onEnded')
+            call.end()
+            dispose(mediaAccess)
+            setDirectCall(null)
+            setShowVideoCall(false)
+            setShowCalling(false)
+        }
+
+        call.onRemoteAudioSettingsChanged = (call) => {
+            // ...
+            console.log('onRemoteAudioSettingsChanged', call)
+            if (call.isRemoteAudioEnabled) {
+                console.log('isRemoteAudioEnabled', call)
+                // The remote user has been unmuted.
+                // TODO: Display an unmuted icon.
+            } else {
+                console.log('isLocalAudioEnabled', call)
+
+                // The remote user has been muted.
+                // TODO: Display and toggles a muted icon.
+            }
+        }
+
+        call.onRemoteVideoSettingsChanged = (call) => {
+            // ...
+            console.log('onRemoteVideoSettingsChanged', call)
+        }
+    }
+
+    const listenOnAudioInputDeviceChanged = async () => {
+        const { call } = await onAudioInputDeviceChanged()
+        console.log(call)
+    }
+
+    const listenOnAudioOutputDeviceChanged = async () => {
+        const { call } = await onAudioOutputDeviceChanged()
+        console.log(call)
+    }
+
+    const listenOnVideoInputDeviceChanged = async () => {
+        const { call } = await onVideoInputDeviceChanged()
+        console.log(call)
+    }
+
+    const handleAudioCall = () => {
+        console.log('handleAudioCall')
+    }
+    const handleVideoCall = () => {
+        setShowIncomingCall(false)
+        setShowCalling(true)
+
+        setTimeout(async () => {
+            const mediaAccess = await requireMediaAccess()
+            // console.log(mediaAccess)
+
+            const callee = channel.members.find(
+                (element) => element.userId !== localStorage.getItem('userId')
+            ).userId
+            const call = await dial(callee)
+            // console.log(call)
+            setMediaAccess(mediaAccess)
+            setDirectCall(call)
+        }, 500)
+    }
 
     const handleShowDetail = () => setShowDetail(true)
 
-    const handleCloseDetail = () => {
-        setShowDetail(false)
-    }
+    const handleCloseDetail = () => setShowDetail(false)
 
-    const handleDeclineIncomingCall = () => setShowIncomingCall(false)
+    const handleDeclineIncomingCall = () => {
+        directCall.end()
+        setShowIncomingCall(false)
+    }
 
     const handleCallIncomingCall = () => {
         setShowIncomingCall(false)
         setShowCalling(true)
+
+        setTimeout(async () => {
+            accept(directCall)
+        }, 500)
     }
 
     const handleEndCalling = () => {
@@ -160,7 +264,8 @@ export function Chat() {
                     visible={showDetail}
                     onCancel={handleCloseChannel}
                     showDetail={handleShowDetail}
-                    showIncomingCall={handleShowIncomingCall}
+                    handleAudioCall={handleAudioCall}
+                    handleVideoCall={handleVideoCall}
                 />
             }
             footerStyle={{ padding: 0 }}
@@ -168,7 +273,7 @@ export function Chat() {
             bodyStyle={{ padding: 0 }}
             placement="right"
             closable={false}
-            visible={!!channel}
+            visible={visible}
             width="100%"
             push={false}
         >

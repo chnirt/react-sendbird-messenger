@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { Button, Col, Input, Upload, message } from 'antd'
-import { PictureOutlined, LikeOutlined } from '@ant-design/icons'
+import { PictureOutlined, SendOutlined } from '@ant-design/icons'
 
 import { PickerButton } from '@components'
 import { PRIMARY_COLOR } from '@constants'
@@ -21,15 +21,21 @@ export function ChatInput() {
         setTypingText(e.target.value)
     }
 
-    const handleSendMessage = async (e) => {
+    const handleKeyDown = async (e) => {
         if (e.keyCode === 13) {
-            // console.log(typingText)
-            const newUserMessage = await sendUserMessage(channel, typingText)
-            // console.log(newUserMessage)
-            const formatNewUserMessage = messageDto(channel, newUserMessage)
-            setMessages((prevState) => [...prevState, formatNewUserMessage])
-            setTypingText('')
+            handleSendMessage()
         }
+    }
+
+    const handleSendMessage = async (e) => {
+        if (typingText === '') return
+
+        // console.log(typingText)
+        const newUserMessage = await sendUserMessage(channel, typingText)
+        // console.log(newUserMessage)
+        const formatNewUserMessage = messageDto(channel, newUserMessage)
+        setMessages((prevState) => [...prevState, formatNewUserMessage])
+        setTypingText('')
     }
 
     const handleUploadFile = async (file) => {
@@ -50,10 +56,6 @@ export function ChatInput() {
         }
     }
 
-    const handleLike = () => {
-        setTypingText((prevState) => prevState + '👍')
-    }
-
     return (
         <Fragment>
             <Col
@@ -66,7 +68,7 @@ export function ChatInput() {
                     placeholder="Type a message..."
                     value={typingText}
                     onChange={onChange}
-                    onKeyDown={handleSendMessage}
+                    onKeyDown={handleKeyDown}
                     onFocus={() => channel.startTyping()}
                     onBlur={() => channel.endTyping()}
                 />
@@ -104,14 +106,14 @@ export function ChatInput() {
                     style={{ border: 0 }}
                     type="ghost"
                     icon={
-                        <LikeOutlined
+                        <SendOutlined
                             style={{
                                 color: PRIMARY_COLOR,
                             }}
                         />
                     }
                     size="large"
-                    onClick={handleLike}
+                    onClick={handleSendMessage}
                 />
             </Col>
         </Fragment>
