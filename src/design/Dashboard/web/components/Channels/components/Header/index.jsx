@@ -6,7 +6,7 @@ import { PRIMARY_COLOR, THIRD_COLOR } from '@constants'
 import { useDashboard } from '@context'
 import { MyMenu } from './components'
 
-export function Header() {
+export function Header({ handleLogout = () => {} }) {
     const { setChannel } = useDashboard()
 
     const [showMenu, setShowMenu] = useState(false)
@@ -66,7 +66,11 @@ export function Header() {
                 </Col>
             </Row>
 
-            <MyMenu visible={showMenu} onClose={handleCloseMenu} />
+            <MyMenu
+                visible={showMenu}
+                onClose={handleCloseMenu}
+                handleLogout={handleLogout}
+            />
         </Fragment>
     )
 }

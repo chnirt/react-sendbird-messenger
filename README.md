@@ -36,15 +36,15 @@
 
 -   [ ] Filter firebase
 -   [x] Design settings
--   [ ] DTO
--   [ ] Mock data
+-   [x] DTO
+-   [x] Mock data - https://mockapi.io/projects/5f0ea5f8faef3500160b8664
 -   [ ] Full testing
 -   [ ] Lazy image
 -   [x] Scroll to bottom
 -   [ ] Load more
 -   [x] Responsive mobile
--   [ ] Design calling
--   [ ] Calling
+-   [x] Design calling
+-   [x] Calling
 -   [x] Custom console.log for dev, prod
 
 ### Learn more

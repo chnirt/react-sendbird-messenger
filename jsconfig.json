@@ -12,6 +12,7 @@
             "@constants": ["constants"],
             "@context": ["context"],
             "@design": ["design"],
+            "@dto": ["dto"],
             "@helpers": ["helpers"],
             "@hooks": ["hooks"],
             "@layout": ["layout"],

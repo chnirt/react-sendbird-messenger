@@ -11,6 +11,7 @@ function ScrollToBottom({ style, handleLoadMore = () => {}, children }) {
 
     useLayoutEffect(() => {
         // console.log('😭')
+
         scrollToBottom()
     }, [])
 

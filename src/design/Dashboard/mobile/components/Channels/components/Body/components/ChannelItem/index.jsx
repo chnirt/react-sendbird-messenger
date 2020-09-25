@@ -14,6 +14,10 @@ const { Text } = Typography
 export function ChannelItem({ channel }) {
     const { setChannel } = useDashboard()
 
+    const handleClickChannel = () => {
+        setChannel(channel)
+    }
+
     const isUnread = channel.isUnread
     const url = channel.url
     const shortName = capitalizeFirstLetter(
@@ -36,9 +40,7 @@ export function ChannelItem({ channel }) {
                 cursor: 'pointer',
             }}
             key={url}
-            onClick={() => {
-                setChannel(channel)
-            }}
+            onClick={handleClickChannel}
         >
             <Col xs={3} sm={3} md={3} lg={4} xl={3}>
                 <Avatar style={{ marginRight: 12 }} src={url} size="large">

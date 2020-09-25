@@ -34,6 +34,8 @@ function SendBirdValue() {
     const userEventHandler = useRef(null)
     const connectionHandler = useRef(null)
 
+    const callHandler = useRef({})
+
     const connectWrapper = useCallback((USER_ID = null, NICK_NAME = null) => {
         return new Promise((resolve, reject) => {
             sbRef.current.connect(USER_ID, async (user, error) => {
@@ -117,48 +119,10 @@ function SendBirdValue() {
 
             if (!userId && localStorageUserId) {
                 connectCallWrapper(localStorageUserId)
+
+                // The UNIQUE_HANDLER_ID below is a unique user-defined ID for a specific event handler.
+                SendBirdCall.addListener(UNIQUE_HANDLER_ID, callHandler.current)
             }
-
-            // The UNIQUE_HANDLER_ID below is a unique user-defined ID for a specific event handler.
-            SendBirdCall.addListener(UNIQUE_HANDLER_ID, {
-                onRinging: (call) => {
-                    console.log(call)
-                    call.onEstablished = (call) => {
-                        // ...
-                    }
-
-                    call.onConnected = (call) => {
-                        // ...
-                    }
-
-                    call.onEnded = (call) => {
-                        // ...
-                    }
-
-                    call.onRemoteAudioSettingsChanged = (call) => {
-                        // ...
-                    }
-
-                    call.onRemoteVideoSettingsChanged = (call) => {
-                        // ...
-                    }
-
-                    const acceptParams = {
-                        callOption: {
-                            localMediaView: document.getElementById(
-                                'local_video_element_id'
-                            ),
-                            remoteMediaView: document.getElementById(
-                                'remote_video_element_id'
-                            ),
-                            audioEnabled: true,
-                            videoEnabled: true,
-                        },
-                    }
-
-                    call.accept(acceptParams)
-                },
-            })
         } else {
             // console.log('not supported')
         }
@@ -167,6 +131,7 @@ function SendBirdValue() {
             sbRef.current.removeChannelHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeUserEventHandler(UNIQUE_HANDLER_ID)
             sbRef.current.removeConnectionHandler(UNIQUE_HANDLER_ID)
+            SendBirdCall.removeListener(UNIQUE_HANDLER_ID)
         }
     }, [connectWrapper, connectCallWrapper, userId])
 
@@ -606,14 +571,15 @@ function SendBirdValue() {
     }
 
     function joinChannel(groupChannel = null) {
+        // console.log('joinChannel', groupChannel)
         return new Promise((resolve, reject) => {
-            if (groupChannel.isPublic) {
-                groupChannel.join((response, error) => {
-                    if (error) reject(error)
+            // if (groupChannel.isPublic) {
+            groupChannel.join((response, error) => {
+                if (error) reject(error)
 
-                    resolve(response)
-                })
-            }
+                resolve(true)
+            })
+            // }
         })
     }
 
@@ -622,7 +588,7 @@ function SendBirdValue() {
             groupChannel.leave((response, error) => {
                 if (error) reject(error)
 
-                resolve(response)
+                resolve(true)
             })
         })
     }
@@ -644,19 +610,23 @@ function SendBirdValue() {
         COVER_IMAGE_OR_URL = null,
         DATA = null
     ) {
-        // When 'distinct' is false
-        sbRef.current.GroupChannel.createChannelWithUserIds(
-            userIds.concat(userId),
-            distinct,
-            NAME,
-            COVER_IMAGE_OR_URL,
-            DATA,
-            (groupChannel, error) => {
-                if (error) return console.log(error)
+        return new Promise((resolve, reject) => {
+            // When 'distinct' is false
+            sbRef.current.GroupChannel.createChannelWithUserIds(
+                userIds.concat(userId),
+                distinct,
+                NAME,
+                COVER_IMAGE_OR_URL,
+                DATA,
+                (groupChannel, error) => {
+                    if (error) reject(error)
 
-                console.log('createChannelWithUserIds', groupChannel)
-            }
-        )
+                    console.log('createChannelWithUserIds', groupChannel)
+
+                    resolve(groupChannel)
+                }
+            )
+        })
     }
 
     function channelListQuery() {
@@ -843,31 +813,96 @@ function SendBirdValue() {
     /**
      * Call
      */
+    function onRinging() {
+        return new Promise((resolve, reject) => {
+            callHandler.current.onRinging = (call) => {
+                // console.log('onRinging')
+                resolve({ call })
+            }
+        })
+    }
+
+    function onAudioInputDeviceChanged() {
+        return new Promise((resolve, reject) => {
+            callHandler.current.onAudioInputDeviceChanged = (call) => {
+                // console.log('onAudioInputDeviceChanged')
+                resolve({ call })
+            }
+        })
+    }
+
+    function onAudioOutputDeviceChanged() {
+        return new Promise((resolve, reject) => {
+            callHandler.current.onAudioOutputDeviceChanged = (call) => {
+                // console.log('onAudioOutputDeviceChanged')
+                resolve({ call })
+            }
+        })
+    }
+
+    function onVideoInputDeviceChanged() {
+        return new Promise((resolve, reject) => {
+            callHandler.current.onVideoInputDeviceChanged = (call) => {
+                // console.log('onVideoInputDeviceChanged')
+                resolve({ call })
+            }
+        })
+    }
+
+    function requireMediaAccess(audio = true, video = true) {
+        return new Promise((resolve, reject) => {
+            const mediaAccess = SendBirdCall.useMedia({ audio, video })
+            resolve(mediaAccess)
+        })
+    }
+
+    function dispose(mediaAccess = null) {
+        mediaAccess.dispose()
+    }
+
     function dial(CALLEE_ID = null) {
         return new Promise((resolve, reject) => {
-            // const dialParams = {
-            //     userId: CALLEE_ID,
-            //     isVideoCall: true,
-            //     callOption: {
-            //         localMediaView: document.getElementById(
-            //             'local_video_element_id'
-            //         ),
-            //         remoteMediaView: document.getElementById(
-            //             'remote_video_element_id'
-            //         ),
-            //         audioEnabled: true,
-            //         videoEnabled: true,
-            //     },
-            // }
-            // SendBirdCall.dial(dialParams, (call, error) => {
-            //     if (error) {
-            //         // Dialing failed
-            //         reject(error)
-            //     }
-            //     // Dialing succeeded
-            //     resolve(call)
-            // })
+            const dialParams = {
+                userId: CALLEE_ID,
+                isVideoCall: true,
+                callOption: {
+                    localMediaView: document.getElementById(
+                        'local_video_element_id'
+                    ),
+                    remoteMediaView: document.getElementById(
+                        'remote_video_element_id'
+                    ),
+                    audioEnabled: true,
+                    videoEnabled: true,
+                },
+            }
+
+            SendBirdCall.dial(dialParams, (call, error) => {
+                if (error) {
+                    // Dialing failed
+                    reject(error)
+                }
+                // Dialing succeeded
+                resolve(call)
+            })
         })
+    }
+
+    function accept(localCall = null) {
+        const acceptParams = {
+            callOption: {
+                localMediaView: document.getElementById(
+                    'local_video_element_id'
+                ),
+                remoteMediaView: document.getElementById(
+                    'remote_video_element_id'
+                ),
+                audioEnabled: true,
+                videoEnabled: true,
+            },
+        }
+
+        localCall.accept(acceptParams)
     }
 
     return {
@@ -938,6 +973,14 @@ function SendBirdValue() {
         markAsDelivered,
 
         // call
+        onRinging,
+        onAudioInputDeviceChanged,
+        onAudioOutputDeviceChanged,
+        onVideoInputDeviceChanged,
+
+        requireMediaAccess,
+        dispose,
         dial,
+        accept,
     }
 }

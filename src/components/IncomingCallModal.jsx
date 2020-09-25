@@ -2,9 +2,10 @@ import React from 'react'
 import { Button, Modal, Avatar, Typography } from 'antd'
 import { useTranslation } from 'react-i18next'
 
-import { ACCEPT, DEFAULT_IMG, REJECT } from '@constants'
+import { ACCEPT, REJECT } from '@constants'
 import { ReactComponent as Phone } from '@assets/svg/call/call-phone-white.svg'
 import { ReactComponent as Decline } from '@assets/svg/call/call-decline-white.svg'
+import { capitalizeFirstLetter, firstCharacterOfEachString } from '@utils'
 
 const { Title, Text } = Typography
 
@@ -12,8 +13,15 @@ export function IncomingCallModal({
     visible = false,
     onOk = () => {},
     onCancel = () => {},
+    caller = {},
 }) {
     const { t } = useTranslation()
+
+    const id = caller.userId
+    const shortName = capitalizeFirstLetter(
+        firstCharacterOfEachString(caller.nickname)
+    )
+    const name = caller.nickname
 
     return (
         <Modal
@@ -88,16 +96,13 @@ export function IncomingCallModal({
                 alignItems: 'center',
             }}
         >
-            <Avatar
-                className="pulse"
-                shape="circle"
-                size={128}
-                src={DEFAULT_IMG}
-            />
+            <Avatar className="pulse" shape="circle" size={128}>
+                {shortName}
+            </Avatar>
             <Title style={{ margin: '10px 0 0' }} level={3}>
-                Maria
+                {name}
             </Title>
-            <Text>@maria</Text>
+            <Text>{id}</Text>
         </Modal>
     )
 }
