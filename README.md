@@ -130,3 +130,5 @@
 -   Solve Module Import Aliasing for Webpack, Jest, and VSCode > <mark>remove line comments in jsconfig.json</mark>: https://medium.com/@justintulk/solve-module-import-aliasing-for-webpack-jest-and-vscode-74007ce4adc9
 
 -   42,006 free vector icons at your fingertips : https://www.iconbolt.com/
+
+-   HTML5 video not working on iphone with react jsx: https://stackoverflow.com/questions/39852188/html5-video-not-working-on-iphone-with-react-jsx
