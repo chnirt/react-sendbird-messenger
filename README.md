@@ -1,8 +1,15 @@
 ## SendBird messenger
 
+---
+
 <img src="src/assets/images/banners/default.png" alt="sendbird-messenger">
 
 ---
+
+### Demo
+
+<img src="src/assets/images/demo/mobile.gif" alt="mobile">
+<img src="src/assets/images/demo/web.gif" alt="web">
 
 ### Life cycle processes.
 
@@ -134,3 +141,5 @@
 -   HTML5 video not working on iphone with react jsx: https://stackoverflow.com/questions/39852188/html5-video-not-working-on-iphone-with-react-jsx
 
 -   Framer sample: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iHDnQfTHEVVceOEBsOf07i
+
+-   Mp4 to gif: https://www.onlineconverter.com/mp4-to-gif
