@@ -11,6 +11,7 @@ import { IncomingCallModal } from '@components'
 import { useDashboard, useSendBird } from '@context'
 import { capitalizeFirstLetter, firstCharacterOfEachString } from '@utils'
 import { channelDto } from '@dto'
+import { ScaleIn } from '@animations'
 
 const { Title } = Typography
 
@@ -186,40 +187,48 @@ export function Header({ detailVisible = false, toggleShowDetail = () => {} }) {
                         {name}
                     </Title>
                 </Col>
-                <Col>
-                    <Button
-                        style={{ border: 0 }}
-                        type="ghost"
-                        icon={
-                            <PhoneOutlined style={{ color: PRIMARY_COLOR }} />
-                        }
-                        size="large"
-                        onClick={handleAudioCall}
-                    />
-                    <Button
-                        style={{ border: 0 }}
-                        type="ghost"
-                        icon={
-                            <VideoCameraOutlined
-                                style={{ color: PRIMARY_COLOR }}
-                            />
-                        }
-                        size="large"
-                        onClick={handleVideoCall}
-                    />
-                    <Button
-                        style={{ border: 0 }}
-                        type="ghost"
-                        icon={
-                            <InfoCircleOutlined
-                                style={{
-                                    color: detailVisible && PRIMARY_COLOR,
-                                }}
-                            />
-                        }
-                        size="large"
-                        onClick={toggleShowDetail}
-                    />
+                <Col style={{ display: 'flex' }}>
+                    <ScaleIn>
+                        <Button
+                            style={{ border: 0 }}
+                            type="ghost"
+                            icon={
+                                <PhoneOutlined
+                                    style={{ color: PRIMARY_COLOR }}
+                                />
+                            }
+                            size="large"
+                            onClick={handleAudioCall}
+                        />
+                    </ScaleIn>
+                    <ScaleIn>
+                        <Button
+                            style={{ border: 0 }}
+                            type="ghost"
+                            icon={
+                                <VideoCameraOutlined
+                                    style={{ color: PRIMARY_COLOR }}
+                                />
+                            }
+                            size="large"
+                            onClick={handleVideoCall}
+                        />
+                    </ScaleIn>
+                    <ScaleIn>
+                        <Button
+                            style={{ border: 0 }}
+                            type="ghost"
+                            icon={
+                                <InfoCircleOutlined
+                                    style={{
+                                        color: detailVisible && PRIMARY_COLOR,
+                                    }}
+                                />
+                            }
+                            size="large"
+                            onClick={toggleShowDetail}
+                        />
+                    </ScaleIn>
                 </Col>
             </Row>
 

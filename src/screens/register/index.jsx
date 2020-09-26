@@ -7,6 +7,7 @@ import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-log
 import { Loading } from '@components'
 import { PRIMARY_COLOR } from '@constants'
 import { useFirebase } from '@context'
+import { FadeIn, SlideLeft } from '@animations'
 
 const { Title, Text } = Typography
 
@@ -86,10 +87,14 @@ export default function Register() {
                                     height: '10vh',
                                 }}
                             >
-                                <Logo fill={PRIMARY_COLOR} />
+                                <FadeIn>
+                                    <Logo fill={PRIMARY_COLOR} />
+                                </FadeIn>
                             </Row>
                             <Row style={{ justifyContent: 'center' }}>
-                                <Title level={2}>SendBird Messenger</Title>
+                                <Title level={2}>
+                                    <SlideLeft>SendBird Messenger</SlideLeft>
+                                </Title>
                             </Row>
                             <Row
                                 style={{

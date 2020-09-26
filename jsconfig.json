@@ -6,6 +6,7 @@
         "checkJs": true,
         "baseUrl": "./src",
         "paths": {
+            "@animations": ["animations"],
             "@assets": ["assets"],
             "@components": ["components"],
             "@config": ["config"],

@@ -1,6 +1,6 @@
 ## SendBird messenger
 
-<img src="src/assets/images/banners/7.png" alt="sendbird-messenger">
+<img src="src/assets/images/banners/default.png" alt="sendbird-messenger">
 
 ---
 
@@ -132,3 +132,5 @@
 -   42,006 free vector icons at your fingertips : https://www.iconbolt.com/
 
 -   HTML5 video not working on iphone with react jsx: https://stackoverflow.com/questions/39852188/html5-video-not-working-on-iphone-with-react-jsx
+
+-   Framer sample: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iHDnQfTHEVVceOEBsOf07i

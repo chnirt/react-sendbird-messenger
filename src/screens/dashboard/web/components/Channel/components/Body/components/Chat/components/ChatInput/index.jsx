@@ -6,6 +6,7 @@ import { PickerButton } from '@components'
 import { PRIMARY_COLOR } from '@constants'
 import { useDashboard, useSendBird } from '@context'
 import { messageDto } from '@dto'
+import { ScaleIn } from '@animations'
 
 export function ChatInput() {
     const { channel, setMessages } = useDashboard()
@@ -80,18 +81,20 @@ export function ChatInput() {
                 }}
             >
                 <Upload beforeUpload={handleUploadFile} showUploadList={false}>
-                    <Button
-                        style={{
-                            border: 0,
-                            display: 'inline-block',
-                            cursor: 'pointer',
-                        }}
-                        type="ghost"
-                        icon={<PictureOutlined />}
-                        size="large"
-                    />
+                    <ScaleIn>
+                        <Button
+                            style={{
+                                border: 0,
+                                display: 'inline-block',
+                                cursor: 'pointer',
+                            }}
+                            type="ghost"
+                            icon={<PictureOutlined />}
+                            size="large"
+                        />
+                    </ScaleIn>
                 </Upload>
-                <div>
+                <ScaleIn>
                     <PickerButton
                         style={{
                             position: 'absolute',
@@ -100,21 +103,22 @@ export function ChatInput() {
                         }}
                         handleEmojiMart={handleEmojiMart}
                     />
-                </div>
-
-                <Button
-                    style={{ border: 0 }}
-                    type="ghost"
-                    icon={
-                        <SendOutlined
-                            style={{
-                                color: PRIMARY_COLOR,
-                            }}
-                        />
-                    }
-                    size="large"
-                    onClick={handleSendMessage}
-                />
+                </ScaleIn>
+                <ScaleIn>
+                    <Button
+                        style={{ border: 0 }}
+                        type="ghost"
+                        icon={
+                            <SendOutlined
+                                style={{
+                                    color: PRIMARY_COLOR,
+                                }}
+                            />
+                        }
+                        size="large"
+                        onClick={handleSendMessage}
+                    />
+                </ScaleIn>
             </Col>
         </Fragment>
     )

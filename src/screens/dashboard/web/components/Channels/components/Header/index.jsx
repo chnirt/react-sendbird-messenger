@@ -4,6 +4,7 @@ import { SettingOutlined, FormOutlined } from '@ant-design/icons'
 
 import { PRIMARY_COLOR, THIRD_COLOR } from '@constants'
 import { useDashboard } from '@context'
+import { ScaleIn } from '@animations'
 import { MyMenu } from './components'
 
 export function Header({ handleLogout = () => {} }) {
@@ -35,15 +36,19 @@ export function Header({ handleLogout = () => {} }) {
                     style={{ display: 'flex', justifyContent: 'flex-start' }}
                     span={3}
                 >
-                    <Button
-                        style={{ border: 0 }}
-                        type="ghost"
-                        icon={
-                            <SettingOutlined style={{ color: PRIMARY_COLOR }} />
-                        }
-                        size="large"
-                        onClick={handleShowMenu}
-                    />
+                    <ScaleIn>
+                        <Button
+                            style={{ border: 0 }}
+                            type="ghost"
+                            icon={
+                                <SettingOutlined
+                                    style={{ color: PRIMARY_COLOR }}
+                                />
+                            }
+                            size="large"
+                            onClick={handleShowMenu}
+                        />
+                    </ScaleIn>
                 </Col>
                 <Col
                     style={{ display: 'flex', justifyContent: 'center' }}
@@ -57,12 +62,18 @@ export function Header({ handleLogout = () => {} }) {
                     style={{ display: 'flex', justifyContent: 'flex-end' }}
                     span={3}
                 >
-                    <Button
-                        style={{ border: 0 }}
-                        type="ghost"
-                        icon={<FormOutlined style={{ color: PRIMARY_COLOR }} />}
-                        size="large"
-                    />
+                    <ScaleIn>
+                        <Button
+                            style={{ border: 0 }}
+                            type="ghost"
+                            icon={
+                                <FormOutlined
+                                    style={{ color: PRIMARY_COLOR }}
+                                />
+                            }
+                            size="large"
+                        />
+                    </ScaleIn>
                 </Col>
             </Row>
 

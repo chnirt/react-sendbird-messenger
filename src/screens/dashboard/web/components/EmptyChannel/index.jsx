@@ -3,6 +3,7 @@ import { Result, Button } from 'antd'
 import { useTranslation } from 'react-i18next'
 
 import { ReactComponent as Logo } from '@assets/images/logo/ic-main-sendbird-logo-white.svg'
+import { ScaleIn } from '@animations'
 
 export function EmptyChannel() {
     const { t } = useTranslation()
@@ -21,9 +22,11 @@ export function EmptyChannel() {
                 title={t('src.screens.dashboard.components.YM')}
                 subTitle={t('src.screens.dashboard.components.SPPAMTAFOG')}
                 extra={[
-                    <Button type="primary" key="console">
-                        {t('src.screens.dashboard.components.SM')}
-                    </Button>,
+                    <ScaleIn>
+                        <Button type="primary" key="console">
+                            {t('src.screens.dashboard.components.SM')}
+                        </Button>
+                    </ScaleIn>,
                 ]}
             />
         </div>
