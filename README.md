@@ -2,7 +2,7 @@
 
 <img src="src/assets/images/banners/default.png" alt="sendbird-messenger">
 
-## Demo
+## [Demo](https://react-sendbird-messenger.vercel.app/)
 
 <img src="src/assets/images/demo/mobile.gif" alt="mobile">
 <img src="src/assets/images/demo/web.gif" alt="web">
