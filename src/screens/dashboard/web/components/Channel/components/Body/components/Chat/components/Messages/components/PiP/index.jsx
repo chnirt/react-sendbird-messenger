@@ -82,6 +82,8 @@ export function PiP({ visible = false }) {
                         }}
                         id="local_video_element_id"
                         autoPlay
+                        playsInline
+                        controls={false}
                     />
                     <video
                         style={{
@@ -92,6 +94,8 @@ export function PiP({ visible = false }) {
                         }}
                         id="remote_video_element_id"
                         autoPlay
+                        playsInline
+                        controls={false}
                     />
                     <div
                         style={{
