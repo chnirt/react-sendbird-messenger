@@ -66,6 +66,7 @@ export function Calling({ visible = false, onCancel = () => {} }) {
                 }}
                 id="local_video_element_id"
                 autoPlay
+                playsinline
             />
             <video
                 style={{
@@ -75,6 +76,7 @@ export function Calling({ visible = false, onCancel = () => {} }) {
                 }}
                 id="remote_video_element_id"
                 autoPlay
+                playsinline
             />
             <div
                 style={{
