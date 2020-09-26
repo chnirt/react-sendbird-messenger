@@ -320,6 +320,7 @@ export function Chat({ visible = false, handleCloseChannel = () => {} }) {
 
             <Detail visible={showDetail} onCancel={handleCloseDetail} />
             <IncomingCall
+                caller={directCall?.caller}
                 visible={showIncomingCall}
                 onCancel={handleDeclineIncomingCall}
                 onOk={handleCallIncomingCall}

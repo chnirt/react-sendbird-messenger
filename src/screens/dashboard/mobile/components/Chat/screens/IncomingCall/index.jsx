@@ -6,6 +6,7 @@ import { ReactComponent as Phone } from '@assets/svg/call/call-phone-white.svg'
 import { ReactComponent as Decline } from '@assets/svg/call/call-decline-white.svg'
 
 import { DEFAULT_IMG, ACCEPT, REJECT } from '@constants'
+import { capitalizeFirstLetter, firstCharacterOfEachString } from '@utils'
 
 const { Title, Text } = Typography
 
@@ -13,8 +14,15 @@ export function IncomingCall({
     visible = false,
     onCancel = () => {},
     onOk = () => {},
+    caller = {},
 }) {
     const { t } = useTranslation()
+
+    const id = caller.userId
+    const shortName = capitalizeFirstLetter(
+        firstCharacterOfEachString(caller.nickname)
+    )
+    const name = caller.nickname
 
     return (
         <Drawer
@@ -91,11 +99,13 @@ export function IncomingCall({
                 shape="circle"
                 size={128}
                 src={DEFAULT_IMG}
-            />
+            >
+                {shortName}
+            </Avatar>
             <Title style={{ margin: '10px 0 0' }} level={3}>
-                Maria
+                {name}
             </Title>
-            <Text>@maria</Text>
+            <Text>{id}</Text>
         </Drawer>
     )
 }
