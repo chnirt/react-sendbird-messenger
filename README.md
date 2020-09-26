@@ -48,11 +48,13 @@
 -   [ ] Full testing
 -   [ ] Lazy image
 -   [x] Scroll to bottom
--   [ ] Load more
+-   [x] Load more
 -   [x] Responsive mobile
 -   [x] Design calling
 -   [x] Calling
 -   [x] Custom console.log for dev, prod
+-   [x] Animation with Framer
+-   [x] message status: Sent, Delivered, Seen
 
 ### Learn more
 
