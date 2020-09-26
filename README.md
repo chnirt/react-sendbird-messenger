@@ -1,17 +1,13 @@
-## SendBird messenger
-
----
+# SendBird messenger
 
 <img src="src/assets/images/banners/default.png" alt="sendbird-messenger">
 
----
-
-### Demo
+## Demo
 
 <img src="src/assets/images/demo/mobile.gif" alt="mobile">
 <img src="src/assets/images/demo/web.gif" alt="web">
 
-### Life cycle processes.
+## Life cycle processes
 
 <!-- [![CircleC](https://circleci.com/gh/chnirt/react-sendbird-messenger.svg?style=svg)](https://circleci.com/gh/chnirt/react-sendbird-messenger) -->
 
@@ -21,7 +17,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger/stargazers)
 [![GitHub license](https://img.shields.io/github/license/chnirt/react-sendbird-messenger)](https://github.com/chnirt/react-sendbird-messenger)
 
-### Tasks: 1 Sep, 2020 ~ Now
+## Tasks: 1 Sep, 2020 ~ Now
 
 -   [x] Design login, register, dashboard
 -   [x] Router-router-dom v6
@@ -55,6 +51,54 @@
 -   [x] Custom console.log for dev, prod
 -   [x] Animation with Framer
 -   [x] message status: Sent, Delivered, Seen
+
+## Prepare!!!
+
+-   Register an account [Firebase](https://firebase.google.com/) and [Sendbird](https://dashboard.sendbird.com/auth/signup) and [Sentry](https://sentry.io/signup/) (optional)
+-   Firebase: Create Project -> Authentication -> Sign-in-method -> Sign-in providers -> Email/Password -> Enabled
+-   Sendbird: Create Application -> Settings -> Chat -> Features -> Enable all features
+-   Prepare environment for .env like .env.sample
+
+## Installation
+
+1. clone repository
+
+```
+  git clone https://github.com/chnirt/react-sendbird-messenger.git
+```
+
+2. cd into directory
+
+```
+  cd react-sendbird-messenger/
+```
+
+3. create .env
+
+```
+  touch .env
+```
+
+4. add to .env
+
+```
+  PORT=<your-port>
+  ...
+```
+
+5. install dependencies using npm
+
+```
+  npm i
+```
+
+## Starting the Server
+
+1. Start in development normal
+
+```
+  npm run start
+```
 
 ### Learn more
 
