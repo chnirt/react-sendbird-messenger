@@ -189,3 +189,11 @@
 -   Framer sample: https://www.youtube.com/playlist?list=PL4cUxeGkcC9iHDnQfTHEVVceOEBsOf07i
 
 -   Mp4 to gif: https://www.onlineconverter.com/mp4-to-gif
+
+-   Deploy Amplify error with emoji: https://github.com/redhat-developer/yaml-language-server/issues/128
+
+-   Deploy react to Amplify: https://aws.amazon.com/getting-started/hands-on/build-react-app-amplify-graphql/module-one/?e=gs2020&p=build-a-react-app-intro
+
+-   Build settings: https://docs.aws.amazon.com/amplify/latest/userguide/build-settings.html
+
+-   yarn build in ReactJS, Allocation failed - JavaScript heap out of memory: https://stackoverflow.com/questions/57923800/yarn-build-in-reactjs-allocation-failed-javascript-heap-out-of-memory
