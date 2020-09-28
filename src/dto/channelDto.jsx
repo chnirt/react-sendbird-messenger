@@ -12,7 +12,8 @@ export const channelDto = (channel) => {
         formatLastMessage(channel?.lastMessage) ??
         'We need to compress the haptic CSS hard drive!'
     const isUnread = channel?.unreadMessageCount > 0 ?? false
-    const createdAt = channel?.createdAt ?? '2020-09-21T18:45:43.976Z'
+    const createdAt =
+        channel?.lastMessage?.createdAt ?? '2020-09-21T18:45:43.976Z'
     const members = channel?.members ?? []
     return {
         id,
