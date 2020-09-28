@@ -197,3 +197,5 @@
 -   Build settings: https://docs.aws.amazon.com/amplify/latest/userguide/build-settings.html
 
 -   yarn build in ReactJS, Allocation failed - JavaScript heap out of memory: https://stackoverflow.com/questions/57923800/yarn-build-in-reactjs-allocation-failed-javascript-heap-out-of-memory
+
+-   Get a free Domain name and setup SSL on your Server: https://www.codementor.io/@vahiwe/get-a-free-domain-name-and-setup-ssl-on-your-server-16h2icyzox

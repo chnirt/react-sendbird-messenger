@@ -104,21 +104,19 @@ export function ChatInput() {
                         handleEmojiMart={handleEmojiMart}
                     />
                 </ScaleIn>
-                <ScaleIn>
-                    <Button
-                        style={{ border: 0 }}
-                        type="ghost"
-                        icon={
-                            <SendOutlined
-                                style={{
-                                    color: PRIMARY_COLOR,
-                                }}
-                            />
-                        }
-                        size="large"
-                        onClick={handleSendMessage}
-                    />
-                </ScaleIn>
+                <Button
+                    style={{ border: 0 }}
+                    type="ghost"
+                    icon={
+                        <SendOutlined
+                            style={{
+                                color: PRIMARY_COLOR,
+                            }}
+                        />
+                    }
+                    size="large"
+                    onClick={handleSendMessage}
+                />
             </Col>
         </Fragment>
     )
