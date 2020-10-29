@@ -51,6 +51,7 @@
 -   [x] Custom console.log for dev, prod
 -   [x] Animation with Framer
 -   [x] message status: Sent, Delivered, Seen
+-   [x] Integrate Electron - Desktop app
 
 ## Prepare!!!
 

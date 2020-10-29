@@ -4,8 +4,7 @@ import './index.less'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-import { BrowserRouter as Router } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
+import { HashRouter } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
 
@@ -23,16 +22,6 @@ import '@assets/fonts/Hanalei-Regular.ttf'
 MyConsole.run()
 
 if (process.env.NODE_ENV === 'production') {
-    const history = createBrowserHistory()
-
-    // Array of Route Config Objects
-    const routes = [
-        { path: '/' },
-        { path: '/register' },
-        { path: '/dashboard' },
-        { path: '/*' },
-    ]
-
     Sentry.init({
         environment: process.env.NODE_ENV,
         dsn: process.env.REACT_APP_ST_DSN,
@@ -42,11 +31,6 @@ if (process.env.NODE_ENV === 'production') {
                 tracingOrigins: [
                     'https://react-sendbird-messenger.vercel.app/',
                 ],
-                // Can also use reactRouterV4Instrumentation
-                routingInstrumentation: Sentry.reactRouterV5Instrumentation(
-                    history,
-                    routes
-                ),
             }),
         ],
         tracesSampleRate: 1.0,
@@ -60,9 +44,9 @@ ReactDOM.render(
                 <FirebaseProvider>
                     <AuthProvider>
                         <SendBirdProvider>
-                            <Router>
+                            <HashRouter>
                                 <App />
-                            </Router>
+                            </HashRouter>
                         </SendBirdProvider>
                     </AuthProvider>
                 </FirebaseProvider>

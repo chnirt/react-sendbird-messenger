@@ -2,6 +2,43 @@
     "name": "react-sendbird-messenger",
     "version": "0.1.0",
     "private": true,
+    "main": "public/electron.js",
+    "build": {
+        "productName": "React SendBird Messenger",
+        "appId": "com.chnirt.react-sendbird-messenger",
+        "dmg": {
+            "contents": [
+                {
+                    "x": 410,
+                    "y": 220
+                },
+                {
+                    "x": 410,
+                    "y": 220,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "files": [
+            "build/**/*",
+            "node_modules/**/*"
+        ],
+        "directories": {
+            "buildResources": "assets",
+            "output": "release"
+        },
+        "mac": {
+            "icon": "build/icon.png",
+            "category": "chnirt.react.sendbird.messenger"
+        },
+        "win": {
+            "icon": "build/icon.png"
+        }
+    },
+    "description": "Welcome to My react-sendbird-messenger app",
+    "author": "Chnirt",
+    "homepage": "./",
     "dependencies": {
         "@craco/craco": "^5.6.4",
         "@sentry/integrations": "^5.23.0",
@@ -15,6 +52,7 @@
         "babel-jest": "^24.9.0",
         "craco-antd": "^1.18.1",
         "craco-less": "^1.17.0",
+        "electron-is-dev": "^1.2.0",
         "emoji-mart": "^3.0.0",
         "env-cmd": "^10.1.0",
         "eslint": "^6.6.0",
@@ -48,6 +86,7 @@
         "start:desi": "env-cmd -f .env.design craco start",
         "start:stag": "env-cmd -f .env.staging craco start",
         "start:prod": "env-cmd -f .env.production craco start",
+        "start:ele": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron . \"",
         "build": "CI= craco --max_old_space_size=4096 build",
         "build:desi": "env-cmd -f .env.design craco build",
         "build:stag": "env-cmd -f .env.staging craco build",
@@ -55,11 +94,16 @@
         "test": "craco test",
         "eject": "react-scripts eject",
         "storybook": "start-storybook -p 6006 -s public",
-        "build-storybook": "build-storybook -s public",
+        "build:storybook": "build-storybook -s public",
         "prettier": "prettier \"src/**/*.{js,jsx,css}\"",
         "format": "yarn prettier --write --ignore-unknown",
         "lint": "eslint src",
-        "lint:fix": "yarn lint --fix --ignore-pattern storybook-static"
+        "lint:fix": "yarn lint --fix --ignore-pattern storybook-static",
+        "ele:pack": "electron-builder --dir",
+        "ele:dist": "electron-builder",
+        "ele:mac": "electron-builder --mac",
+        "ele:win": "electron-builder --win",
+        "postinstall": "electron-builder install-app-deps"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -86,12 +130,16 @@
         "@storybook/react": "^6.0.21",
         "babel-loader": "^8.1.0",
         "chalk": "^4.1.0",
+        "concurrently": "^5.3.0",
+        "electron": "^10.1.5",
+        "electron-builder": "^22.9.1",
         "husky": "^4.2.5",
         "jest-canvas-mock": "^2.2.0",
         "lint-staged": "^10.3.0",
         "mini-css-extract-plugin": "^0.11.2",
         "prettier": "^2.1.1",
         "progress-bar-webpack-plugin": "^2.1.0",
-        "react-is": "^16.13.1"
+        "react-is": "^16.13.1",
+        "wait-on": "^5.2.0"
     }
 }
