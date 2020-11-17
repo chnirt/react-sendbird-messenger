@@ -1,25 +1,30 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+    "short_name": "Sendbird Messenger",
+    "name": "React SendBird Messenger",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "icons": {
+        "16": "logo16.png",
+        "24": "logo24.png",
+        "32": "logo32.png",
+        "48": "logo48.png",
+        "128": "logo128.png",
+        "192": "logo192.png",
+        "512": "logo512.png"
     },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+    "browser_action": {
+        "default_icon": {
+            "16": "logo16.png",
+            "24": "logo24.png",
+            "32": "logo32.png",
+            "48": "logo48.png",
+            "128": "logo128.png",
+            "192": "logo192.png",
+            "512": "logo512.png"
+        },
+        "default_title": "React SendBird Messenger",
+        "default_popup": "index.html"
     },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+    "start_url": "/",
+    "display": "standalone"
 }

@@ -36,7 +36,7 @@
             "icon": "build/icon.png"
         }
     },
-    "description": "Welcome to My react-sendbird-messenger app",
+    "description": "Welcome to My React Sendbird Messenger App",
     "author": "Chnirt",
     "homepage": "./",
     "dependencies": {
