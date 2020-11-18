@@ -202,3 +202,9 @@
 -   Get a free Domain name and setup SSL on your Server: https://www.codementor.io/@vahiwe/get-a-free-domain-name-and-setup-ssl-on-your-server-16h2icyzox
 
 -   Create Chrome Extension in React: https://dev.to/bayardlouis470/create-chrome-extension-in-react-3pna
+
+-   How to specify icons in manifest.json?: https://stackoverflow.com/questions/35298168/how-to-specify-icons-in-manifest-json
+
+-   Service Workers: an Introduction: https://developers.google.com/web/fundamentals/primers/service-workers
+
+-   Unexpected use of 'self' no-restricted-globals React: https://stackoverflow.com/questions/44292520/unexpected-use-of-self-no-restricted-globals-react
