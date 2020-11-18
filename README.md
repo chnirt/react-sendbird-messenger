@@ -208,3 +208,5 @@
 -   Service Workers: an Introduction: https://developers.google.com/web/fundamentals/primers/service-workers
 
 -   Unexpected use of 'self' no-restricted-globals React: https://stackoverflow.com/questions/44292520/unexpected-use-of-self-no-restricted-globals-react
+
+-   How to Make a React Progressive Web Application (PWA): https://www.codica.com/blog/how-to-create-pwa-with-react/
