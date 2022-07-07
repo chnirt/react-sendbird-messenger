@@ -61,7 +61,7 @@
         "history": "^5.0.0",
         "i18next": "^19.7.0",
         "jest-config": "^26.4.2",
-        "moment": "^2.27.0",
+        "moment": "^2.29.4",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-draggable": "^4.4.3",
